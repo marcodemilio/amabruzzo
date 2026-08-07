@@ -87,16 +87,9 @@
       text-overflow:ellipsis;
       text-align:center;
     }
-    .subtitle{margin:.25rem 0 0;color:var(--muted);font-size:.9rem}
     .subtitle-small{margin:.35rem 0 0;color:var(--muted);font-size:.78rem;line-height:1.25;text-align:center}
     .subtitle-small strong{color:#b00020;font-weight:800}
-    .release{
-      font-size:.72rem;
-      color:var(--muted);
-      display:block;
-      margin-top:.15rem;
-      text-align:center;
-    }
+    .release{font-size:.72rem;color:var(--muted);display:block;margin-top:.15rem;text-align:center}
     .panel{
       background:var(--surface2);
       border:1px solid var(--border);
@@ -105,17 +98,6 @@
       box-shadow:0 1px 2px rgba(0,0,0,.08)
     }
     .panel h2{margin:0 0 .6rem;font-size:1.05rem}
-    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}
-    .kpi{
-      background:var(--bg);
-      border:1px solid var(--border);
-      border-radius:.75rem;
-      padding:.7rem;
-      min-height:64px;
-    }
-    .kpi-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.15rem}
-    .kpi-value{font-size:.92rem;font-weight:700;line-height:1.15}
-    .kpi-value .big-symbol{font-size:1.35rem;line-height:1;margin-right:.35rem}
     .field label{display:block;font-size:.92rem;font-weight:600;margin-bottom:.3rem}
     .field input{
       width:100%;min-height:42px;border-radius:.5rem;
@@ -211,6 +193,12 @@
       margin-top:.65rem
     }
     .quad-grid .toolbar-btn{min-height:36px;padding:0 .55rem;font-size:.82rem}
+    .quad-total{
+      margin-top:.5rem;
+      font-size:.85rem;
+      color:var(--muted);
+      text-align:center;
+    }
     .icon-row{
       display:flex;
       gap:.45rem;
@@ -284,11 +272,11 @@
           <div>
             <h1>Alcolisti Meteo Analcolici</h1>
             <span class="release">Rel. 01-B-005</span>
-            <p class="subtitle-small" id="subtitleText">dati aggiornati al <strong id="lastUpdate">07/08/2026, 17:45:00</strong></p>
+            <p class="subtitle-small" id="subtitleText">dati aggiornati al <strong id="lastUpdate">07/08/2026, 17:45:45</strong></p>
             <div class="icon-row">
               <button class="icon-pill active" id="labelRainBtn" type="button"><span class="weather-icon">☔</span></button>
-              <button class="icon-pill" id="labelMinBtn" type="button"><span class="weather-icon blue">🌡</span></button>
-              <button class="icon-pill" id="labelMaxBtn" type="button"><span class="weather-icon red">🌡</span></button>
+              <button class="icon-pill" id="labelMinBtn" type="button"><span class="weather-icon red">🌡</span></button>
+              <button class="icon-pill" id="labelMaxBtn" type="button"><span class="weather-icon blue">🌡</span></button>
             </div>
           </div>
         </div>
@@ -301,16 +289,7 @@
           <input id="searchInput" type="search" placeholder="Es. Prati Di Tivo" />
         </div>
         <p id="loadStatus" class="subtitle" style="margin-top:.75rem">Caricamento dati in corso…</p>
-      </section>
-
-      <section class="panel">
-        <h2>Riepilogo</h2>
-        <div class="grid-2" id="summaryGrid">
-          <div class="kpi"><div class="kpi-label">Stazioni Monitorate</div><div class="kpi-value">41 di cui <span id="offlineCount">x</span> Offline</div></div>
-          <div class="kpi"><div class="kpi-label">Pioggia</div><div class="kpi-value" id="kpiRain">-</div></div>
-          <div class="kpi"><div class="kpi-label">Temperatura minima</div><div class="kpi-value" id="kpiTmin">-</div></div>
-          <div class="kpi"><div class="kpi-label">Temperatura massima</div><div class="kpi-value" id="kpiTmax">-</div></div>
-        </div>
+        <div id="filterSummary" class="subtitle-small" style="margin-top:.6rem"></div>
       </section>
 
       <section class="panel">
@@ -323,6 +302,8 @@
           <button class="toolbar-btn" data-quad="4" type="button">Q5</button>
           <button class="toolbar-btn" data-quad="5" type="button">Q6</button>
         </div>
+        <button id="resetViewBtn" class="toolbar-btn" type="button" style="width:100%;margin-top:.6rem">Totale</button>
+        <div id="quadTotal" class="quad-total"></div>
       </section>
 
       <section class="panel">
@@ -354,107 +335,33 @@
     const APP = document.getElementById('app');
     const map = L.map('map').setView([42.2, 13.75], 8.4);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; OpenStreetMap' }).addTo(map);
-
-    const abruzzoBounds = [
-      L.latLngBounds([[41.80, 13.00], [42.20, 13.60]]),
-      L.latLngBounds([[41.80, 13.60], [42.20, 14.20]]),
-      L.latLngBounds([[41.80, 14.20], [42.20, 14.90]]),
-      L.latLngBounds([[42.20, 13.00], [42.60, 13.60]]),
-      L.latLngBounds([[42.20, 13.60], [42.60, 14.20]]),
-      L.latLngBounds([[42.20, 14.20], [42.60, 14.90]])
-    ];
-
+    const abruzzoBounds = [L.latLngBounds([[41.80, 13.00], [42.20, 13.60]]),L.latLngBounds([[41.80, 13.60], [42.20, 14.20]]),L.latLngBounds([[41.80, 14.20], [42.20, 14.90]]),L.latLngBounds([[42.20, 13.00], [42.60, 13.60]]),L.latLngBounds([[42.20, 13.60], [42.60, 14.20]]),L.latLngBounds([[42.20, 14.20], [42.60, 14.90]])];
+    const totalBounds = L.latLngBounds([[41.65, 13.0], [42.95, 14.95]]);
     map.setMaxBounds(L.latLngBounds([[41.55, 12.75], [42.95, 15.05]]));
-    map.fitBounds(L.latLngBounds([[41.65, 13.0], [42.95, 14.95]]), { padding: [20, 20], maxZoom: 10 });
+    map.fitBounds(totalBounds, { padding: [20, 20], maxZoom: 10 });
 
-    const els = {
-      searchInput: document.getElementById('searchInput'),
-      stationList: document.getElementById('stationList'),
-      loadStatus: document.getElementById('loadStatus'),
-      fitBtnSidebar: document.getElementById('fitBtnSidebar'),
-      summaryGrid: document.getElementById('summaryGrid'),
-      debugBox: document.getElementById('debugBox'),
-      quadGrid: document.getElementById('quadGrid'),
-      labelRainBtn: document.getElementById('labelRainBtn'),
-      labelMinBtn: document.getElementById('labelMinBtn'),
-      labelMaxBtn: document.getElementById('labelMaxBtn'),
-      subtitleText: document.getElementById('subtitleText'),
-      sidebarToggle: document.getElementById('sidebarToggle')
-    };
-
+    const els = {searchInput: document.getElementById('searchInput'),stationList: document.getElementById('stationList'),loadStatus: document.getElementById('loadStatus'),fitBtnSidebar: document.getElementById('fitBtnSidebar'),debugBox: document.getElementById('debugBox'),quadGrid: document.getElementById('quadGrid'),labelRainBtn: document.getElementById('labelRainBtn'),labelMinBtn: document.getElementById('labelMinBtn'),labelMaxBtn: document.getElementById('labelMaxBtn'),subtitleText: document.getElementById('subtitleText'),sidebarToggle: document.getElementById('sidebarToggle'),filterSummary: document.getElementById('filterSummary'),resetViewBtn: document.getElementById('resetViewBtn'),quadTotal: document.getElementById('quadTotal')};
     let stationData = [];
     let markersLayer = L.layerGroup().addTo(map);
     let markerRefs = new Map();
     let labelMode = 'rain';
-
+    let currentQuad = null;
     const normName = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
     const num = v => { const n = parseFloat(String(v ?? '').replace(',', '.').trim()); return Number.isFinite(n) ? n : null; };
-    const flexDate = raw => {
-      const d = String(raw || '').replace(/\D/g, '');
-      if (d.length < 8) return null;
-      const iso = `${d.slice(4,8)}-${d.slice(2,4)}-${d.slice(0,2)}T${d.length >= 10 ? d.slice(8,10) : '00'}:${d.length >= 12 ? d.slice(10,12) : '00'}:${d.length >= 14 ? d.slice(12,14) : '00'}`;
-      const x = new Date(iso);
-      return Number.isNaN(x.getTime()) ? null : x;
-    };
-    const fetchText = async p => {
-      const r = await fetch(p, { cache: 'no-store' });
-      if (!r.ok) throw new Error(`HTTP ${r.status} per ${p}`);
-      return await r.text();
-    };
-    const delimiter = t => {
-      const candidates = [';', ',', '\t', '|'];
-      return candidates.map(c => ({ c, n: (t.split(/\r?\n/).slice(0, 10).join('\n').match(new RegExp('\\' + c, 'g')) || []).length }))
-        .sort((a,b)=>b.n-a.n)[0].c;
-    };
-    const get = (r, ...keys) => {
-      for (const k of keys) {
-        const v = r[k];
-        if (v !== undefined && v !== null && String(v).trim() !== '') return String(v).trim();
-      }
-      return '';
-    };
-    const parseWeather = rows => rows.map(r => {
-      const latestDate = flexDate(get(r, 'DataRilevamento', 'DataAggiornamento', 'Data'));
-      return {
-        date: latestDate,
-        tmax: num(get(r, 'TemperaturaMax', 'TemperaturaMassima')),
-        tmin: num(get(r, 'TemperaturaMin', 'TemperaturaMinima')),
-        rain: num(get(r, 'PioggiaGiornaliera', 'Pioggia Giornaliera')),
-        stato: String(get(r, 'Stato', 'stato')).trim().toLowerCase(),
-        fonte: String(get(r, 'FonteDati', 'fontedati')).trim().toLowerCase()
-      };
-    }).filter(r => r.date).sort((a, b) => a.date - b.date);
-
-    const summarizeWeather = rows => {
-      const cleaned = parseWeather(rows);
-      const latest = cleaned.at(-1) || null;
-      const online = (latest?.fonte === 'online') || latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true';
-      return { count: cleaned.length, latest, rainValue: latest ? latest.rain : null, online, series: cleaned };
-    };
-
-    const weatherExtremes = () => {
-      const valid = stationData.filter(s => s.summary.count > 0);
-      const rainMax = [...valid].sort((a, b) => (b.summary.rainValue ?? -1) - (a.summary.rainValue ?? -1))[0] || null;
-      const tmaxMax = [...valid].sort((a, b) => (b.summary.latest?.tmax ?? -999) - (a.summary.latest?.tmax ?? -999))[0] || null;
-      const tminMin = [...valid].sort((a, b) => (a.summary.latest?.tmin ?? 999) - (b.summary.latest?.tmin ?? 999))[0] || null;
-      const offlineCount = stationData.filter(s => s.summary.count > 0 && !s.summary.online).length;
-      return { rainMax, tmaxMax, tminMin, offlineCount };
-    };
-
-    const getLabelValue = s => {
-      const latest = s.summary.latest || {};
-      if (labelMode === 'min') return Number.isFinite(latest.tmin) ? Math.round(latest.tmin) : '–';
-      if (labelMode === 'max') return Number.isFinite(latest.tmax) ? Math.round(latest.tmax) : '–';
-      return Number.isFinite(s.summary.rainValue) ? Math.round(s.summary.rainValue) : '–';
-    };
-
+    const flexDate = raw => { const d = String(raw || '').replace(/\D/g, ''); if (d.length < 8) return null; const iso = `${d.slice(4,8)}-${d.slice(2,4)}-${d.slice(0,2)}T${d.length >= 10 ? d.slice(8,10) : '00'}:${d.length >= 12 ? d.slice(10,12) : '00'}:${d.length >= 14 ? d.slice(12,14) : '00'}`; const x = new Date(iso); return Number.isNaN(x.getTime()) ? null : x; };
+    const fetchText = async p => { const r = await fetch(p, { cache: 'no-store' }); if (!r.ok) throw new Error(`HTTP ${r.status} per ${p}`); return await r.text(); };
+    const delimiter = t => [';', ',', '\t', '|'].map(c => ({ c, n: (t.split(/\r?\n/).slice(0, 10).join('\n').match(new RegExp('\\' + c, 'g')) || []).length })).sort((a,b)=>b.n-a.n)[0].c;
+    const get = (r, ...keys) => { for (const k of keys) { const v = r[k]; if (v !== undefined && v !== null && String(v).trim() !== '') return String(v).trim(); } return ''; };
+    const parseWeather = rows => rows.map(r => ({date: flexDate(get(r, 'DataRilevamento', 'DataAggiornamento', 'Data')),tmax: num(get(r, 'TemperaturaMax', 'TemperaturaMassima')),tmin: num(get(r, 'TemperaturaMin', 'TemperaturaMinima')),rain: num(get(r, 'PioggiaGiornaliera', 'Pioggia Giornaliera')),stato: String(get(r, 'Stato', 'stato')).trim().toLowerCase(),fonte: String(get(r, 'FonteDati', 'fontedati')).trim().toLowerCase()})).filter(r => r.date).sort((a, b) => a.date - b.date);
+    const summarizeWeather = rows => { const cleaned = parseWeather(rows); const latest = cleaned.at(-1) || null; const online = (latest?.fonte === 'online') || latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true'; return { count: cleaned.length, latest, rainValue: latest ? latest.rain : null, online, series: cleaned }; };
+    const weatherExtremes = () => { const valid = stationData.filter(s => s.summary.count > 0); const rainMax = [...valid].sort((a, b) => (b.summary.rainValue ?? -1) - (a.summary.rainValue ?? -1))[0] || null; const tmaxMax = [...valid].sort((a, b) => (b.summary.latest?.tmax ?? -999) - (a.summary.latest?.tmax ?? -999))[0] || null; const tminMin = [...valid].sort((a, b) => (a.summary.latest?.tmin ?? 999) - (b.summary.latest?.tmin ?? 999))[0] || null; const offlineCount = stationData.filter(s => s.summary.count > 0 && !s.summary.online).length; return { rainMax, tmaxMax, tminMin, offlineCount }; };
+    const getLabelValue = s => { const latest = s.summary.latest || {}; if (labelMode === 'min') return Number.isFinite(latest.tmin) ? Math.round(latest.tmin) : '–'; if (labelMode === 'max') return Number.isFinite(latest.tmax) ? Math.round(latest.tmax) : '–'; return Number.isFinite(s.summary.rainValue) ? Math.round(s.summary.rainValue) : '–'; };
     const popupHtml = s => {
       const statusLabel = s.summary.online ? 'Online' : 'Offline';
       const statusTime = s.summary.latest?.date ? s.summary.latest.date.toLocaleString('it-IT') : 'n/d';
       const latest = s.summary.latest || {};
-      const minTxt = Number.isFinite(latest.tmin) ? `<span style="color:#1f78b4">Tmin ${latest.tmin.toFixed(0)}°</span>` : 'Tmin n/d';
-      const maxTxt = Number.isFinite(latest.tmax) ? `<span style="color:#a13544">Tmax ${latest.tmax.toFixed(0)}°</span>` : 'Tmax n/d';
       const byDay = new Map();
+
       s.summary.series.forEach(r => {
         if (!r.date) return;
         const key = r.date.toLocaleDateString('it-IT');
@@ -464,10 +371,14 @@
         if (Number.isFinite(r.tmax)) prev.tmax = prev.tmax === null ? r.tmax : Math.max(prev.tmax, r.tmax);
         byDay.set(key, prev);
       });
+
       const today = new Date();
       today.setHours(0, 0, 0, 0);
+
+      const fmtDay = d => d.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
       const rows = [];
       let runningTotal = 0;
+
       for (let i = 1; i <= 30; i++) {
         const d = new Date(today);
         d.setDate(d.getDate() - i);
@@ -475,121 +386,64 @@
         const item = byDay.get(key);
         const rain = item ? item.rain : 0;
         runningTotal += rain;
+
         const tempTxt = (item && Number.isFinite(item.tmin) && Number.isFinite(item.tmax))
-          ? `<span style="color:#a13544">[${item.tmin.toFixed(0)}°]</span> <span style="color:#1f78b4">[${item.tmax.toFixed(0)}°]</span>`
+          ? `<span style="color:#a13544">[${item.tmin.toFixed(0)}° - ${item.tmax.toFixed(0)}°]</span>`
           : '<span style="color:var(--muted)">[n/d]</span>';
-        const extra = [5, 10, 15, 20, 25, 30].includes(i) ? ` · totale <span style="color:var(--primary)">[${runningTotal.toFixed(1)}]</span>` : '';
-        rows.push(`<div class="popup-day">- ${i}: ${d.toLocaleDateString('it-IT')} · <span style="color:var(--rain)">${rain.toFixed(1)} mm</span> · ${tempTxt}${extra}</div>`);
+
+        rows.push(
+          `<div class="popup-day">- ${fmtDay(d)} · <span style="color:var(--rain)">${rain.toFixed(1)} mm</span> (${runningTotal.toFixed(1)}) ${tempTxt}</div>`
+        );
       }
+
       return `
         <div class="popup-title">${s.name}</div>
         <div class="popup-meta">
           <div class="popup-line"><strong style="color:var(--success)">${statusLabel}</strong> · ${statusTime}</div>
-          <div class="popup-line">Oggi · <span style="color:var(--rain)">${Number.isFinite(s.summary.rainValue) ? s.summary.rainValue.toFixed(1) : 'n/d'} mm</span></div>
-          <div class="popup-line">Temperature · ${minTxt} · ${maxTxt}</div>
+          <div class="popup-line">
+            Oggi · <span style="color:var(--rain)">${Number.isFinite(s.summary.rainValue) ? s.summary.rainValue.toFixed(1) : 'n/d'} mm</span>
+            · ${Number.isFinite(latest.tmin) && Number.isFinite(latest.tmax)
+              ? `<span style="color:#a13544">${latest.tmin.toFixed(0)}°</span> - <span style="color:#1f78b4">${latest.tmax.toFixed(0)}°</span>`
+              : 'n/d'}
+          </div>
           <div style="margin-top:.5rem;max-height:260px;overflow:auto;padding-right:.25rem">
             ${rows.join('')}
           </div>
         </div>
       `;
     };
-
-    const markerIcon = s => {
-      const modeClass = labelMode === 'min' ? 'min' : labelMode === 'max' ? 'max' : 'rain';
-      const statusClass = s.summary.online ? 'online' : 'offline';
-      return L.divIcon({
-        className: '',
-        html: `<div class="station-marker ${modeClass} ${statusClass}">${getLabelValue(s)}</div>`,
-        iconSize: [34, 34],
-        iconAnchor: [17, 17],
-        popupAnchor: [0, -70]
-      });
-    };
-
-    const refreshMarkers = data => {
-      markersLayer.clearLayers();
-      markerRefs.clear();
-      data.forEach(s => {
-        const m = L.marker([s.lat, s.lon], { icon: markerIcon(s) })
-          .addTo(markersLayer)
-          .bindPopup(popupHtml(s), { autoPan: true, offset: L.point(0, 70), maxHeight: 320 });
-        markerRefs.set(s.id, m);
-      });
-    };
-
-    function renderSummary() {
+    const markerIcon = s => { const modeClass = labelMode === 'min' ? 'min' : labelMode === 'max' ? 'max' : 'rain'; const statusClass = s.summary.online ? 'online' : 'offline'; return L.divIcon({ className: '', html: `<div class="station-marker ${modeClass} ${statusClass}">${getLabelValue(s)}</div>`, iconSize: [34, 34], iconAnchor: [17, 17], popupAnchor: [0, -70] }); };
+    const refreshMarkers = data => { markersLayer.clearLayers(); markerRefs.clear(); data.forEach(s => { const m = L.marker([s.lat, s.lon], { icon: markerIcon(s) }).addTo(markersLayer).bindPopup(popupHtml(s), { autoPan: true, offset: L.point(0, 70), maxHeight: 320 }); markerRefs.set(s.id, m); }); };
+    function renderTopSummary() {
       const ex = weatherExtremes();
-      document.getElementById('offlineCount').textContent = ex.offlineCount;
-      document.getElementById('kpiRain').innerHTML = ex.rainMax && Number.isFinite(ex.rainMax.summary.rainValue)
-        ? `<span class="big-symbol">☔</span> ${Math.round(ex.rainMax.summary.rainValue)} mm [${ex.rainMax.name}]`
-        : 'n/d';
-      document.getElementById('kpiTmin').innerHTML = ex.tminMin && Number.isFinite(ex.tminMin.summary.latest?.tmin)
-        ? `<span class="big-symbol">🌡</span> Minimo ${Math.round(ex.tminMin.summary.latest.tmin)}° [${ex.tminMin.name}]`
-        : 'n/d';
-      document.getElementById('kpiTmax').innerHTML = ex.tmaxMax && Number.isFinite(ex.tmaxMax.summary.latest?.tmax)
-        ? `<span class="big-symbol">🌡</span> Massimo ${Math.round(ex.tmaxMax.summary.latest.tmax)}° [${ex.tmaxMax.name}]`
-        : 'n/d';
+      const activeName = labelMode === 'rain' ? ex.rainMax?.name : labelMode === 'min' ? ex.tminMin?.name : ex.tmaxMax?.name;
+      const activeVal = labelMode === 'rain' ? ex.rainMax?.summary.rainValue : labelMode === 'min' ? ex.tminMin?.summary.latest?.tmin : ex.tmaxMax?.summary.latest?.tmax;
+      const activeText = labelMode === 'rain'
+        ? `Pioggia ☔ ${Number.isFinite(activeVal) ? Math.round(activeVal) : 'n/d'} mm - ${activeName || 'n/d'}`
+        : labelMode === 'min'
+          ? `Temperatura minima 🌡 ${Number.isFinite(activeVal) ? Math.round(activeVal) : 'n/d'}° - ${activeName || 'n/d'}`
+          : `Temperatura Massima 🌡 ${Number.isFinite(activeVal) ? Math.round(activeVal) : 'n/d'}° - ${activeName || 'n/d'}`;
+      els.filterSummary.innerHTML = `Stazioni Monitorate <strong>${stationData.length}</strong> di cui <strong>${weatherExtremes().offlineCount}</strong> Offline<br>${activeText}`;
     }
-
-    function setDebug(stationsRows, weatherRows, parsedStations, parsedWeather, weatherById, stTxt, weTxt) {
-      const s0 = stationsRows[0] || {};
-      const w0 = weatherRows[0] || {};
-      els.debugBox.textContent = `URL stazioni: ${STATIONS_CSV}
-URL meteo: ${WEATHER_CSV}
-
-Stazioni raw
-righe: ${stationsRows.length}
-delimitatore: ${parsedStations.meta?.delimiter || ','}
-colonne: ${Object.keys(s0).join(', ') || 'n/d'}
-
-Meteo raw
-righe: ${weatherRows.length}
-delimitatore: ${parsedWeather.meta?.delimiter || ','}
-colonne: ${Object.keys(w0).join(', ') || 'n/d'}
-
-Match
-stazioni totali: ${stationData.length}
-con dati meteo: ${stationData.filter(s => s.summary.count > 0).length}
-senza dati meteo: ${stationData.filter(s => s.summary.count === 0).length}
-id meteo: ${weatherById.size}
-
-Anteprima stazioni
-${stTxt.slice(0, 400)}
-
-Anteprima meteo
-${weTxt.slice(0, 400)}
-`;
+    function updateQuadTotal() {
+      const count = currentQuad === null ? stationData.length : stationData.filter(s => s.quad === currentQuad).length;
+      els.quadTotal.textContent = currentQuad === null ? `Totale: ${count}` : `Totale quadrante: ${count}`;
     }
-
-    function renderStationList(data) {
-      els.stationList.innerHTML = '';
-      data.forEach(s => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'station-card';
-        b.dataset.id = s.id;
-        b.innerHTML = `
-          <div class="station-title">${s.name}</div>
-          <div class="station-meta">
-            <span>${s.altitude ?? 'n/d'} m</span>
-            <span>${s.summary.online ? 'online' : 'offline'}</span>
-            <span>${Number.isFinite(s.summary.rainValue) ? `${Math.round(s.summary.rainValue)} mm` : 'n/d'}</span>
-          </div>`;
-        b.onclick = () => {
-          const m = markerRefs.get(s.id);
-          if (m) { map.flyTo([s.lat, s.lon], 11, { duration: .8 }); m.openPopup(); }
-        };
-        els.stationList.appendChild(b);
-      });
+    function quadIndexOf(lat, lon) {
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+      const row = lat < 42.2 ? 0 : 1;
+      const col = lon < 13.6 ? 0 : lon < 14.2 ? 1 : 2;
+      return row * 3 + col;
     }
-
-    function filterStations() {
-      const q = normName(els.searchInput.value);
-      const filtered = stationData.filter(s => Number.isFinite(s.lat) && Number.isFinite(s.lon) && (!q || normName(s.name).includes(q) || normName(s.reference).includes(q)));
-      refreshMarkers(filtered);
-      renderStationList(filtered);
+    function applyViewport(quad) {
+      currentQuad = quad;
+      if (quad === null) map.fitBounds(totalBounds, { padding: [20, 20], maxZoom: 10 });
+      else map.fitBounds(abruzzoBounds[quad], { padding: [20, 20], maxZoom: 12 });
+      updateQuadTotal();
     }
-
+    function setDebug(stationsRows, weatherRows, parsedStations, parsedWeather, weatherById, stTxt, weTxt) { const s0 = stationsRows[0] || {}; const w0 = weatherRows[0] || {}; els.debugBox.textContent = `URL stazioni: ${STATIONS_CSV}\nURL meteo: ${WEATHER_CSV}\n\nStazioni raw\nrighe: ${stationsRows.length}\ndelimitatore: ${parsedStations.meta?.delimiter || ','}\ncolonne: ${Object.keys(s0).join(', ') || 'n/d'}\n\nMeteo raw\nrighe: ${weatherRows.length}\ndelimitatore: ${parsedWeather.meta?.delimiter || ','}\ncolonne: ${Object.keys(w0).join(', ') || 'n/d'}\n\nMatch\nstazioni totali: ${stationData.length}\ncon dati meteo: ${stationData.filter(s => s.summary.count > 0).length}\nsenza dati meteo: ${stationData.filter(s => s.summary.count === 0).length}\nid meteo: ${weatherById.size}\n\nAnteprima stazioni\n${stTxt.slice(0, 400)}\n\nAnteprima meteo\n${weTxt.slice(0, 400)}\n`; }
+    function renderStationList(data) { els.stationList.innerHTML = ''; data.forEach(s => { const b = document.createElement('button'); b.type = 'button'; b.className = 'station-card'; b.dataset.id = s.id; b.innerHTML = `<div class="station-title">${s.name}</div><div class="station-meta"><span>${s.altitude ?? 'n/d'} m</span><span>${s.summary.online ? 'online' : 'offline'}</span><span>${Number.isFinite(s.summary.rainValue) ? `${Math.round(s.summary.rainValue)} mm` : 'n/d'}</span></div>`; b.onclick = () => { const m = markerRefs.get(s.id); if (m) { map.flyTo([s.lat, s.lon], 11, { duration: .8 }); m.openPopup(); } }; els.stationList.appendChild(b); }); }
+    function filterStations() { const q = normName(els.searchInput.value); const filtered = stationData.filter(s => Number.isFinite(s.lat) && Number.isFinite(s.lon) && (!q || normName(s.name).includes(q) || normName(s.reference).includes(q))); refreshMarkers(filtered); renderStationList(filtered); updateQuadTotal(); }
     async function init() {
       try {
         const [stTxt, weTxt] = await Promise.all([fetchText(STATIONS_CSV), fetchText(WEATHER_CSV)]);
@@ -599,92 +453,32 @@ ${weTxt.slice(0, 400)}
         const weatherRows = parsedWeather.data || [];
         const weatherById = new Map();
 
-        weatherRows.forEach(r => {
-          const id = get(r, 'Id', 'id');
-          if (!id) return;
-          if (!weatherById.has(id)) weatherById.set(id, []);
-          weatherById.get(id).push(r);
-        });
+        weatherRows.forEach(r => { const id = get(r, 'Id', 'id'); if (!id) return; if (!weatherById.has(id)) weatherById.set(id, []); weatherById.get(id).push(r); });
+        stationData = stationsRows.map(r => { const id = get(r, 'Id', 'id'); const name = get(r, 'Stazione Meteo', 'StazioneMeteo', 'stazionemeteo', 'stazione'); const weather = weatherById.get(id) || []; return { id, name, lat: num(get(r, 'Lat', 'lat')), lon: num(get(r, 'Long', 'long', 'Lon', 'lon')), altitude: num(get(r, 'Altitudine', 'altitudine')), reference: get(r, 'Riferimento', 'riferimento'), summary: summarizeWeather(weather), quad: quadIndexOf(num(get(r, 'Lat', 'lat')), num(get(r, 'Long', 'long', 'Lon', 'lon'))) }; }).filter(s => s.id && s.name && Number.isFinite(s.lat) && Number.isFinite(s.lon));
 
-        stationData = stationsRows.map(r => {
-          const id = get(r, 'Id', 'id');
-          const name = get(r, 'Stazione Meteo', 'StazioneMeteo', 'stazionemeteo', 'stazione');
-          const weather = weatherById.get(id) || [];
-          return {
-            id,
-            name,
-            lat: num(get(r, 'Lat', 'lat')),
-            lon: num(get(r, 'Long', 'long', 'Lon', 'lon')),
-            altitude: num(get(r, 'Altitudine', 'altitudine')),
-            reference: get(r, 'Riferimento', 'riferimento'),
-            summary: summarizeWeather(weather)
-          };
-        }).filter(s => s.id && s.name && Number.isFinite(s.lat) && Number.isFinite(s.lon));
-
-        const latestAgg = weatherRows
-          .map(r => flexDate(get(r, 'DataAggiornamento', 'DataRilevamento', 'Data')))
-          .filter(Boolean)
-          .sort((a, b) => a - b)
-          .at(-1);
-
+        const latestAgg = weatherRows.map(r => flexDate(get(r, 'DataAggiornamento', 'DataRilevamento', 'Data'))).filter(Boolean).sort((a, b) => a - b).at(-1);
         els.subtitleText.innerHTML = `dati aggiornati al <strong id="lastUpdate">${latestAgg ? latestAgg.toLocaleString('it-IT') : 'n/d'}</strong>`;
-
-        renderSummary();
+        renderTopSummary();
         refreshMarkers(stationData);
         renderStationList(stationData);
         setDebug(stationsRows, weatherRows, parsedStations, parsedWeather, weatherById, stTxt, weTxt);
-        els.loadStatus.textContent = `Caricate ${stationData.length} stazioni.`;
+        updateQuadTotal();
       } catch (err) {
-        els.loadStatus.textContent = 'Errore nel caricamento dei CSV.';
         els.debugBox.textContent = String(err?.stack || err?.message || err);
       }
     }
 
     els.searchInput.addEventListener('input', filterStations);
+    els.fitBtnSidebar.addEventListener('click', () => { currentQuad = null; applyViewport(null); });
+    els.resetViewBtn.addEventListener('click', () => { currentQuad = null; applyViewport(null); });
 
-    els.fitBtnSidebar.addEventListener('click', () => {
-      map.fitBounds(L.latLngBounds([[41.65, 13.0], [42.95, 14.95]]), { padding: [20, 20], maxZoom: 10 });
-    });
+    els.labelRainBtn.addEventListener('click', () => { labelMode = 'rain'; els.labelRainBtn.classList.add('active'); els.labelMinBtn.classList.remove('active'); els.labelMaxBtn.classList.remove('active'); renderTopSummary(); refreshMarkers(stationData); filterStations(); });
+    els.labelMinBtn.addEventListener('click', () => { labelMode = 'min'; els.labelMinBtn.classList.add('active'); els.labelRainBtn.classList.remove('active'); els.labelMaxBtn.classList.remove('active'); renderTopSummary(); refreshMarkers(stationData); filterStations(); });
+    els.labelMaxBtn.addEventListener('click', () => { labelMode = 'max'; els.labelMaxBtn.classList.add('active'); els.labelRainBtn.classList.remove('active'); els.labelMinBtn.classList.remove('active'); renderTopSummary(); refreshMarkers(stationData); filterStations(); });
 
-    els.labelRainBtn.addEventListener('click', () => {
-      labelMode = 'rain';
-      els.labelRainBtn.classList.add('active');
-      els.labelMinBtn.classList.remove('active');
-      els.labelMaxBtn.classList.remove('active');
-      refreshMarkers(stationData);
-      filterStations();
-    });
+    els.quadGrid.addEventListener('click', e => { const btn = e.target.closest('[data-quad]'); if (!btn) return; const idx = Number(btn.dataset.quad); applyViewport(idx); });
 
-    els.labelMinBtn.addEventListener('click', () => {
-      labelMode = 'min';
-      els.labelMinBtn.classList.add('active');
-      els.labelRainBtn.classList.remove('active');
-      els.labelMaxBtn.classList.remove('active');
-      refreshMarkers(stationData);
-      filterStations();
-    });
-
-    els.labelMaxBtn.addEventListener('click', () => {
-      labelMode = 'max';
-      els.labelMaxBtn.classList.add('active');
-      els.labelRainBtn.classList.remove('active');
-      els.labelMinBtn.classList.remove('active');
-      refreshMarkers(stationData);
-      filterStations();
-    });
-
-    els.quadGrid.addEventListener('click', e => {
-      const btn = e.target.closest('[data-quad]');
-      if (!btn) return;
-      const idx = Number(btn.dataset.quad);
-      map.fitBounds(abruzzoBounds[idx], { padding: [20, 20], maxZoom: 12 });
-    });
-
-    els.sidebarToggle.addEventListener('click', () => {
-      APP.classList.toggle('sidebar-collapsed');
-      els.sidebarToggle.textContent = APP.classList.contains('sidebar-collapsed') ? 'Mostra' : 'Nascondi';
-      setTimeout(() => map.invalidateSize(), 260);
-    });
+    els.sidebarToggle.addEventListener('click', () => { APP.classList.toggle('sidebar-collapsed'); els.sidebarToggle.textContent = APP.classList.contains('sidebar-collapsed') ? 'Mostra' : 'Nascondi'; setTimeout(() => map.invalidateSize(), 260); });
 
     document.documentElement.setAttribute('data-theme', 'light');
     init();
