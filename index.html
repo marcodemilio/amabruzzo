@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alcolisti Meteo Analcolici - Rel. 01-B-011</title>
+  <title>Alcolisti Micologici Analcolici TRIS - Rel. 01-B-014</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <style>
     :root{
@@ -26,11 +26,13 @@
       --red:#a13544;
       --gray:#9a9a9a;
       --fuchsia:#ff00ff;
+      --green-dark:#0b5d1e;
+      --tris:#7b2cbf;
+      --active-green:#a8df6f;
       --shadow:0 6px 18px rgba(0,0,0,.12);
       --radius:1rem;
       --font:'Inter',system-ui,sans-serif;
       --sidebar-width:360px;
-      --green-dark:#0b5d1e;
     }
     *{box-sizing:border-box}
     html,body{margin:0;min-height:100%;font-family:var(--font);background:var(--bg);color:var(--text)}
@@ -58,6 +60,7 @@
     .logo-wrap{display:flex;gap:.65rem;align-items:center;justify-content:center;width:100%}
     .logo{width:40px;height:40px;color:var(--primary)}
     h1{margin:0;font-size:clamp(.98rem,1.35vw,1.25rem);line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+    .tris-word{color:var(--tris);font-weight:800}
     .subtitle-small{margin:.35rem 0 0;color:var(--muted);font-size:.78rem;line-height:1.25;text-align:center}
     .subtitle-small strong{color:#b00020;font-weight:800}
     .release{font-size:.72rem;color:var(--muted);display:block;margin-top:.15rem;text-align:center}
@@ -88,15 +91,46 @@
     .station-marker.max.offline{background:var(--gray)}
     .station-marker.rain.online{background:var(--success)}
     .station-marker.rain.offline{background:var(--danger)}
+    .station-marker.active{box-shadow:0 0 0 4px var(--active-green), 0 3px 10px rgba(0,0,0,.25)}
     .station-marker::after{
       content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);
       width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid currentColor
     }
     .station-marker.online::after{color:var(--success)}
     .station-marker.offline::after{color:var(--danger)}
-    .map-toggle{position:absolute;top:1rem;right:1rem;z-index:1000}
-    .map-toggle-group{position:absolute;top:4rem;right:1rem;z-index:1000}
-    .map-toggle-second{min-width:132px}
+    .map-toggle{
+      position:absolute;
+      top:1rem;
+      right:1rem;
+      z-index:1000;
+      font-size:1rem;
+      font-weight:800;
+      padding:.8rem 1.1rem;
+      border-radius:999px;
+      background:linear-gradient(180deg,#fdf4d7,#e9c96b);
+      color:#2c2410;
+      border:2px solid rgba(90,70,20,.35);
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
+      min-height:46px;
+    }
+    .map-toggle-group{
+      position:absolute;
+      top:4.2rem;
+      right:1rem;
+      z-index:1000;
+    }
+    .map-toggle-second{
+      min-width:160px;
+      font-size:1rem;
+      font-weight:800;
+      padding:.8rem 1.1rem;
+      border-radius:999px;
+      background:linear-gradient(180deg,#e8f5ff,#9fc9ff);
+      color:#10253f;
+      border:2px solid rgba(20,60,120,.28);
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
+      min-height:46px;
+    }
     .quad-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem;margin-top:.65rem}
     .quad-grid .toolbar-btn{min-height:36px;padding:0 .55rem;font-size:.82rem}
     .quad-total{margin-top:.5rem;font-size:.85rem;color:var(--muted);text-align:center}
@@ -105,14 +139,14 @@
       display:inline-flex;align-items:center;justify-content:center;min-height:38px;min-width:68px;padding:0 .8rem;border-radius:999px;border:1px solid var(--border);
       background:var(--bg);color:var(--text);font-size:.9rem;font-weight:600;cursor:pointer;user-select:none
     }
-    .icon-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .icon-pill.active{background:var(--active-green);color:#20310f;border-color:#87bf47}
     .weather-icon{font-size:1.45rem;line-height:1}
     .blue-dark{color:var(--blue-dark)}
     .red{color:var(--red)}
     .blue{color:var(--blue)}
     .debug-box{white-space:pre-wrap;font-size:.82rem;line-height:1.35;max-height:240px;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:.75rem;padding:.75rem}
     .leaflet-popup-content-wrapper{width:auto}
-    .leaflet-popup-content{width:540px !important;max-width:540px !important}
+    .leaflet-popup-content{width:560px !important;max-width:560px !important}
     .popup-days{max-height:280px;overflow:auto;padding-right:.25rem}
     .popup-rain-day{color:var(--green-dark);font-weight:700}
     .popup-rain-cum{color:var(--fuchsia);font-weight:700}
@@ -125,6 +159,7 @@
       .app.sidebar-collapsed .sidebar{transform:none;opacity:1;pointer-events:auto;padding:1rem;border-bottom:1px solid var(--border)}
       .map-wrap,#map{height:70vh}
       h1{font-size:clamp(.98rem,4vw,1.2rem)}
+      .map-toggle,.map-toggle-second{font-size:.95rem}
     }
   </style>
 </head>
@@ -140,8 +175,8 @@
             <path d="M32 18V27" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <div>
-            <h1>Alcolisti Meteo Analcolici</h1>
-            <span class="release">Rel. 01-B-011</span>
+            <h1>Alcolisti Micologici Analcolici <span class="tris-word">TRIS</span></h1>
+            <span class="release">Rel. 01-B-014</span>
             <p class="subtitle-small" id="subtitleText">dati aggiornati al <strong id="lastUpdate">07/08/2026, 17:45:45</strong></p>
             <div class="icon-row">
               <button class="icon-pill active" id="labelRainBtn" type="button"><span class="weather-icon" style="color:#0b5d1e">☔</span></button>
@@ -151,7 +186,6 @@
           </div>
         </div>
       </div>
-
       <section class="panel">
         <h2>Filtri</h2>
         <div class="field">
@@ -161,7 +195,6 @@
         <p id="loadStatus" class="subtitle" style="margin-top:.75rem">Caricamento dati in corso…</p>
         <div id="filterSummary" class="subtitle-small" style="margin-top:.6rem"></div>
       </section>
-
       <section class="panel">
         <h2>Quadranti Abruzzo</h2>
         <div class="quad-grid" id="quadGrid">
@@ -175,27 +208,23 @@
         <button id="resetViewBtn" class="toolbar-btn" type="button" style="width:100%;margin-top:.6rem">Totale</button>
         <div id="quadTotal" class="quad-total"></div>
       </section>
-
       <section class="panel">
         <h2>Debug</h2>
         <div id="debugBox" class="debug-box">In attesa del caricamento…</div>
       </section>
-
       <section class="panel">
         <h2>Stazioni</h2>
         <div id="stationList" class="list"></div>
       </section>
     </aside>
-
     <main class="map-wrap">
-      <button id="sidebarToggle" class="toolbar-btn map-toggle" type="button">Nascondi</button>
+      <button id="sidebarToggle" class="toolbar-btn map-toggle" type="button">Nascondi Menu</button>
       <div class="map-toggle-group">
         <button id="fitBtnSidebar" class="toolbar-btn map-toggle-second" type="button">Centra Abruzzo</button>
       </div>
       <div id="map"></div>
     </main>
   </div>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
@@ -209,7 +238,6 @@
     const totalBounds = L.latLngBounds([[41.65, 13.0], [42.95, 14.95]]);
     map.setMaxBounds(L.latLngBounds([[41.55, 12.75], [42.95, 15.05]]));
     map.fitBounds(totalBounds, { padding: [20, 20], maxZoom: 10 });
-
     const els = {searchInput: document.getElementById('searchInput'),stationList: document.getElementById('stationList'),loadStatus: document.getElementById('loadStatus'),fitBtnSidebar: document.getElementById('fitBtnSidebar'),debugBox: document.getElementById('debugBox'),quadGrid: document.getElementById('quadGrid'),labelRainBtn: document.getElementById('labelRainBtn'),labelMinBtn: document.getElementById('labelMinBtn'),labelMaxBtn: document.getElementById('labelMaxBtn'),subtitleText: document.getElementById('subtitleText'),sidebarToggle: document.getElementById('sidebarToggle'),filterSummary: document.getElementById('filterSummary'),resetViewBtn: document.getElementById('resetViewBtn'),quadTotal: document.getElementById('quadTotal')};
     let stationData = [];
     let markersLayer = L.layerGroup().addTo(map);
@@ -242,13 +270,13 @@
       });
       const today = new Date(); today.setHours(0,0,0,0);
       const fmtDay = d => d.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' });
-      const rows = []; let runningTotal = 0;
-      for (let i = 1; i <= 30; i++) {
+      const rows = []; let runningTotal = Number.isFinite(byDay.get(today.toLocaleDateString('it-IT'))?.rain) ? byDay.get(today.toLocaleDateString('it-IT')).rain : 0;
+      for (let i = 0; i <= 30; i++) {
         const d = new Date(today); d.setDate(d.getDate() - i);
         const key = d.toLocaleDateString('it-IT');
         const item = byDay.get(key);
         const rain = item ? item.rain : 0;
-        runningTotal += rain;
+        if (i > 0) runningTotal += rain;
         const tempTxt = (item && Number.isFinite(item.tmin) && Number.isFinite(item.tmax))
           ? `<span class="popup-temp">[${item.tmin.toFixed(0)}°-${item.tmax.toFixed(0)}°]</span>`
           : '<span class="popup-temp muted">[n/d]</span>';
@@ -257,7 +285,7 @@
       return `<div class="popup-title">${s.name}</div><div class="popup-meta"><div class="popup-line"><strong style="color:var(--success)">${statusLabel}</strong> · ${statusTime}</div><div class="popup-line">Oggi · <span style="color:var(--rain)">${Number.isFinite(s.summary.rainValue) ? s.summary.rainValue.toFixed(1) : 'n/d'}</span> · ${Number.isFinite(latest.tmin) && Number.isFinite(latest.tmax) ? `<span style="color:var(--blue-dark)">${latest.tmin.toFixed(0)}°</span>-<span style="color:var(--red)">${latest.tmax.toFixed(0)}°</span>` : 'n/d'}</div><div class="popup-days">${rows.join('')}</div></div>`;
     };
     const markerIcon = s => { const modeClass = labelMode === 'min' ? 'min' : labelMode === 'max' ? 'max' : 'rain'; const statusClass = s.summary.online ? 'online' : 'offline'; return L.divIcon({ className: '', html: `<div class="station-marker ${modeClass} ${statusClass}">${getLabelValue(s)}</div>`, iconSize: [34, 34], iconAnchor: [17, 17], popupAnchor: [0, -70] }); };
-    const refreshMarkers = data => { markersLayer.clearLayers(); markerRefs.clear(); data.forEach(s => { const m = L.marker([s.lat, s.lon], { icon: markerIcon(s) }).addTo(markersLayer).bindPopup(popupHtml(s), { autoPan: true, offset: L.point(0, 70), maxHeight: 380, maxWidth: 560 }); markerRefs.set(s.id, m); }); };
+    const refreshMarkers = data => { markersLayer.clearLayers(); markerRefs.clear(); data.forEach(s => { const m = L.marker([s.lat, s.lon], { icon: markerIcon(s) }).addTo(markersLayer).bindPopup(popupHtml(s), { autoPan: true, keepInView: true, autoPanPaddingTopLeft: L.point(40, 100), autoPanPaddingBottomRight: L.point(40, 40), offset: L.point(0, 70), maxHeight: 380, maxWidth: 560 }); markerRefs.set(s.id, m); }); };
     function renderTopSummary() { const ex = weatherExtremes(); const activeName = labelMode === 'rain' ? ex.rainMax?.name : labelMode === 'min' ? ex.tminMin?.name : ex.tmaxMax?.name; const activeVal = labelMode === 'rain' ? ex.rainMax?.summary.rainValue : labelMode === 'min' ? ex.tminMin?.summary.latest?.tmin : ex.tmaxMax?.summary.latest?.tmax; const activeText = labelMode === 'rain' ? `Pioggia ☔ ${Number.isFinite(activeVal) ? Math.round(activeVal) : 'n/d'} mm - ${activeName || 'n/d'}` : labelMode === 'min' ? `Temperatura minima 🌡 ${Number.isFinite(activeVal) ? Math.round(activeVal) : 'n/d'}° - ${activeName || 'n/d'}` : `Temperatura Massima 🌡 ${Number.isFinite(activeVal) ? Math.round(activeVal) : 'n/d'}° - ${activeName || 'n/d'}`; els.filterSummary.innerHTML = `Stazioni Monitorate <strong>${stationData.length}</strong> di cui <strong>${weatherExtremes().offlineCount}</strong> Offline<br>${activeText}`; }
     function updateQuadTotal() { const count = currentQuad === null ? stationData.length : stationData.filter(s => s.quad === currentQuad).length; els.quadTotal.textContent = currentQuad === null ? `Totale: ${count}` : `Totale quadrante: ${count}`; }
     function quadIndexOf(lat, lon) { if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null; const row = lat < 42.2 ? 0 : 1; const col = lon < 13.6 ? 0 : lon < 14.2 ? 1 : 2; return row * 3 + col; }
@@ -265,15 +293,50 @@
     function setDebug(stationsRows, weatherRows, parsedStations, parsedWeather, weatherById, stTxt, weTxt) { const s0 = stationsRows[0] || {}; const w0 = weatherRows[0] || {}; els.debugBox.textContent = `URL stazioni: ${STATIONS_CSV}\nURL meteo: ${WEATHER_CSV}\n\nStazioni raw\nrighe: ${stationsRows.length}\ndelimitatore: ${parsedStations.meta?.delimiter || ','}\ncolonne: ${Object.keys(s0).join(', ') || 'n/d'}\n\nMeteo raw\nrighe: ${weatherRows.length}\ndelimitatore: ${parsedWeather.meta?.delimiter || ','}\ncolonne: ${Object.keys(w0).join(', ') || 'n/d'}\n\nMatch\nstazioni totali: ${stationData.length}\ncon dati meteo: ${stationData.filter(s => s.summary.count > 0).length}\nsenza dati meteo: ${stationData.filter(s => s.summary.count === 0).length}\nid meteo: ${weatherById.size}\n\nAnteprima stazioni\n${stTxt.slice(0, 400)}\n\nAnteprima meteo\n${weTxt.slice(0, 400)}\n`; }
     function renderStationList(data) { els.stationList.innerHTML = ''; data.forEach(s => { const b = document.createElement('button'); b.type = 'button'; b.className = 'station-card'; b.dataset.id = s.id; b.innerHTML = `<div class="station-title">${s.name}</div><div class="station-meta"><span>${s.altitude ?? 'n/d'} m</span><span>${s.summary.online ? 'online' : 'offline'}</span><span>${Number.isFinite(s.summary.rainValue) ? `${Math.round(s.summary.rainValue)} mm` : 'n/d'}</span></div>`; b.onclick = () => { const m = markerRefs.get(s.id); if (m) { map.flyTo([s.lat, s.lon], 11, { duration: .8 }); m.openPopup(); } }; els.stationList.appendChild(b); }); }
     function filterStations() { const q = normName(els.searchInput.value); const filtered = stationData.filter(s => Number.isFinite(s.lat) && Number.isFinite(s.lon) && (!q || normName(s.name).includes(q) || normName(s.reference).includes(q))); refreshMarkers(filtered); renderStationList(filtered); updateQuadTotal(); }
-    async function init() { try { const [stTxt, weTxt] = await Promise.all([fetchText(STATIONS_CSV), fetchText(WEATHER_CSV)]); const parsedStations = Papa.parse(stTxt, { header: true, skipEmptyLines: true, delimiter: delimiter(stTxt), transformHeader: h => h.trim(), transform: v => String(v).trim() }); const parsedWeather = Papa.parse(weTxt, { header: true, skipEmptyLines: true, delimiter: delimiter(weTxt), transformHeader: h => h.trim(), transform: v => String(v).trim() }); const stationsRows = parsedStations.data || []; const weatherRows = parsedWeather.data || []; const weatherById = new Map(); weatherRows.forEach(r => { const id = get(r, 'Id', 'id'); if (!id) return; if (!weatherById.has(id)) weatherById.set(id, []); weatherById.get(id).push(r); }); stationData = stationsRows.map(r => { const id = get(r, 'Id', 'id'); const name = get(r, 'Stazione Meteo', 'StazioneMeteo', 'stazionemeteo', 'stazione'); const weather = weatherById.get(id) || []; return { id, name, lat: num(get(r, 'Lat', 'lat')), lon: num(get(r, 'Long', 'long', 'Lon', 'lon')), altitude: num(get(r, 'Altitudine', 'altitudine')), reference: get(r, 'Riferimento', 'riferimento'), summary: summarizeWeather(weather), quad: quadIndexOf(num(get(r, 'Lat', 'lat')), num(get(r, 'Long', 'long', 'Lon', 'lon'))) }; }).filter(s => s.id && s.name && Number.isFinite(s.lat) && Number.isFinite(s.lon)); const latestAgg = weatherRows.map(r => flexDate(get(r, 'DataAggiornamento', 'DataRilevamento', 'Data'))).filter(Boolean).sort((a, b) => a - b).at(-1); els.subtitleText.innerHTML = `dati aggiornati al <strong id="lastUpdate">${latestAgg ? latestAgg.toLocaleString('it-IT') : 'n/d'}</strong>`; renderTopSummary(); refreshMarkers(stationData); renderStationList(stationData); setDebug(stationsRows, weatherRows, parsedStations, parsedWeather, weatherById, stTxt, weTxt); updateQuadTotal(); } catch (err) { els.debugBox.textContent = String(err?.stack || err?.message || err); } }
+    async function init() {
+      try {
+        const [stTxt, weTxt] = await Promise.all([fetchText(STATIONS_CSV), fetchText(WEATHER_CSV)]);
+        const parsedStations = Papa.parse(stTxt, { header: true, skipEmptyLines: true, delimiter: delimiter(stTxt), transformHeader: h => h.trim(), transform: v => String(v).trim() });
+        const parsedWeather = Papa.parse(weTxt, { header: true, skipEmptyLines: true, delimiter: delimiter(weTxt), transformHeader: h => h.trim(), transform: v => String(v).trim() });
+        const stationsRows = parsedStations.data || [];
+        const weatherRows = parsedWeather.data || [];
+        const weatherById = new Map();
+        weatherRows.forEach(r => { const id = get(r, 'Id', 'id'); if (!id) return; if (!weatherById.has(id)) weatherById.set(id, []); weatherById.get(id).push(r); });
+        stationData = stationsRows.map(r => { const id = get(r, 'Id', 'id'); const name = get(r, 'Stazione Meteo', 'StazioneMeteo', 'stazionemeteo', 'stazione'); const lat = num(get(r, 'Lat', 'lat')); const lon = num(get(r, 'Long', 'long', 'Lon', 'lon')); const weather = weatherById.get(id) || []; return { id, name, lat, lon, altitude: num(get(r, 'Altitudine', 'altitudine')), reference: get(r, 'Riferimento', 'riferimento'), summary: summarizeWeather(weather), quad: quadIndexOf(lat, lon) }; }).filter(s => s.id && s.name && Number.isFinite(s.lat) && Number.isFinite(s.lon));
+        const latestAgg = weatherRows.map(r => flexDate(get(r, 'DataAggiornamento', 'DataRilevamento', 'Data'))).filter(Boolean).sort((a, b) => a - b).at(-1);
+        els.subtitleText.innerHTML = `dati aggiornati al <strong id="lastUpdate">${latestAgg ? latestAgg.toLocaleString('it-IT') : 'n/d'}</strong>`;
+        renderTopSummary();
+        refreshMarkers(stationData);
+        renderStationList(stationData);
+        setDebug(stationsRows, weatherRows, parsedStations, parsedWeather, weatherById, stTxt, weTxt);
+        updateQuadTotal();
+        filterStations();
+        els.loadStatus.textContent = stationData.length ? `Caricate ${stationData.length} stazioni` : 'Nessuna stazione trovata';
+      } catch (err) {
+        els.loadStatus.textContent = 'Errore nel caricamento dati';
+        els.debugBox.textContent = String(err?.stack || err?.message || err);
+      }
+    }
     els.searchInput.addEventListener('input', filterStations);
     els.fitBtnSidebar.addEventListener('click', () => { currentQuad = null; applyViewport(null); });
     els.resetViewBtn.addEventListener('click', () => { currentQuad = null; applyViewport(null); });
-    els.labelRainBtn.addEventListener('click', () => { labelMode = 'rain'; els.labelRainBtn.classList.add('active'); els.labelMinBtn.classList.remove('active'); els.labelMaxBtn.classList.remove('active'); renderTopSummary(); refreshMarkers(stationData); filterStations(); });
-    els.labelMinBtn.addEventListener('click', () => { labelMode = 'min'; els.labelMinBtn.classList.add('active'); els.labelRainBtn.classList.remove('active'); els.labelMaxBtn.classList.remove('active'); renderTopSummary(); refreshMarkers(stationData); filterStations(); });
-    els.labelMaxBtn.addEventListener('click', () => { labelMode = 'max'; els.labelMaxBtn.classList.add('active'); els.labelRainBtn.classList.remove('active'); els.labelMinBtn.classList.remove('active'); renderTopSummary(); refreshMarkers(stationData); filterStations(); });
+    function setMode(mode){
+      labelMode = mode;
+      els.labelRainBtn.classList.remove('active');
+      els.labelMinBtn.classList.remove('active');
+      els.labelMaxBtn.classList.remove('active');
+      if (mode === 'rain') els.labelRainBtn.classList.add('active');
+      if (mode === 'min') els.labelMinBtn.classList.add('active');
+      if (mode === 'max') els.labelMaxBtn.classList.add('active');
+      renderTopSummary();
+      refreshMarkers(stationData);
+      filterStations();
+    }
+    els.labelRainBtn.addEventListener('click', () => setMode('rain'));
+    els.labelMinBtn.addEventListener('click', () => setMode('min'));
+    els.labelMaxBtn.addEventListener('click', () => setMode('max'));
     els.quadGrid.addEventListener('click', e => { const btn = e.target.closest('[data-quad]'); if (!btn) return; const idx = Number(btn.dataset.quad); applyViewport(idx); });
-    els.sidebarToggle.addEventListener('click', () => { APP.classList.toggle('sidebar-collapsed'); els.sidebarToggle.textContent = APP.classList.contains('sidebar-collapsed') ? 'Mostra' : 'Nascondi'; setTimeout(() => map.invalidateSize(), 260); });
+    els.sidebarToggle.addEventListener('click', () => { APP.classList.toggle('sidebar-collapsed'); els.sidebarToggle.textContent = APP.classList.contains('sidebar-collapsed') ? 'Mostra Menu' : 'Nascondi Menu'; setTimeout(() => map.invalidateSize(), 260); });
     document.documentElement.setAttribute('data-theme', 'light');
     init();
   })();
