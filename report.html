@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Piogge Giornaliere/Cumulate -
+    Alcolisti Micologici Analcolici TRIS -
+    Rel. 02-A-018
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js">
+  </script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js">
+  </script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js">
+  </script>
+
+  <style>
+    :root{
+      --bg:#f7f6f2;
+      --surface:#ffffff;
+      --border:#d4d1ca;
+      --text:#28251d;
+      --muted:#6f6d68;
+      --primary:#01696f;
+      --tris:#7b2cbf;
+      --active-green:#a8df6f;
+      --radius:1rem;
+      --font:'Inter',system-ui,sans-serif;
+      --sidebar-width:360px;
+      --sidebar-collapsed-width:34px;
+      --yellow:#ffe66a;
+      --yellow2:#fff3a8;
+      --yellow-border:#c7a900;
+    }
+
+    *{
+      box-sizing:border-box
+    }
+
+    html,
+    body{
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:var(--font)
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns:var(--sidebar-width) minmax(0,1fr);
+      min-height:100vh;
+      transition:grid-template-columns .25s ease
+    }
+
+    .app.sidebar-collapsed{
+      grid-template-columns:var(--sidebar-collapsed-width) minmax(0,1fr)
+    }
+
+    .sidebar{
+      position:relative;
+      z-index:10;
+      width:var(--sidebar-width);
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      padding:1rem;
+      overflow:hidden;
+      background:var(--surface);
+      border-right:1px solid var(--border);
+      transition:
+        width .25s ease,
+        padding .25s ease
+    }
+
+    .app.sidebar-collapsed .sidebar{
+      width:var(--sidebar-collapsed-width);
+      padding:.35rem .25rem
+    }
+
+    .sidebar-toggle-inside{
+      position:absolute;
+      top:.5rem;
+      right:.5rem;
+      z-index:20;
+      min-height:34px;
+      padding:0 .7rem;
+      border:1px solid #9bb9d6;
+      border-radius:.6rem;
+      background:linear-gradient(180deg,#edf7ff,#cfe7ff);
+      color:#173b5d;
+      cursor:pointer;
+      font-weight:800
+    }
+
+    .sidebar-toggle-mini{
+      display:none;
+      position:absolute;
+      top:8px;
+      left:6px;
+      z-index:20;
+      width:22px;
+      height:22px;
+      padding:0;
+      border:0;
+      border-radius:999px;
+      background:#e9c96b;
+      color:#2c2410;
+      font-weight:900;
+      cursor:pointer
+    }
+
+    .app.sidebar-collapsed .sidebar-toggle-inside{
+      display:none
+    }
+
+    .app.sidebar-collapsed .sidebar-toggle-mini{
+      display:block
+    }
+
+    .sidebar-content{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      transition:opacity .15s ease
+    }
+
+    .app.sidebar-collapsed .sidebar-content{
+      opacity:0;
+      pointer-events:none
+    }
+
+    .brand{
+      display:flex;
+      justify-content:flex-start;
+      align-items:flex-start;
+      margin-top:1.2rem;
+      text-align:left
+    }
+
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:.55rem;
+      width:100%
+    }
+
+    .logo{
+      width:34px;
+      height:34px;
+      flex:0 0 auto;
+      color:var(--primary)
+    }
+
+    h1{
+      max-width:270px;
+      margin:0;
+      overflow:hidden;
+      font-size:clamp(.84rem,1.1vw,1rem);
+      line-height:1.08;
+      text-align:left;
+      text-overflow:ellipsis;
+      white-space:normal
+    }
+
+    .tris-word{
+      color:var(--tris);
+      font-weight:800
+    }
+
+    .release{
+      display:block;
+      margin-top:.2rem;
+      color:var(--muted);
+      font-size:.7rem;
+      font-weight:700;
+      text-align:left
+    }
+
+    .subtitle-small{
+      margin:.35rem 0 0;
+      color:var(--muted);
+      font-size:.76rem;
+      line-height:1.25;
+      text-align:left
+    }
+
+    .subtitle-small strong{
+      color:#b00020;
+      font-weight:800
+    }
+
+    .report-link{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:.45rem;
+      width:100%;
+      min-height:38px;
+      margin-top:.8rem;
+      padding:0 .8rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:var(--bg);
+      color:var(--text);
+      font-size:.9rem;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow:0 3px 8px rgba(0,0,0,.08);
+      transition:all .2s ease
+    }
+
+    .report-link:hover{
+      border-color:#87bf47;
+      background:var(--active-green);
+      color:#20310f;
+      transform:translateY(-1px)
+    }
+
+    .report-menu{
+      display:flex;
+      flex-direction:column;
+      gap:.5rem;
+      margin-top:.25rem
+    }
+
+    .report-menu-title{
+      margin:.5rem 0 0;
+      color:var(--muted);
+      font-size:.78rem;
+      font-weight:800;
+      text-transform:uppercase
+    }
+
+    .report-menu button{
+      width:100%;
+      min-height:38px;
+      padding:0 .8rem;
+      border:1px solid var(--border);
+      border-radius:.65rem;
+      background:#fafafa;
+      color:var(--text);
+      cursor:pointer;
+      font:inherit;
+      font-size:.86rem;
+      font-weight:700;
+      text-align:left
+    }
+
+    .report-menu button.active{
+      border-color:#87bf47;
+      background:var(--active-green);
+      color:#20310f
+    }
+
+    .report-main{
+      min-width:0;
+      padding:1rem;
+      overflow:auto
+    }
+
+    .report-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:1rem;
+      margin-bottom:1rem;
+      padding:1rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg,#ffffff,#f4fbfc);
+      box-shadow:0 1px 2px rgba(0,0,0,.08)
+    }
+
+    .report-title{
+      margin:0;
+      font-size:1.25rem;
+      line-height:1.15
+    }
+
+    .report-subtitle{
+      margin:.35rem 0 0;
+      color:var(--muted);
+      font-size:.9rem
+    }
+
+    .report-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      padding:.4rem .75rem;
+      border:1px solid #cfe7d6;
+      border-radius:999px;
+      background:#eef8f1;
+      color:#215f2a;
+      font-size:.86rem;
+      font-weight:800
+    }
+
+    .panel{
+      padding:1rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--surface);
+      box-shadow:0 1px 2px rgba(0,0,0,.08)
+    }
+
+    .controls{
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+      gap:10px
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:250px
+    }
+
+    .field label{
+      display:block;
+      color:var(--muted);
+      font-size:.88rem;
+      font-weight:700
+    }
+
+    select,
+    button{
+      min-height:42px;
+      padding:0 .75rem;
+      border:1px solid var(--border);
+      border-radius:.65rem;
+      background:var(--surface);
+      color:var(--text);
+      font:inherit
+    }
+
+    select{
+      min-width:280px;
+      border-color:#9bb9d6;
+      background:linear-gradient(180deg,#f5fbff,#dfeeff);
+      color:#173b5d;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 3px 8px rgba(0,0,0,.08)
+    }
+
+    select.placeholder{
+      border-color:#d9b900;
+      background:linear-gradient(
+        180deg,
+        var(--yellow2),
+        var(--yellow)
+      );
+      color:#5a4800
+    }
+
+    button{
+      cursor:pointer;
+      font-weight:700;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+      transition:
+        transform .08s ease,
+        box-shadow .15s ease,
+        background .15s ease
+    }
+
+    button:hover{
+      transform:translateY(-1px)
+    }
+
+    .btn-execute{
+      border-color:#9bd5da;
+      background:linear-gradient(180deg,#f2fbfc,#d6f0f2);
+      color:#0f4f54
+    }
+
+    .btn-save{
+      border-color:#d6b15f;
+      background:linear-gradient(180deg,#fff4dc,#f3cd7b);
+      color:#5a4310
+    }
+
+    .hidden{
+      display:none !important
+    }
+
+    .summary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:12px
+    }
+
+    .summary .left,
+    .summary .right{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.4rem .7rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:#fafafa;
+      color:var(--muted);
+      font-size:.88rem
+    }
+
+    .pill strong{
+      color:var(--text)
+    }
+
+    .status{
+      color:var(--muted);
+      font-size:.9rem
+    }
+
+    .error{
+      padding:10px;
+      border:1px solid #efc9cf;
+      border-radius:12px;
+      background:#fff6f8;
+      color:#a13544;
+      font-weight:700;
+      white-space:pre-wrap
+    }
+
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px
+    }
+
+    .legend .item{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.35rem .6rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:#fbfbfb;
+      font-size:.84rem
+    }
+
+    .legend .dot{
+      display:inline-block;
+      width:10px;
+      height:10px;
+      border-radius:50%
+    }
+
+    .dot-rain{
+      background:#2f7a2f
+    }
+
+    .dot-cum{
+      background:#7b2cbf
+    }
+
+    .legend .selected-column{
+      width:10px;
+      height:10px;
+      border:1px solid var(--yellow-border);
+      background:var(--yellow)
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff
+    }
+
+    table{
+      width:100%;
+      min-width:1560px;
+      border-collapse:collapse;
+      table-layout:fixed;
+      font-size:.84rem
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      padding:6px 5px;
+      border-bottom:1px solid var(--border);
+      background:#eaf7fb;
+      color:#16484e;
+      font-weight:800
+    }
+
+    th,
+    td{
+      width:43px;
+      max-width:43px;
+      padding:6px 5px;
+      border-right:1px solid #e6e2da;
+      border-bottom:1px solid #e6e2da;
+      text-align:center;
+      vertical-align:middle;
+      overflow:hidden;
+      word-wrap:break-word;
+      overflow-wrap:anywhere
+    }
+
+    th:first-child,
+    td:first-child{
+      position:sticky;
+      left:0;
+      z-index:1;
+      width:280px;
+      max-width:280px;
+      background:#fff
+    }
+
+    thead th:first-child{
+      z-index:3;
+      background:#dff3f6
+    }
+
+    .name-cell{
+      min-width:280px;
+      color:#163338;
+      font-weight:700;
+      text-align:left
+    }
+
+    .station-name{
+      display:inline;
+      color:#163338;
+      font-weight:700
+    }
+
+    .selected-cumulative{
+      display:inline;
+      margin-left:.35rem;
+      color:#6a1d86;
+      font-size:.76rem;
+      font-weight:700
+    }
+
+    .rain-row td{
+      color:#124f1e;
+      font-weight:700
+    }
+
+    .cum-row td{
+      color:#6a1d86;
+      font-weight:700
+    }
+
+    .selected-column{
+      background:var(--yellow) !important;
+      color:#3b3000 !important;
+      border-left:1px solid var(--yellow-border) !important;
+      border-right:1px solid var(--yellow-border) !important
+    }
+
+    thead .selected-column{
+      background:#f2d733 !important;
+      color:#3b3000 !important
+    }
+
+    @media (max-width:980px){
+      .app{
+        grid-template-columns:var(--sidebar-width) minmax(0,1fr)
+      }
+
+      .app.sidebar-collapsed{
+        grid-template-columns:var(--sidebar-collapsed-width) minmax(0,1fr)
+      }
+
+      .report-main{
+        padding:.75rem
+      }
+
+      .report-header{
+        align-items:flex-start;
+        flex-direction:column
+      }
+
+      table{
+        min-width:1380px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div
+    class="app"
+    id="app">
+
+    <aside class="sidebar">
+
+      <button
+        id="sidebarToggleMini"
+        class="sidebar-toggle-mini"
+        type="button"
+        title="Mostra contenuto">
+        ☰
+      </button>
+
+      <button
+        id="sidebarToggleInside"
+        class="sidebar-toggle-inside"
+        type="button"
+        title="Nascondi contenuto">
+        ☰
+      </button>
+
+      <div class="sidebar-content">
+
+        <div class="brand">
+
+          <div class="logo-wrap">
+
+            <svg
+              class="logo"
+              viewBox="0 0 64 64"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+
+              <path
+                d="M10 39C18 25 25 18 33 12C40 21 46 31 54 39C49 45 43 50 33 54C23 49 16 45 10 39Z"
+                stroke="currentColor"
+                stroke-width="3"/>
+
+              <path
+                d="M24 39C24 34 27 31 32 31C37 31 40 34 40 39"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="M22 44H42"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+              <path
+                d="M32 18V27"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"/>
+            </svg>
+
+            <div>
+
+              <h1>
+                Alcolisti Micologici Analcolici
+                <span class="tris-word">TRIS</span>
+              </h1>
+
+              <span class="release">
+                Rel. 02-A-018
+              </span>
+
+              <p class="subtitle-small">
+                dati aggiornati al
+                <strong id="lastUpdate">
+                  caricamento...
+                </strong>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="report-link"
+          href="index.html"
+          title="Torna alla Home Page">
+
+          <span>🏠</span>
+          <span>Torna alla Home Page</span>
+        </a>
+
+        <div class="report-menu">
+
+          <div class="report-menu-title">
+            Report
+          </div>
+
+          <button
+            class="active"
+            type="button"
+            data-report="rain">
+            Piogge Giornaliere/Cumulate
+          </button>
+
+          <button
+            type="button"
+            data-report="min">
+            Temperature minime
+          </button>
+
+          <button
+            type="button"
+            data-report="max">
+            Temperature massime
+          </button>
+
+          <button
+            type="button"
+            data-report="monthly">
+            Report mensile
+          </button>
+
+          <button
+            type="button"
+            data-report="annual">
+            Report annuale
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="report-main">
+
+      <header class="report-header">
+
+        <div>
+          <h2
+            class="report-title"
+            id="reportTitle">
+            Piogge Giornaliere/Cumulate
+          </h2>
+
+          <p
+            class="report-subtitle"
+            id="reportSubtitle">
+            Seleziona un giorno e premi Esegui per calcolare il cumulativo.
+          </p>
+        </div>
+
+        <div class="report-badge">
+          TRIS · stessi CSV della mappa
+        </div>
+      </header>
+
+      <section class="panel">
+
+        <div class="controls">
+
+          <div class="field">
+            <label for="daySelect">
+              Seleziona Giorno (0:-30)
+            </label>
+
+            <select
+              id="daySelect"
+              class="placeholder"
+              aria-label="Seleziona giorno">
+
+              <option value="">
+                Seleziona un giorno
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+
+            <button
+              id="executeBtn"
+              class="btn-execute"
+              type="button">
+              Esegui
+            </button>
+          </div>
+
+          <div
+            class="field hidden"
+            id="savePdfField">
+
+            <label>&nbsp;</label>
+
+            <button
+              id="savePdfBtn"
+              class="btn-save"
+              type="button">
+              Salva PDF
+            </button>
+          </div>
+        </div>
+
+        <div class="legend">
+
+          <span class="item">
+            <span class="dot dot-rain"></span>
+            Riga superiore: pioggia giornaliera
+          </span>
+
+          <span class="item">
+            <span class="dot dot-cum"></span>
+            Riga inferiore: cumulativo retrogrado
+          </span>
+
+          <span class="item">
+            Colonne: -30, -29, ... -1, 0
+          </span>
+
+          <span class="item">
+            <span class="selected-column"></span>
+            Giorno selezionato
+          </span>
+        </div>
+      </section>
+
+      <section
+        class="panel"
+        style="margin-top:1rem">
+
+        <div class="summary">
+
+          <div class="left">
+
+            <span class="pill">
+              Stazioni:
+              <strong id="stationsCount">0</strong>
+            </span>
+
+            <span class="pill">
+              Righe meteo:
+              <strong id="recordsCount">0</strong>
+            </span>
+
+            <span class="pill">
+              Ordine su:
+              <strong id="selectedDayLabel">—</strong>
+            </span>
+          </div>
+
+          <div
+            class="right status"
+            id="statusText">
+            Seleziona un giorno e premi Esegui.
+          </div>
+        </div>
+
+        <div
+          id="errorBox"
+          class="error"
+          style="display:none">
+        </div>
+
+        <div class="table-wrap">
+
+          <table id="reportTable">
+
+            <thead id="tableHead"></thead>
+
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+  (() => {
+    const STATIONS_CSV =
+      './stazioni_meteo.csv';
+
+    const WEATHER_CSV =
+      './dati_meteo_30g.csv';
+
+    const RELEASE =
+      'Rel. 02-A-018';
+
+    const RAIN_KEYS = [
+      'pioggia',
+      'rain',
+      'precipitazione',
+      'precipitation',
+      'precip'
+    ];
+
+    const TEMPERATURE_KEYS = [
+      'temperatura',
+      'temperature',
+      'temp',
+      'tmin',
+      'tmax',
+      'minima',
+      'massima',
+      'umidita',
+      'humidity',
+      'vento',
+      'wind',
+      'pressione',
+      'pressure'
+    ];
+
+    const DATE_KEYS = [
+      'datarilevamento',
+      'dataaggiornamento',
+      'data',
+      'timestamp',
+      'datetime',
+      'date',
+      'ora',
+      'time'
+    ];
+
+    const ID_KEYS = [
+      'id',
+      'idstazione',
+      'stationid',
+      'stazioneid',
+      'codice'
+    ];
+
+    const STATION_NAME_KEYS = [
+      'stazionemeteo',
+      'stazione',
+      'nome',
+      'nomestazione',
+      'name'
+    ];
+
+    const els = {
+      app:
+        document.getElementById('app'),
+
+      daySelect:
+        document.getElementById('daySelect'),
+
+      executeBtn:
+        document.getElementById('executeBtn'),
+
+      savePdfField:
+        document.getElementById('savePdfField'),
+
+      savePdfBtn:
+        document.getElementById('savePdfBtn'),
+
+      tableHead:
+        document.getElementById('tableHead'),
+
+      tableBody:
+        document.getElementById('tableBody'),
+
+      stationsCount:
+        document.getElementById('stationsCount'),
+
+      recordsCount:
+        document.getElementById('recordsCount'),
+
+      selectedDayLabel:
+        document.getElementById('selectedDayLabel'),
+
+      statusText:
+        document.getElementById('statusText'),
+
+      errorBox:
+        document.getElementById('errorBox'),
+
+      lastUpdate:
+        document.getElementById('lastUpdate'),
+
+      sidebarToggleInside:
+        document.getElementById('sidebarToggleInside'),
+
+      sidebarToggleMini:
+        document.getElementById('sidebarToggleMini')
+    };
+
+    let stations = [];
+    let rawWeatherCount = 0;
+    let detectedRainField = '';
+    let detectedDateField = '';
+    let tableGenerated = false;
+
+    const normalizeKey = value =>
+      String(value ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g,'')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g,'');
+
+    function num(value) {
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return null;
+      }
+
+      let text =
+        String(value)
+          .trim()
+          .replace(/\s/g,'');
+
+      if (!text) {
+        return null;
+      }
+
+      if (
+        text.includes(',') &&
+        text.includes('.')
+      ) {
+        if (
+          text.lastIndexOf(',') >
+          text.lastIndexOf('.')
+        ) {
+          text =
+            text
+              .replace(/\./g,'')
+              .replace(',','.');
+        } else {
+          text =
+            text.replace(/,/g,'');
+        }
+      } else if (
+        text.includes(',')
+      ) {
+        text =
+          text.replace(',','.');
+      }
+
+      const result =
+        parseFloat(text);
+
+      return Number.isFinite(result)
+        ? result
+        : null;
+    }
+
+    function delimiter(text) {
+      const candidates =
+        [';',',','\t','|'];
+
+      return candidates
+        .map(character => ({
+          character,
+
+          count:
+            (
+              text.match(
+                new RegExp(
+                  '\\' + character,
+                  'g'
+                )
+              ) || []
+            ).length
+        }))
+        .sort(
+          (a,b) =>
+            b.count - a.count
+        )[0].character;
+    }
+
+    function parseCsv(text) {
+      return Papa.parse(
+        text,
+        {
+          header:true,
+          skipEmptyLines:true,
+          delimiter:
+            delimiter(text),
+
+          transformHeader:
+            header => header.trim(),
+
+          transform:
+            value => String(value).trim()
+        }
+      );
+    }
+
+    function localDate(
+      year,
+      month,
+      day
+    ) {
+      return new Date(
+        year,
+        month - 1,
+        day,
+        12,
+        0,
+        0,
+        0
+      );
+    }
+
+    function today() {
+      const now =
+        new Date();
+
+      return localDate(
+        now.getFullYear(),
+        now.getMonth() + 1,
+        now.getDate()
+      );
+    }
+
+    function addDays(
+      date,
+      offset
+    ) {
+      const result =
+        localDate(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          date.getDate()
+        );
+
+      result.setDate(
+        result.getDate() + Number(offset)
+      );
+
+      return result;
+    }
+
+    function dateKey(
+      year,
+      month,
+      day
+    ) {
+      return (
+        `${String(year).padStart(4,'0')}-` +
+        `${String(month).padStart(2,'0')}-` +
+        `${String(day).padStart(2,'0')}`
+      );
+    }
+
+    function dateKeyFromValue(value) {
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return null;
+      }
+
+      const text =
+        String(value).trim();
+
+      if (!text) {
+        return null;
+      }
+
+      let match =
+        text.match(
+          /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/
+        );
+
+      if (match) {
+        return dateKey(
+          Number(match[3]),
+          Number(match[2]),
+          Number(match[1])
+        );
+      }
+
+      match =
+        text.match(
+          /^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})/
+        );
+
+      if (match) {
+        return dateKey(
+          Number(match[1]),
+          Number(match[2]),
+          Number(match[3])
+        );
+      }
+
+      return null;
+    }
+
+    function parseDate(value) {
+      const key =
+        dateKeyFromValue(value);
+
+      if (!key) {
+        return null;
+      }
+
+      const [
+        year,
+        month,
+        day
+      ] =
+        key.split('-').map(Number);
+
+      return localDate(
+        year,
+        month,
+        day
+      );
+    }
+
+    function formatDay(date) {
+      return (
+        `${String(date.getDate()).padStart(2,'0')}/` +
+        `${String(date.getMonth() + 1).padStart(2,'0')}/` +
+        `${date.getFullYear()}`
+      );
+    }
+
+    function formatShortDay(date) {
+      return (
+        `${String(date.getDate()).padStart(2,'0')}/` +
+        `${String(date.getMonth() + 1).padStart(2,'0')}`
+      );
+    }
+
+    function formatDateTime(date) {
+      if (!date) {
+        return 'n/d';
+      }
+
+      return (
+        `${formatDay(date)} ` +
+        `${String(date.getHours()).padStart(2,'0')}:` +
+        `${String(date.getMinutes()).padStart(2,'0')}:` +
+        `${String(date.getSeconds()).padStart(2,'0')}`
+      );
+    }
+
+    function setError(message) {
+      els.errorBox.style.display =
+        message
+          ? 'block'
+          : 'none';
+
+      els.errorBox.textContent =
+        message || '';
+    }
+
+    function resetPdfButton() {
+      tableGenerated =
+        false;
+
+      els.savePdfField.classList.add(
+        'hidden'
+      );
+    }
+
+    function showPdfButton() {
+      tableGenerated =
+        true;
+
+      els.savePdfField.classList.remove(
+        'hidden'
+      );
+    }
+
+    function findDateField(fields) {
+      const exact =
+        fields.find(field =>
+          DATE_KEYS.some(key =>
+            normalizeKey(field) ===
+            normalizeKey(key)
+          )
+        );
+
+      if (exact) {
+        return exact;
+      }
+
+      return fields.find(field => {
+        const key =
+          normalizeKey(field);
+
+        return (
+          key.includes('data') ||
+          key.includes('date') ||
+          key.includes('time')
+        );
+      }) || '';
+    }
+
+    function findRainField(fields) {
+      const valid =
+        fields.filter(field => {
+          const key =
+            normalizeKey(field);
+
+          const rain =
+            RAIN_KEYS.some(candidate =>
+              key.includes(
+                normalizeKey(candidate)
+              )
+            );
+
+          const temperature =
+            TEMPERATURE_KEYS.some(candidate =>
+              key.includes(
+                normalizeKey(candidate)
+              )
+            );
+
+          return rain && !temperature;
+        });
+
+      return valid[0] || '';
+    }
+
+    function makeSeries(
+      weatherRows,
+      rainField,
+      dateField
+    ) {
+      const currentDay =
+        today();
+
+      const currentTime =
+        Date.UTC(
+          currentDay.getFullYear(),
+          currentDay.getMonth(),
+          currentDay.getDate()
+        );
+
+      const rainByOffset =
+        new Map();
+
+      for (
+        let offset = -30;
+        offset <= 0;
+        offset++
+      ) {
+        rainByOffset.set(
+          offset,
+          0
+        );
+      }
+
+      weatherRows.forEach(row => {
+        const rowDate =
+          parseDate(
+            row[dateField]
+          );
+
+        if (!rowDate) {
+          return;
+        }
+
+        const rowTime =
+          Date.UTC(
+            rowDate.getFullYear(),
+            rowDate.getMonth(),
+            rowDate.getDate()
+          );
+
+        const offset =
+          Math.round(
+            (
+              rowTime - currentTime
+            ) /
+            86400000
+          );
+
+        if (
+          offset < -30 ||
+          offset > 0
+        ) {
+          return;
+        }
+
+        const rain =
+          num(
+            row[rainField]
+          );
+
+        if (
+          !Number.isFinite(rain)
+        ) {
+          return;
+        }
+
+        rainByOffset.set(
+          offset,
+          (
+            rainByOffset.get(offset) || 0
+          ) + rain
+        );
+      });
+
+      const cumulativeByOffset =
+        new Map();
+
+      let total =
+        rainByOffset.get(0) || 0;
+
+      cumulativeByOffset.set(
+        0,
+        total
+      );
+
+      for (
+        let offset = -1;
+        offset >= -30;
+        offset--
+      ) {
+        total +=
+          rainByOffset.get(offset) || 0;
+
+        cumulativeByOffset.set(
+          offset,
+          total
+        );
+      }
+
+      const series =
+        [];
+
+      for (
+        let offset = -30;
+        offset <= 0;
+        offset++
+      ) {
+        const date =
+          addDays(
+            currentDay,
+            offset
+          );
+
+        series.push({
+          offset,
+          date,
+
+          rain:
+            rainByOffset.get(offset) || 0,
+
+          cumulative:
+            cumulativeByOffset.get(offset) || 0
+        });
+      }
+
+      return series;
+    }
+
+    function buildDaySelect() {
+      const select =
+        els.daySelect;
+
+      select.replaceChildren();
+
+      const placeholder =
+        document.createElement('option');
+
+      placeholder.value =
+        '';
+
+      placeholder.textContent =
+        'Seleziona un giorno';
+
+      select.appendChild(
+        placeholder
+      );
+
+      const currentDay =
+        today();
+
+      for (
+        let offset = -30;
+        offset <= 0;
+        offset++
+      ) {
+        const date =
+          addDays(
+            currentDay,
+            offset
+          );
+
+        const option =
+          document.createElement('option');
+
+        option.value =
+          String(offset);
+
+        option.textContent =
+          `${offset} ${formatDay(date)}`;
+
+        select.appendChild(
+          option
+        );
+      }
+
+      select.value =
+        '';
+
+      select.classList.add(
+        'placeholder'
+      );
+    }
+
+    function parseData(
+      stationsText,
+      weatherText
+    ) {
+      const stationResult =
+        parseCsv(stationsText);
+
+      const weatherResult =
+        parseCsv(weatherText);
+
+      const stationRows =
+        stationResult.data || [];
+
+      const weatherRows =
+        weatherResult.data || [];
+
+      const stationFields =
+        stationResult.meta.fields || [];
+
+      const weatherFields =
+        weatherResult.meta.fields || [];
+
+      rawWeatherCount =
+        weatherRows.length;
+
+      detectedRainField =
+        findRainField(weatherFields);
+
+      detectedDateField =
+        findDateField(weatherFields);
+
+      if (!detectedRainField) {
+        throw new Error(
+          'Colonna pioggia non trovata:\n' +
+          weatherFields.join(' | ')
+        );
+      }
+
+      if (!detectedDateField) {
+        throw new Error(
+          'Colonna data non trovata:\n' +
+          weatherFields.join(' | ')
+        );
+      }
+
+      const stationIdField =
+        stationFields.find(field =>
+          ID_KEYS.some(key =>
+            normalizeKey(field) ===
+            normalizeKey(key)
+          )
+        ) || stationFields[0];
+
+      const weatherIdField =
+        weatherFields.find(field =>
+          ID_KEYS.some(key =>
+            normalizeKey(field) ===
+            normalizeKey(key)
+          )
+        ) || stationFields[0];
+
+      const stationNameField =
+        stationFields.find(field =>
+          STATION_NAME_KEYS.some(key =>
+            normalizeKey(field) ===
+            normalizeKey(key)
+          )
+        ) || stationFields[1];
+
+      const weatherById =
+        new Map();
+
+      let latestDate =
+        null;
+
+      weatherRows.forEach(row => {
+        const date =
+          parseDate(
+            row[detectedDateField]
+          );
+
+        if (
+          date &&
+          (
+            !latestDate ||
+            date > latestDate
+          )
+        ) {
+          latestDate =
+            date;
+        }
+
+        const id =
+          String(
+            row[weatherIdField] ?? ''
+          ).trim();
+
+        if (!id) {
+          return;
+        }
+
+        if (!weatherById.has(id)) {
+          weatherById.set(id,[]);
+        }
+
+        weatherById.get(id).push(row);
+      });
+
+      stations =
+        stationRows
+          .map(row => {
+            const id =
+              String(
+                row[stationIdField] ?? ''
+              ).trim();
+
+            const name =
+              String(
+                row[stationNameField] ?? ''
+              ).trim();
+
+            return {
+              id,
+              name,
+
+              series:
+                makeSeries(
+                  weatherById.get(id) || [],
+                  detectedRainField,
+                  detectedDateField
+                )
+            };
+          })
+          .filter(station =>
+            station.id &&
+            station.name
+          );
+
+      return latestDate;
+    }
+
+    function selectedOffset() {
+      if (
+        els.daySelect.value === ''
+      ) {
+        return null;
+      }
+
+      return Number(
+        els.daySelect.value
+      );
+    }
+
+    function dayByOffset(
+      station,
+      offset
+    ) {
+      return station.series.find(
+        day =>
+          Number(day.offset) ===
+          Number(offset)
+      );
+    }
+
+    function selectedCumulative(
+      station,
+      offset
+    ) {
+      return (
+        dayByOffset(station,offset)
+          ?.cumulative ?? 0
+      );
+    }
+
+    function stationLabel(
+      station,
+      offset
+    ) {
+      const value =
+        selectedCumulative(
+          station,
+          offset
+        );
+
+      return `
+        <span class="station-name">
+          ${station.name}
+        </span>
+
+        <span class="selected-cumulative">
+          Cumulativo ${offset}:
+          ${value.toFixed(1)} mm
+        </span>
+      `;
+    }
+
+    function selectedClass(
+      columnOffset,
+      selectedOffsetValue
+    ) {
+      return Number(columnOffset) ===
+        Number(selectedOffsetValue)
+        ? 'selected-column'
+        : '';
+    }
+
+    function renderTable() {
+      const offset =
+        selectedOffset();
+
+      if (
+        offset === null
+      ) {
+        resetPdfButton();
+
+        els.tableHead.innerHTML =
+          '';
+
+        els.tableBody.innerHTML =
+          '';
+
+        return false;
+      }
+
+      const columns =
+        stations.length
+          ? stations[0].series
+          : [];
+
+      const sorted =
+        [...stations].sort(
+          (a,b) =>
+            selectedCumulative(b,offset) -
+            selectedCumulative(a,offset)
+        );
+
+      const headerTop = [
+        '<th style="min-width:280px">Stazione meteo</th>'
+      ];
+
+      const headerBottom = [
+        '<th style="min-width:280px"></th>'
+      ];
+
+      columns.forEach(column => {
+        const className =
+          selectedClass(
+            column.offset,
+            offset
+          );
+
+        headerTop.push(
+          `
+            <th
+              class="${className}"
+              data-offset="${column.offset}">
+              ${column.offset}
+            </th>
+          `
+        );
+
+        headerBottom.push(
+          `
+            <th
+              class="${className}"
+              data-offset="${column.offset}">
+              ${formatShortDay(column.date)}
+            </th>
+          `
+        );
+      });
+
+      els.tableHead.innerHTML =
+        `
+          <tr>
+            ${headerTop.join('')}
+          </tr>
+
+          <tr>
+            ${headerBottom.join('')}
+          </tr>
+        `;
+
+      const rows =
+        [];
+
+      sorted.forEach(station => {
+        const rainRow = [
+          `
+            <td
+              class="name-cell"
+              rowspan="2">
+
+              ${stationLabel(
+                station,
+                offset
+              )}
+            </td>
+          `
+        ];
+
+        const cumulativeRow =
+          [];
+
+        columns.forEach(column => {
+          const day =
+            dayByOffset(
+              station,
+              column.offset
+            );
+
+          const className =
+            selectedClass(
+              column.offset,
+              offset
+            );
+
+          rainRow.push(
+            `
+              <td
+                class="${className}"
+                data-offset="${column.offset}">
+                ${day.rain.toFixed(1)}
+              </td>
+            `
+          );
+
+          cumulativeRow.push(
+            `
+              <td
+                class="${className}"
+                data-offset="${column.offset}">
+                ${
+                  column.offset === 0
+                    ? ''
+                    : day.cumulative.toFixed(1)
+                }
+              </td>
+            `
+          );
+        });
+
+        rows.push(
+          `
+            <tr class="rain-row">
+              ${rainRow.join('')}
+            </tr>
+          `
+        );
+
+        rows.push(
+          `
+            <tr class="cum-row">
+              ${cumulativeRow.join('')}
+            </tr>
+          `
+        );
+      });
+
+      els.tableBody.innerHTML =
+        rows.join('');
+
+      els.stationsCount.textContent =
+        String(stations.length);
+
+      els.recordsCount.textContent =
+        String(rawWeatherCount);
+
+      els.selectedDayLabel.textContent =
+        `${offset} · ${
+          formatDay(
+            addDays(today(),offset)
+          )
+        }`;
+
+      els.statusText.textContent =
+        `${RELEASE} · Tabella aggiornata.`;
+
+      showPdfButton();
+
+      return true;
+    }
+
+    function buildPdfData() {
+      const offset =
+        selectedOffset();
+
+      const columns =
+        stations.length
+          ? stations[0].series
+          : [];
+
+      const sorted =
+        [...stations].sort(
+          (a,b) =>
+            selectedCumulative(b,offset) -
+            selectedCumulative(a,offset)
+        );
+
+      const head = [
+        [
+          {
+            content:'Stazione meteo',
+
+            styles:{
+              halign:'left',
+              fillColor:[223,243,246],
+              textColor:[22,51,56],
+              fontStyle:'bold'
+            }
+          },
+
+          ...columns.map(column => ({
+            content:String(column.offset),
+
+            styles:{
+              fillColor:
+                Number(column.offset) ===
+                Number(offset)
+                  ? [242,215,51]
+                  : [234,247,251],
+
+              textColor:
+                Number(column.offset) ===
+                Number(offset)
+                  ? [59,48,0]
+                  : [22,72,78],
+
+              fontStyle:'bold'
+            }
+          }))
+        ],
+
+        [
+          {
+            content:'Data',
+
+            styles:{
+              halign:'left',
+              fillColor:[240,248,249],
+              textColor:[13,47,51],
+              fontStyle:'bold'
+            }
+          },
+
+          ...columns.map(column => ({
+            content:
+              formatShortDay(column.date),
+
+            styles:{
+              fillColor:
+                Number(column.offset) ===
+                Number(offset)
+                  ? [242,215,51]
+                  : [240,248,249],
+
+              textColor:
+                Number(column.offset) ===
+                Number(offset)
+                  ? [59,48,0]
+                  : [13,47,51],
+
+              fontStyle:'bold'
+            }
+          }))
+        ]
+      ];
+
+      const body =
+        [];
+
+      sorted.forEach(station => {
+        const selectedValue =
+          selectedCumulative(
+            station,
+            offset
+          );
+
+        /*
+         * La prima colonna viene ripetuta:
+         * una volta nella riga pioggia e una volta
+         * nella riga cumulativo.
+         *
+         * Non viene usato rowSpan.
+         */
+        const rainRow = [
+          {
+            content:
+              `${station.name} · ` +
+              `Cumulativo ${offset}: ` +
+              `${selectedValue.toFixed(1)} mm`,
+
+            styles:{
+              halign:'left',
+              valign:'middle',
+              fillColor:[252,252,252],
+              textColor:[18,79,30],
+              fontStyle:'bold'
+            }
+          }
+        ];
+
+        const cumulativeRow = [
+          {
+            content:
+              'Cumulativo',
+
+            styles:{
+              halign:'left',
+              valign:'middle',
+              fillColor:[249,245,255],
+              textColor:[106,29,134],
+              fontStyle:'bold'
+            }
+          }
+        ];
+
+        columns.forEach(column => {
+          const day =
+            dayByOffset(
+              station,
+              column.offset
+            );
+
+          const isSelected =
+            Number(column.offset) ===
+            Number(offset);
+
+          const rainCellStyles =
+            isSelected
+              ? {
+                  fillColor:[255,230,106],
+                  textColor:[59,48,0],
+                  fontStyle:'bold'
+                }
+              : {
+                  fillColor:[252,252,252],
+                  textColor:[18,79,30],
+                  fontStyle:'bold'
+                };
+
+          const cumulativeCellStyles =
+            isSelected
+              ? {
+                  fillColor:[255,230,106],
+                  textColor:[59,48,0],
+                  fontStyle:'bold'
+                }
+              : {
+                  fillColor:[249,245,255],
+                  textColor:[106,29,134],
+                  fontStyle:'bold'
+                };
+
+          rainRow.push({
+            content:
+              day.rain.toFixed(1),
+
+            styles:
+              rainCellStyles
+          });
+
+          cumulativeRow.push({
+            content:
+              column.offset === 0
+                ? ''
+                : day.cumulative.toFixed(1),
+
+            styles:
+              cumulativeCellStyles
+          });
+        });
+
+        body.push(rainRow);
+        body.push(cumulativeRow);
+      });
+
+      return {
+        head,
+        body,
+        offset
+      };
+    }
+
+    function makePdf() {
+      const {
+        jsPDF
+      } =
+        window.jspdf;
+
+      const {
+        head,
+        body,
+        offset
+      } =
+        buildPdfData();
+
+      const pdf =
+        new jsPDF(
+          'l',
+          'mm',
+          'a4'
+        );
+
+      pdf.setFont(
+        'helvetica',
+        'bold'
+      );
+
+      pdf.setFontSize(14);
+
+      pdf.text(
+        'Piogge Giornaliere/Cumulate - Report stazioni',
+        14,
+        12
+      );
+
+      pdf.setFont(
+        'helvetica',
+        'normal'
+      );
+
+      pdf.setFontSize(9);
+
+      pdf.text(
+        `${RELEASE} · Giorno selezionato: ${
+          offset
+        } · Data: ${
+          formatDay(
+            addDays(today(),offset)
+          )
+        } · Generato il ${
+          new Date().toLocaleString('it-IT')
+        }`,
+        14,
+        18
+      );
+
+      pdf.autoTable({
+        startY:24,
+
+        head,
+        body,
+
+        theme:'grid',
+
+        styles:{
+          fontSize:6.2,
+          cellPadding:1.1,
+          overflow:'linebreak',
+          halign:'center',
+          valign:'middle'
+        },
+
+        columnStyles:{
+          0:{
+            cellWidth:48,
+            halign:'left'
+          }
+        },
+
+        margin:{
+          left:6,
+          right:6
+        }
+      });
+
+      return pdf;
+    }
+
+    function openPdf() {
+      const pdf =
+        makePdf();
+
+      const blob =
+        pdf.output('blob');
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const popup =
+        window.open(
+          url,
+          '_blank'
+        );
+
+      if (!popup) {
+        window.location.href =
+          url;
+      }
+
+      setTimeout(
+        () => URL.revokeObjectURL(url),
+        60000
+      );
+    }
+
+    async function savePdf() {
+      if (
+        !tableGenerated ||
+        selectedOffset() === null
+      ) {
+        return;
+      }
+
+      const pdf =
+        makePdf();
+
+      const blob =
+        pdf.output('blob');
+
+      const offset =
+        selectedOffset();
+
+      const filename =
+        `piogge_giornaliere_cumulate_${
+          offset
+        }.pdf`;
+
+      const url =
+        URL.createObjectURL(blob);
+
+      const anchor =
+        document.createElement('a');
+
+      anchor.href =
+        url;
+
+      anchor.download =
+        filename;
+
+      document.body.appendChild(
+        anchor
+      );
+
+      anchor.click();
+      anchor.remove();
+
+      setTimeout(
+        () => URL.revokeObjectURL(url),
+        60000
+      );
+
+      els.statusText.textContent =
+        'Download PDF avviato.';
+    }
+
+    function executeReport() {
+      if (
+        selectedOffset() === null
+      ) {
+        window.alert(
+          'Seleziona il giorno per calcolare la pioggia cumulata e premi esegui'
+        );
+
+        return;
+      }
+
+      if (
+        renderTable()
+      ) {
+        openPdf();
+      }
+    }
+
+    function toggleSidebar() {
+      els.app.classList.toggle(
+        'sidebar-collapsed'
+      );
+    }
+
+    async function init() {
+      try {
+        const [
+          stationsText,
+          weatherText
+        ] =
+          await Promise.all([
+            fetch(
+              `${STATIONS_CSV}?v=${Date.now()}`,
+              {
+                cache:'no-store'
+              }
+            ).then(response => {
+              if (!response.ok) {
+                throw new Error(
+                  `Errore ${response.status}: ${STATIONS_CSV}`
+                );
+              }
+
+              return response.text();
+            }),
+
+            fetch(
+              `${WEATHER_CSV}?v=${Date.now()}`,
+              {
+                cache:'no-store'
+              }
+            ).then(response => {
+              if (!response.ok) {
+                throw new Error(
+                  `Errore ${response.status}: ${WEATHER_CSV}`
+                );
+              }
+
+              return response.text();
+            })
+          ]);
+
+        const latestDate =
+          parseData(
+            stationsText,
+            weatherText
+          );
+
+        buildDaySelect();
+
+        els.stationsCount.textContent =
+          String(stations.length);
+
+        els.recordsCount.textContent =
+          String(rawWeatherCount);
+
+        els.lastUpdate.textContent =
+          formatDateTime(latestDate);
+
+        els.statusText.textContent =
+          `${RELEASE} · Dati caricati.`;
+
+        setError('');
+      } catch (error) {
+        els.lastUpdate.textContent =
+          'errore lettura CSV';
+
+        els.statusText.textContent =
+          `${RELEASE} · Errore caricamento dati.`;
+
+        setError(
+          String(
+            error?.stack ||
+            error
+          )
+        );
+      }
+    }
+
+    els.daySelect.addEventListener(
+      'change',
+      () => {
+        els.daySelect.classList.toggle(
+          'placeholder',
+          els.daySelect.value === ''
+        );
+
+        resetPdfButton();
+
+        els.tableHead.innerHTML =
+          '';
+
+        els.tableBody.innerHTML =
+          '';
+
+        els.selectedDayLabel.textContent =
+          '—';
+      }
+    );
+
+    els.executeBtn.addEventListener(
+      'click',
+      executeReport
+    );
+
+    els.savePdfBtn.addEventListener(
+      'click',
+      savePdf
+    );
+
+    els.sidebarToggleInside.addEventListener(
+      'click',
+      toggleSidebar
+    );
+
+    els.sidebarToggleMini.addEventListener(
+      'click',
+      toggleSidebar
+    );
+
+    init();
+  })();
+  </script>
+</body>
+</html>
