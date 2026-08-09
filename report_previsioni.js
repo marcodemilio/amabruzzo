@@ -16,7 +16,7 @@ let giornoSelezionato = null;
 let specieSelezionata = "";
 
 const RELEASE =
-    "Rel. 03-C-007";
+    "Rel. 03-C-008";
 
 const GIORNI_PREVISIONE =
     10;
@@ -229,15 +229,14 @@ function rilevaDelimitatore(testo) {
             .join("\n");
 
     const conteggi =
-        delimitatori.map(delimitatore => {
-            return {
-                delimitatore,
-                conteggio:
-                    anteprima
-                        .split(delimitatore)
-                        .length - 1
-            };
-        });
+        delimitatori.map(delimitatore => ({
+            delimitatore,
+
+            conteggio:
+                anteprima
+                    .split(delimitatore)
+                    .length - 1
+        }));
 
     conteggi.sort(
         (a, b) =>
@@ -273,6 +272,7 @@ function parseCSV(testo) {
                     rilevaDelimitatore(
                         testo
                     ),
+
                 transformHeader:
                     intestazione =>
                         String(
@@ -283,6 +283,7 @@ function parseCSV(testo) {
                                 ""
                             )
                             .trim(),
+
                 transform:
                     valore =>
                         String(
@@ -292,8 +293,9 @@ function parseCSV(testo) {
         );
 
     if (
-        risultato.errors &&
-        risultato.errors.length > 0
+        resultadoConError(
+            risultato
+        )
     ) {
         console.warn(
             "Avvisi del parsing CSV:",
@@ -325,6 +327,18 @@ function parseCSV(testo) {
         rows,
         fields
     };
+}
+
+function resultadoConError(
+    risultato
+) {
+    return (
+        risultato &&
+        Array.isArray(
+            risultato.errors
+        ) &&
+        risultato.errors.length > 0
+    );
 }
 
 function trovaCampo(
@@ -503,7 +517,9 @@ function trovaCampoData(fields) {
             "datarilevamento",
             "dataaggiornamento",
             "timestamp",
-            "datetime"
+            "datetime",
+            "dataora",
+            "dataeora"
         ]
     );
 }
@@ -525,7 +541,7 @@ function estraiData(value) {
 
     let corrispondenza =
         testo.match(
-            /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/
+            /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?/
         );
 
     if (corrispondenza) {
@@ -538,23 +554,33 @@ function estraiData(value) {
         const anno =
             Number(corrispondenza[3]);
 
+        const ore =
+            Number(corrispondenza[4] || 0);
+
+        const minuti =
+            Number(corrispondenza[5] || 0);
+
+        const secondi =
+            Number(corrispondenza[6] || 0);
+
         const data =
             new Date(
                 anno,
                 mese - 1,
-                giorno
+                giorno,
+                ore,
+                minuti,
+                secondi
             );
 
-        return Number.isNaN(
-            data.getTime()
-        )
-            ? null
-            : data;
+        return dataValida(data)
+            ? data
+            : null;
     }
 
     corrispondenza =
         testo.match(
-            /^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})/
+            /^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?/
         );
 
     if (corrispondenza) {
@@ -567,28 +593,45 @@ function estraiData(value) {
         const giorno =
             Number(corrispondenza[3]);
 
+        const ore =
+            Number(corrispondenza[4] || 0);
+
+        const minuti =
+            Number(corrispondenza[5] || 0);
+
+        const secondi =
+            Number(corrispondenza[6] || 0);
+
         const data =
             new Date(
                 anno,
                 mese - 1,
-                giorno
+                giorno,
+                ore,
+                minuti,
+                secondi
             );
 
-        return Number.isNaN(
-            data.getTime()
-        )
-            ? null
-            : data;
+        return dataValida(data)
+            ? data
+            : null;
     }
 
     const data =
         new Date(testo);
 
-    return Number.isNaN(
-        data.getTime()
-    )
-        ? null
-        : data;
+    return dataValida(data)
+        ? data
+        : null;
+}
+
+function dataValida(data) {
+    return (
+        data instanceof Date &&
+        !Number.isNaN(
+            data.getTime()
+        )
+    );
 }
 
 function media(valori) {
@@ -609,6 +652,49 @@ function media(valori) {
         );
 
     return somma / validi.length;
+}
+
+function trovaDataMassimaMeteo(
+    righeMeteo,
+    campoData
+) {
+    const dateValide =
+        righeMeteo
+            .map(riga =>
+                estraiData(
+                    riga[campoData]
+                )
+            )
+            .filter(data =>
+                dataValida(data)
+            );
+
+    if (!dateValide.length) {
+        return null;
+    }
+
+    return dateValide.reduce(
+        (massima, data) =>
+            data > massima
+                ? data
+                : massima
+    );
+}
+
+function formattaDataAggiornamento(
+    data
+) {
+    if (!dataValida(data)) {
+        return "non disponibile";
+    }
+
+    return new Intl.DateTimeFormat(
+        "it-IT",
+        {
+            dateStyle: "short",
+            timeStyle: "short"
+        }
+    ).format(data);
 }
 
 function costruisciStorico(
@@ -632,7 +718,9 @@ function costruisciStorico(
                     )
             }))
             .filter(elementoRiga =>
-                elementoRiga.data
+                dataValida(
+                    elementoRiga.data
+                )
             )
             .sort(
                 (a, b) =>
@@ -889,8 +977,8 @@ function dataSenzaOra(data) {
 
 /*
   Il Giorno 1 è domani.
-  Il file storico continua a usare anche
-  il record meteorologico di oggi.
+  L'indice 0 è oggi nella risposta Open-Meteo.
+  L'indice 1 è domani.
 */
 
 function dataGiornoPrevisione(
@@ -901,18 +989,13 @@ function dataGiornoPrevisione(
             new Date()
         );
 
-    const domani =
+    const data =
         new Date(oggi);
 
-    domani.setDate(
-        domani.getDate() + 1
-    );
-
-    const data =
-        new Date(domani);
-
     data.setDate(
-        data.getDate() + indiceGiorno
+        data.getDate() +
+        indiceGiorno +
+        1
     );
 
     return data;
@@ -1272,17 +1355,30 @@ function calcolaProbabilitaReale(
             stazione.id
         ];
 
+    /*
+      Open-Meteo:
+      indice 0 = oggi
+      indice 1 = domani
+
+      Il nostro indice:
+      Giorno 1 = domani
+      quindi indicePrevisione = indiceGiorno + 1
+    */
+
+    const indicePrevisione =
+        indiceGiorno + 1;
+
     const temperaturaMassima =
         previsione &&
         Number.isFinite(
             previsione
                 .temperature_2m_max[
-                    indiceGiorno
+                    indicePrevisione
                 ]
         )
             ? previsione
                 .temperature_2m_max[
-                    indiceGiorno
+                    indicePrevisione
                 ]
             : temperaturaStorica + 2;
 
@@ -1291,12 +1387,12 @@ function calcolaProbabilitaReale(
         Number.isFinite(
             previsione
                 .temperature_2m_min[
-                    indiceGiorno
+                    indicePrevisione
                 ]
         )
             ? previsione
                 .temperature_2m_min[
-                    indiceGiorno
+                    indicePrevisione
                 ]
             : temperaturaStorica - 2;
 
@@ -1305,12 +1401,12 @@ function calcolaProbabilitaReale(
         Number.isFinite(
             previsione
                 .precipitation_sum[
-                    indiceGiorno
+                    indicePrevisione
                 ]
         )
             ? previsione
                 .precipitation_sum[
-                    indiceGiorno
+                    indicePrevisione
                 ]
             : 0;
 
@@ -2069,6 +2165,37 @@ async function elaboraDati(
         );
     }
 
+    const dataMassima =
+        trovaDataMassimaMeteo(
+            righeMeteo,
+            campoData
+        );
+
+    const testoAggiornamento =
+        formattaDataAggiornamento(
+            dataMassima
+        );
+
+    const dataLastUpdate =
+        elemento(
+            "data-last-update"
+        );
+
+    const lastUpdate =
+        elemento(
+            "lastUpdate"
+        );
+
+    if (dataLastUpdate) {
+        dataLastUpdate.textContent =
+            testoAggiornamento;
+    }
+
+    if (lastUpdate) {
+        lastUpdate.textContent =
+            testoAggiornamento;
+    }
+
     const storico =
         costruisciStorico(
             righeMeteo,
@@ -2114,8 +2241,10 @@ async function elaboraDati(
         );
     }
 
-    statusEl.style.display =
-        "none";
+    if (statusEl) {
+        statusEl.style.display =
+            "none";
+    }
 }
 
 async function caricaFileAutomaticamente() {
@@ -2189,13 +2318,13 @@ async function caricaFileAutomaticamente() {
 
         if (!testoStazioni.trim()) {
             throw new Error(
-                "stazioni_meteo.csv è vuoto."
+                "stazioni_meteo.csv \u00E8 vuoto."
             );
         }
 
         if (!testoMeteo.trim()) {
             throw new Error(
-                "dati_meteo_30g.csv è vuoto."
+                "dati_meteo_30g.csv \u00E8 vuoto."
             );
         }
 
