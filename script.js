@@ -33,40 +33,39 @@ function parseCSV(text) {
     }).filter(row => row.length > 0 && row !== "");
 }
 
-let fileStazioniPronto = false;
-let fileMeteoPronto = false;
-let rawStazioni = [];
-let rawMeteo = [];
+// Caricamento asincrono nativo ottimizzato per GitHub Pages
+async function caricaFileAutomaticamente() {
+    try {
+        document.getElementById('status-text').innerText = "Caricamento dati meteorologici in corso...";
+        
+        // Chiamate relative stabili per GitHub
+        const resStazioni = await fetch('stazioni_meteo.csv');
+        const resMeteo = await fetch('dati_meteo_30g.csv');
+        
+        if (!resStazioni.ok || !resMeteo.ok) {
+            throw new Error("I file CSV non sono stati trovati nella cartella principale.");
+        }
 
-document.getElementById('csv-stazioni').addEventListener('change', function(e) {
-    let reader = new FileReader();
-    reader.onload = function() {
-        rawStazioni = parseCSV(reader.result);
-        fileStazioniPronto = true;
-        verificaEElabora();
-    };
-    reader.readAsText(e.target.files);
-});
+        const textStazioni = await resStazioni.text();
+        const textMeteo = await resMeteo.text();
 
-document.getElementById('csv-meteo').addEventListener('change', function(e) {
-    let reader = new FileReader();
-    reader.onload = function() {
-        rawMeteo = parseCSV(reader.result);
-        fileMeteoPronto = true;
-        verificaEElabora();
-    };
-    reader.readAsText(e.target.files);
-});
+        let rawStazioni = parseCSV(textStazioni);
+        let rawMeteo = parseCSV(textMeteo);
 
-function verificaEElabora() {
-    if (!fileStazioniPronto || !fileMeteoPronto) {
-        document.getElementById('status-text').innerText = "Un file caricato. Seleziona anche il second file...";
-        return;
+        elaboraDati(rawStazioni, rawMeteo);
+
+    } catch (error) {
+        document.getElementById('status-text').innerHTML = 
+            `<span style="color: #b91c1c;">Errore: ${error.message}</span><br>` +
+            `<small>Verifica che i nomi dei file caricati nella repository siano scritti interamente in minuscolo o corrispondano esattamente.</small>`;
+        console.error(error);
     }
-    
-    document.getElementById('status-text').innerText = "Elaborazione dati in corso...";
+}
+
+function elaboraDati(rawStazioni, rawMeteo) {
     stazioni = [];
 
+    // Pulizia e normalizzazione delle intestazioni per evitare disallineamenti maiuscole/minuscole
     let headerStazioni = rawStazioni[0].map(h => h.toLowerCase().replace(/\s+/g, ''));
     let idxIdStaz = headerStazioni.indexOf('id');
     let idxNomeStaz = headerStazioni.findIndex(h => h.includes('stazione'));
@@ -78,7 +77,7 @@ function verificaEElabora() {
     let idxPioggia = headerMeteo.findIndex(h => h.includes('pioggia'));
 
     if(idxIdStaz === -1 || idxNomeStaz === -1 || idxMeteoId === -1 || idxPioggia === -1) {
-        document.getElementById('status-text').innerText = "Errore: Struttura colonne dei CSV non riconosciuta. Controlla le intestazioni.";
+        document.getElementById('status-text').innerText = "Errore: Colonne del file CSV non riconosciute.";
         return;
     }
 
@@ -87,12 +86,9 @@ function verificaEElabora() {
         let riga = rawMeteo[i];
         if (!riga || riga.length <= Math.max(idxMeteoId, idxPioggia)) continue;
         
-        let idRaw = riga[idxMeteoId];
-        if (!idRaw) continue;
-        let id = idRaw.trim();
-        
+        let id = riga[idxMeteoId].trim();
         let pioggiaVal = parseFloat(riga[idxPioggia]);
-        if (!isNaN(pioggiaVal)) {
+        if (!isNaN(pioggiaVal) && id) {
             if (!mappaPioggia[id]) mappaPioggia[id] = 0;
             mappaPioggia[id] += pioggiaVal;
         }
@@ -102,9 +98,8 @@ function verificaEElabora() {
         let riga = rawStazioni[i];
         if (!riga || riga.length <= Math.max(idxIdStaz, idxNomeStaz, idxAlt)) continue;
         
-        let idRaw = riga[idxIdStaz];
-        if (!idRaw) continue;
-        let id = idRaw.trim();
+        let id = riga[idxIdStaz].trim();
+        if (!id) continue;
 
         let nome = riga[idxNomeStaz] || "Stazione " + id;
         let link = riga[idxLink] || "#";
@@ -123,7 +118,7 @@ function verificaEElabora() {
     }
 
     if (stazioni.length === 0) {
-        document.getElementById('status-text').innerText = "Errore: Nessuna stazione mappata. Verifica la corrispondenza degli ID nei file.";
+        document.getElementById('status-text').innerText = "Errore: Mappatura stazioni fallita.";
         return;
     }
 
@@ -219,3 +214,5 @@ function costruisciBottoni() {
         tabsContainer.appendChild(btn);
     });
 }
+
+window.onload = caricaFileAutomaticamente;
