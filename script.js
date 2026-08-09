@@ -1,14 +1,15 @@
 let stazioni = [];
 let specieSelezionata = "Boletus edulis";
+let datiPrevisioniMeteo = {}; // Salverà le previsioni live delle stazioni
 
 const specieFunghi = [
-    { nome: "Boletus edulis", altMin: 900, altMax: 1800, rainReq: 60, piccoGiorno: 6 },
-    { nome: "Boletus aestivalis", altMin: 600, altMax: 1400, rainReq: 40, piccoGiorno: 4 },
-    { nome: "Boletus aereus", altMin: 200, altMax: 1000, rainReq: 35, piccoGiorno: 3 },
-    { nome: "Agaricus campestris", altMin: 0, altMax: 2000, rainReq: 25, piccoGiorno: 2 },
-    { nome: "Agaricus arvensis", altMin: 300, altMax: 1600, rainReq: 30, piccoGiorno: 4 },
-    { nome: "Macrolepiota procera", altMin: 0, altMax: 1800, rainReq: 35, piccoGiorno: 5 },
-    { nome: "Cantharellus cibarius", altMin: 700, altMax: 1600, rainReq: 70, piccoGiorno: 7 }
+    { nome: "Boletus edulis", altMin: 1000, altMax: 1800, rainReq: 60, tempOttimale: 15, termofilo: false },
+    { nome: "Boletus aestivalis", altMin: 700, altMax: 1400, rainReq: 40, tempOttimale: 22, termofilo: true },
+    { nome: "Boletus aereus", altMin: 200, altMax: 1000, rainReq: 35, tempOttimale: 24, termofilo: true },
+    { nome: "Agaricus campestris", altMin: 0, altMax: 2000, rainReq: 25, tempOttimale: 18, termofilo: false },
+    { nome: "Agaricus arvensis", altMin: 300, altMax: 1600, rainReq: 30, tempOttimale: 16, termofilo: false },
+    { nome: "Macrolepiota procera", altMin: 0, altMax: 1800, rainReq: 35, tempOttimale: 19, termofilo: false },
+    { nome: "Cantharellus cibarius", altMin: 800, altMax: 1600, rainReq: 70, tempOttimale: 18, termofilo: false }
 ];
 
 function parseCSV(text) {
@@ -31,83 +32,80 @@ function parseCSV(text) {
         }
         result.push(current.trim().replace(/^"|"$/g, ''));
         return result;
-    }).filter(row => row.length > 0 && row[0] !== "");
+    }).filter(row => row.length > 0 && row !== "");
 }
 
 async function caricaFileAutomaticamente() {
     const statusEl = document.getElementById('status-text');
     try {
-        statusEl.innerText = "Download dei dati meteorologici in corso...";
-        
-        // Utilizziamo Promise.all per scaricare i file in parallelo in modo sicuro su GitHub Pages
+        statusEl.innerText = "Download dei dati meteorologici locali...";
         const [resStazioni, resMeteo] = await Promise.all([
             fetch('stazioni_meteo.csv'),
             fetch('dati_meteo_30g.csv')
         ]);
 
-        if (!resStazioni.ok) throw new Error(`Impossibile scaricare stazioni_meteo.csv (Stato: ${resStazioni.status})`);
-        if (!resMeteo.ok) throw new Error(`Impossibile scaricare dati_meteo_30g.csv (Stato: ${resMeteo.status})`);
+        if (!resStazioni.ok || !resMeteo.ok) throw new Error("File CSV non trovati nella repository.");
 
-        statusEl.innerText = "Elaborazione dei dataset AMAbruzzo...";
-        
         const textStazioni = await resStazioni.text();
         const textMeteo = await resMeteo.text();
 
         let rawStazioni = parseCSV(textStazioni);
         let rawMeteo = parseCSV(textMeteo);
 
-        if (rawStazioni.length <= 1) throw new Error("Il file stazioni_meteo.csv non contiene righe di dati valide.");
-        if (rawMeteo.length <= 1) throw new Error("Il file dati_meteo_30g.csv non contiene righe di dati valide.");
-
-        elaboraDati(rawStazioni, rawMeteo);
+        await elaboraDati(rawStazioni, rawMeteo);
 
     } catch (error) {
-        statusEl.innerHTML = 
-            `<span style="color: #b91c1c; font-size: 1.1rem; font-weight: bold;">⚠️ Errore di Sincronizzazione</span><br>` +
-            `<p style="color: #374151; font-weight: normal; margin: 10px 0;">Dettaglio: ${error.message}</p>` +
-            `<small style="color: #6b7280; font-weight: normal;">Controlla la console del browser (tasto F12) per maggiori informazioni sul tracciamento.</small>`;
-        console.error("Errore Sincronizzazione Repository:", error);
+        statusEl.innerHTML = `<span style="color: #b91c1c; font-weight: bold;">⚠️ Errore: ${error.message}</span>`;
+        console.error(error);
     }
 }
 
-function elaboraDati(rawStazioni, rawMeteo) {
+async function elaboraDati(rawStazioni, rawMeteo) {
     const statusEl = document.getElementById('status-text');
     stazioni = [];
 
-    // Pulizia e normalizzazione indici intestazioni
-    let headerStazioni = rawStazioni[0].map(h => h.toLowerCase().replace(/\s+/g, '').replace(/"/g, ''));
+    let headerStazioni = rawStazioni.map(h => h.toLowerCase().replace(/\s+/g, '').replace(/"/g, ''));
     let idxIdStaz = headerStazioni.indexOf('id');
     let idxNomeStaz = headerStazioni.findIndex(h => h.includes('stazione'));
     let idxLink = headerStazioni.findIndex(h => h.includes('link') || h.includes('indirizzo'));
     let idxAlt = headerStazioni.findIndex(h => h.includes('altitudine'));
+    let idxLat = headerStazioni.indexOf('lat');
+    let idxLong = headerStazioni.indexOf('long');
 
-    let headerMeteo = rawMeteo[0].map(h => h.toLowerCase().replace(/\s+/g, '').replace(/"/g, ''));
+    let headerMeteo = rawMeteo.map(h => h.toLowerCase().replace(/\s+/g, '').replace(/"/g, ''));
     let idxMeteoId = headerMeteo.indexOf('id');
     let idxPioggia = headerMeteo.findIndex(h => h.includes('pioggia'));
+    let idxTMin = headerMeteo.findIndex(h => h.includes('temperaturamin'));
+    let idxTMax = headerMeteo.findIndex(h => h.includes('temperaturamax'));
 
-    if(idxIdStaz === -1 || idxNomeStaz === -1 || idxMeteoId === -1 || idxPioggia === -1) {
-        statusEl.innerHTML = `<b>Errore Mappatura Colonne CSV:</b><br>` +
-            `Colonne Stazioni: [${headerStazioni.join(', ')}]<br>` +
-            `Colonne Meteo: [${headerMeteo.join(', ')}]<br>` +
-            `<small>Verifica i nomi delle intestazioni nella prima riga dei tuoi file excel.</small>`;
-        return;
-    }
-
-    // Calcolo cumulativo delle piogge degli ultimi 30 giorni per ID stazione
-    let mappaPioggia = {};
-    for (let i = 1; i < rawMeteo.length; i++) {
+    // 1. Analisi Storica (Pioggia cumulata e medie termiche dell'ultima settimana)
+    let mappaMeteoStorico = {};
+    for (let i = rawMeteo.length - 1; i >= 1; i--) {
         let riga = rawMeteo[i];
         if (!riga || riga.length <= Math.max(idxMeteoId, idxPioggia)) continue;
         
         let id = riga[idxMeteoId].trim();
-        let pioggiaVal = parseFloat(riga[idxPioggia]);
-        if (!isNaN(pioggiaVal) && id) {
-            if (!mappaPioggia[id]) mappaPioggia[id] = 0;
-            mappaPioggia[id] += pioggiaVal;
+        if (!id) continue;
+
+        if (!mappaMeteoStorico[id]) {
+            mappaMeteoStorico[id] = { rainTotal: 0, tempMinSum: 0, tempMaxSum: 0, tempGiorni: 0 };
+        }
+
+        let p = parseFloat(riga[idxPioggia]);
+        let tMin = parseFloat(riga[idxTMin]);
+        let tMax = parseFloat(riga[idxTMax]);
+
+        if (!isNaN(p)) mappaMeteoStorico[id].rainTotal += p;
+        
+        // Prendiamo gli ultimi 7 record disponibili nel CSV per fare la media termica recente
+        if (!isNaN(tMin) && !isNaN(tMax) && tMin !== 0 && tMax !== 0 && mappaMeteoStorico[id].tempGiorni < 7) {
+            mappaMeteoStorico[id].tempMinSum += tMin;
+            mappaMeteoStorico[id].tempMaxSum += tMax;
+            mappaMeteoStorico[id].tempGiorni++;
         }
     }
 
-    // Aggregazione dati anagrafici stazioni abruzzesi
+    // 2. Costruzione del Dataset Stazioni
     for (let i = 1; i < rawStazioni.length; i++) {
         let riga = rawStazioni[i];
         if (!riga || riga.length <= Math.max(idxIdStaz, idxNomeStaz, idxAlt)) continue;
@@ -115,28 +113,37 @@ function elaboraDati(rawStazioni, rawMeteo) {
         let id = riga[idxIdStaz].trim();
         if (!id) continue;
 
-        let nome = riga[idxNomeStaz] || "Stazione " + id;
-        let link = riga[idxLink] || "#";
-        let altitudine = parseInt(riga[idxAlt]);
-        if (isNaN(altitudine)) altitudine = 0;
-        
-        let totalePioggia = mappaPioggia[id] || 0;
+        let storico = mappaMeteoStorico[id] || { rainTotal: 0, tempMinSum: 0, tempMaxSum: 0, tempGiorni: 1 };
+        let mediaTMin = storico.tempMinSum / (storico.tempGiorni || 1);
+        let mediaTMax = storico.tempMaxSum / (storico.tempGiorni || 1);
 
         stazioni.push({
             id: id,
-            nome: nome,
-            link: link,
-            alt: altitudine,
-            rain30g: totalePioggia
+            nome: riga[idxNomeStaz] || "Stazione " + id,
+            link: riga[idxLink] || "#",
+            alt: parseInt(riga[idxAlt]) || 0,
+            lat: parseFloat(riga[idxLat]) || 42.35,
+            lon: parseFloat(riga[idxLong]) || 13.40,
+            rain30g: storico.rainTotal,
+            storicoTMedia: (mediaTMin + mediaTMax) / 2 || 20 // Fallback se mancano i dati
         });
     }
 
-    if (stazioni.length === 0) {
-        statusEl.innerText = "Errore: Impossibile accoppiare i record dei file CSV.";
-        return;
+    // 3. Interrogazione API Open-Meteo per le previsioni reali dei prossimi 10 giorni
+    statusEl.innerText = "Interrogazione API Open-Meteo per le previsioni a 10 giorni...";
+    for (let stazione of stazioni) {
+        try {
+            let url = `https://open-meteo.com{stazione.lat}&longitude=${stazione.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Europe%2FRome&forecast_days=10`;
+            let response = await fetch(url);
+            if (response.ok) {
+                let data = await response.json();
+                datiPrevisioniMeteo[stazione.id] = data.daily; 
+            }
+        } catch (e) {
+            console.warn(`Impossibile scaricare il meteo previsionale per la stazione ${stazione.nome}`);
+        }
     }
 
-    // Sblocco dell'interfaccia grafica
     statusEl.style.display = "none";
     document.getElementById('tabs').style.display = "flex";
     document.getElementById('table-area').style.display = "block";
@@ -145,68 +152,77 @@ function elaboraDati(rawStazioni, rawMeteo) {
     renderTabella(specieSelezionata);
 }
 
-function calcolaProbabilita(stazione, fungo, giorno) {
-    if (!stazione || !fungo) return 0;
-    
+function calcolaProbabilitaReale(stazione, fungo, indiceGiorno) {
     let score = 100;
-    let rain = parseFloat(stazione.rain30g);
-    let alt = parseInt(stazione.alt);
     
-    if (isNaN(rain)) rain = 0;
-    if (isNaN(alt)) alt = 0;
+    // VARIABILI STORICHE (CSV)
+    let rainStorica = stazione.rain30g;
+    let tMediaStorica = stazione.storicoTMedia;
 
-    if (rain < fungo.rainReq) {
-        score -= ((fungo.rainReq - rain) / fungo.rainReq) * 60; 
-    }
-    
-    if (alt < fungo.altMin || alt > fungo.altMax) {
-        let distanza = Math.min(Math.abs(alt - fungo.altMin), Math.abs(alt - fungo.altMax));
-        score -= (distanza / 2);
-    }
-    
-    score -= (Math.abs(giorno - fungo.piccoGiorno) * 7);
-    score = Math.max(0, Math.min(95, Math.round(score)));
+    // VARIABILI PREVISIONALI LIVE (Se disponibili dall'API)
+    let meteoFuturo = datiPrevisioniMeteo[stazione.id];
+    let tMaxPrevista = meteoFuturo ? meteoFuturo.temperature_2m_max[indiceGiorno] : tMediaStorica + 2;
+    let tMinPrevista = meteoFuturo ? meteoFuturo.temperature_2m_min[indiceGiorno] : tMediaStorica - 2;
+    let pioggiaPrevista = meteoFuturo ? meteoFuturo.precipitation_sum[indiceGiorno] : 0;
+    let tMediaPrevista = (tMaxPrevista + tMinPrevista) / 2;
 
-    if (rain < 30 && (fungo.nome === "Boletus edulis" || fungo.nome === "Cantharellus cibarius")) {
-        score = Math.round(score * 0.1);
+    // 1. Valutazione Idrica (Storico + Pioggia cumulativa del giorno previsto)
+    let acquaDisponibile = rainStorica + pioggiaPrevista;
+    if (acquaDisponibile < fungo.rainReq) {
+        score -= ((fungo.rainReq - acquaDisponibile) / fungo.rainReq) * 50;
     }
+
+    // 2. Vincolo Altitudinale Ecologico
+    if (stazione.alt < fungo.altMin || stazione.alt > fungo.altMax) {
+        let distanza = Math.min(Math.abs(stazione.alt - fungo.altMin), Math.abs(stazione.alt - fungo.altMax));
+        score -= (distanza / 3);
+    }
+
+    // 3. Analisi Termica dell'Aria (Fattore Stagionale di Agosto)
+    // Se fa troppo caldo o troppo freddo rispetto alla temperatura ottimale della specie
+    let scostamentoTermico = Math.abs(tMediaPrevista - fungo.tempOttimale);
+    score -= (scostamentoTermico * 4);
+
+    // Guardrail Agosto: Specie termofile (Aereus/Aestivalis) amano il caldo estivo di bassa quota.
+    // Specie fredde (Edulis) soffrono il caldo agostano sotto i 1000-1200m.
+    if (fungo.termofilo && tMediaPrevista < 18) score -= 30; // Penalizza i porcini neri se fa troppo freddo
+    if (!fungo.termofilo && stazione.alt < 1000 && tMaxPrevista > 28) score -= 40; // Brucia i Boletus edulis in bassa quota ad agosto
+
+    // Normalizzazione finale
+    score = Math.max(0, Math.min(98, Math.round(score)));
     
-    return isNaN(score) ? 0 : score;
+    // Se non c'è stata pioggia sufficiente nel mese (<25mm), la fruttificazione estiva è impossibile
+    if (acquaDisponibile < 25) score = Math.round(score * 0.05);
+
+    return score;
 }
 
 function ottieniClasseStile(prob) {
-    let p = parseInt(prob);
-    if (isNaN(p) || p < 15) return 'prob-none';
-    if (p >= 75) return 'prob-high';
-    if (p >= 40) return 'prob-medium';
-    return 'prob-low';
+    if (prob >= 75) return 'prob-high';
+    if (prob >= 40) return 'prob-medium';
+    if (prob >= 15) return 'prob-low';
+    return 'prob-none';
 }
 
 function renderTabella(fungoNome) {
     specieSelezionata = fungoNome;
     const fungo = specieFunghi.find(f => f.nome === fungoNome);
-    if (!fungo) return;
-    
-    document.getElementById('current-mushroom-title').innerText = `Probabilità di nascita per: ${fungo.nome}`;
+    document.getElementById('current-mushroom-title').innerText = `Previsione di Nascita Reale: ${fungo.nome}`;
     
     const tbody = document.getElementById('table-body');
     tbody.innerHTML = '';
 
     stazioni.forEach(stazione => {
         const tr = document.createElement('tr');
-        let pioggiaMostrata = 0;
-        if (stazione.rain30g && !isNaN(parseFloat(stazione.rain30g))) {
-            pioggiaMostrata = parseFloat(stazione.rain30g).toFixed(1);
-        }
-        
         tr.innerHTML = `
             <td><a class="station-link" href="${stazione.link}" target="_blank">🔗 ${stazione.nome}</a></td>
             <td>${stazione.alt} m</td>
-            <td style="font-weight: 500;">${pioggiaMostrata} mm</td>
+            <td style="font-weight: 500;">${stazione.rain30g.toFixed(1)} mm</td>
         `;
 
-        for (let g = 1; g <= 10; g++) {
-            let prob = calcolaProbabilita(stazione, fungo, g);
+              // Genera i dati reali basati sull'indice del giorno previsionale (0 = Oggi, 9 = Tra 10 giorni)
+        for (let g = 0; g < 10; g++) {
+            let prob = calcolaProbabilitaReale(stazione, fungo, g);
             let classe = ottieniClasseStile(prob);
             tr.innerHTML += `<td class="${classe}">${prob}%</td>`;
         }
@@ -233,3 +249,4 @@ function costruisciBottoni() {
 window.onload = function() {
     caricaFileAutomaticamente();
 };
+
