@@ -8,9 +8,9 @@
     content="width=device-width, initial-scale=1.0">
 
   <title>
-    Piogge Giornaliere/Cumulate -
+    Previsioni Crescita Funghi -
     Alcolisti Micologici Analcolici TRIS -
-    Rel. 02-A-019
+    Rel. 03-C-007
   </title>
 
   <link
@@ -30,14 +30,6 @@
     src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js">
   </script>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js">
-  </script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js">
-  </script>
-
   <style>
     :root{
       --bg:#f7f6f2;
@@ -52,9 +44,6 @@
       --font:'Inter',system-ui,sans-serif;
       --sidebar-width:360px;
       --sidebar-collapsed-width:34px;
-      --yellow:#ffe66a;
-      --yellow2:#fff3a8;
-      --yellow-border:#c7a900;
     }
 
     *{
@@ -70,6 +59,10 @@
       font-family:var(--font)
     }
 
+    body{
+      overflow-x:hidden
+    }
+
     .app{
       display:grid;
       grid-template-columns:var(--sidebar-width) minmax(0,1fr);
@@ -78,7 +71,9 @@
     }
 
     .app.sidebar-collapsed{
-      grid-template-columns:var(--sidebar-collapsed-width) minmax(0,1fr)
+      grid-template-columns:
+        var(--sidebar-collapsed-width)
+        minmax(0,1fr)
     }
 
     .sidebar{
@@ -112,7 +107,11 @@
       padding:0 .7rem;
       border:1px solid #9bb9d6;
       border-radius:.6rem;
-      background:linear-gradient(180deg,#edf7ff,#cfe7ff);
+      background:linear-gradient(
+        180deg,
+        #edf7ff,
+        #cfe7ff
+      );
       color:#173b5d;
       cursor:pointer;
       font-weight:800
@@ -135,11 +134,13 @@
       cursor:pointer
     }
 
-    .app.sidebar-collapsed .sidebar-toggle-inside{
+    .app.sidebar-collapsed
+    .sidebar-toggle-inside{
       display:none
     }
 
-    .app.sidebar-collapsed .sidebar-toggle-mini{
+    .app.sidebar-collapsed
+    .sidebar-toggle-mini{
       display:block
     }
 
@@ -150,7 +151,8 @@
       transition:opacity .15s ease
     }
 
-    .app.sidebar-collapsed .sidebar-content{
+    .app.sidebar-collapsed
+    .sidebar-content{
       opacity:0;
       pointer-events:none
     }
@@ -250,15 +252,6 @@
       margin-top:.25rem
     }
 
-    .report-menu-title{
-      margin:.5rem 0 0;
-      color:var(--muted);
-      font-size:.78rem;
-      font-weight:800;
-      text-transform:uppercase
-    }
-
-    .report-menu button,
     .report-menu-link{
       display:flex;
       align-items:center;
@@ -269,8 +262,6 @@
       border-radius:.65rem;
       background:#fafafa;
       color:var(--text);
-      cursor:pointer;
-      font:inherit;
       font-size:.86rem;
       font-weight:700;
       text-align:left;
@@ -278,12 +269,10 @@
       box-shadow:0 2px 8px rgba(0,0,0,.06);
       transition:
         transform .08s ease,
-        box-shadow .15s ease,
         background .15s ease,
         border-color .15s ease
     }
 
-    .report-menu button:hover,
     .report-menu-link:hover{
       transform:translateY(-1px);
       border-color:#87bf47;
@@ -292,7 +281,7 @@
       text-decoration:none
     }
 
-    .report-menu button.active{
+    .report-menu-link.active{
       border-color:#87bf47;
       background:var(--active-green);
       color:#20310f
@@ -302,8 +291,16 @@
       color:var(--text)
     }
 
+    .report-menu-link.active:visited{
+      color:#20310f
+    }
+
+    .report-link:focus-visible,
     .report-menu-link:focus-visible,
-    .report-menu button:focus-visible{
+    .sidebar-toggle-inside:focus-visible,
+    .sidebar-toggle-mini:focus-visible,
+    select:focus-visible,
+    button:focus-visible{
       outline:3px solid rgba(1,105,111,.35);
       outline-offset:2px
     }
@@ -324,7 +321,11 @@
       padding:1rem;
       border:1px solid var(--border);
       border-radius:var(--radius);
-      background:linear-gradient(180deg,#ffffff,#f4fbfc);
+      background:linear-gradient(
+        180deg,
+        #ffffff,
+        #f4fbfc
+      );
       box-shadow:0 1px 2px rgba(0,0,0,.08)
     }
 
@@ -361,26 +362,42 @@
       box-shadow:0 1px 2px rgba(0,0,0,.08)
     }
 
+    .status-msg{
+      margin:0;
+      padding:1rem;
+      border:1px solid #f0dca4;
+      border-radius:.8rem;
+      background:#fff8df;
+      color:#7c5a0b;
+      font-size:.95rem;
+      font-weight:700;
+      text-align:center
+    }
+
+    .status-msg.error{
+      border-color:#efc9cf;
+      background:#fff6f8;
+      color:#a13544
+    }
+
     .controls{
       display:flex;
       align-items:flex-end;
-      justify-content:flex-start;
       flex-wrap:wrap;
-      gap:10px
+      gap:12px
     }
 
     .field{
       display:flex;
       flex-direction:column;
       gap:6px;
-      min-width:250px
+      min-width:240px
     }
 
     .field label{
-      display:block;
       color:var(--muted);
-      font-size:.88rem;
-      font-weight:700
+      font-size:.86rem;
+      font-weight:800
     }
 
     select,
@@ -395,9 +412,13 @@
     }
 
     select{
-      min-width:280px;
+      min-width:240px;
       border-color:#9bb9d6;
-      background:linear-gradient(180deg,#f5fbff,#dfeeff);
+      background:linear-gradient(
+        180deg,
+        #f5fbff,
+        #dfeeff
+      );
       color:#173b5d;
       font-weight:700;
       cursor:pointer;
@@ -408,237 +429,201 @@
       border-color:#d9b900;
       background:linear-gradient(
         180deg,
-        var(--yellow2),
-        var(--yellow)
+        #fff3a8,
+        #ffe66a
       );
       color:#5a4800
     }
 
     button{
       cursor:pointer;
-      font-weight:700;
+      font-weight:800;
       box-shadow:0 2px 8px rgba(0,0,0,.06);
       transition:
         transform .08s ease,
-        box-shadow .15s ease,
-        background .15s ease
+        background .15s ease,
+        border-color .15s ease
     }
 
-    button:hover{
+    button:hover:not(:disabled){
       transform:translateY(-1px)
     }
 
-    .btn-execute{
+    button:disabled{
+      cursor:not-allowed;
+      opacity:.55
+    }
+
+    .btn-genera{
       border-color:#9bd5da;
-      background:linear-gradient(180deg,#f2fbfc,#d6f0f2);
+      background:linear-gradient(
+        180deg,
+        #f2fbfc,
+        #d6f0f2
+      );
       color:#0f4f54
     }
 
-    .btn-save{
-      border-color:#d6b15f;
-      background:linear-gradient(180deg,#fff4dc,#f3cd7b);
-      color:#5a4310
+    .selection-status{
+      min-height:42px;
+      display:flex;
+      align-items:center;
+      color:var(--muted);
+      font-size:.86rem;
+      font-weight:700
+    }
+
+    .data-summary{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:1rem
+    }
+
+    .summary-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.4rem .65rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:#fafafa;
+      color:var(--muted);
+      font-size:.82rem
+    }
+
+    .summary-pill strong{
+      color:var(--text)
+    }
+
+    .update-pill{
+      border-color:#f0c8ce;
+      background:#fff5f6;
+      color:#8d1d2d
+    }
+
+    .update-pill strong{
+      color:#b00020
+    }
+
+    .table-responsive{
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:#fff
+    }
+
+    .table-heading{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:.8rem;
+      padding:1rem 1rem .6rem
+    }
+
+    .table-heading h3{
+      margin:0;
+      color:var(--primary);
+      font-size:1.05rem
+    }
+
+    .table-heading p{
+      margin:.35rem 0 0;
+      color:var(--muted);
+      font-size:.82rem
+    }
+
+    table{
+      width:100%;
+      min-width:760px;
+      border-collapse:collapse;
+      text-align:left;
+      font-size:.86rem
+    }
+
+    th,
+    td{
+      padding:10px;
+      border-bottom:1px solid #e5e7eb;
+      white-space:nowrap
+    }
+
+    th{
+      background:#f9fafb;
+      color:#374151;
+      font-weight:800
+    }
+
+    tbody tr:hover{
+      background:#f9fafb
+    }
+
+    .rank-cell{
+      width:70px;
+      color:var(--muted);
+      font-weight:800;
+      text-align:center
+    }
+
+    .probability-cell{
+      min-width:130px;
+      font-size:1rem;
+      font-weight:900;
+      text-align:center
+    }
+
+    .prob-high{
+      background:#dcfce7;
+      color:#15803d
+    }
+
+    .prob-medium{
+      background:#fef9c3;
+      color:#a16207
+    }
+
+    .prob-low{
+      background:#f3f4f6;
+      color:#6b7280
+    }
+
+    .prob-none{
+      background:#fee2e2;
+      color:#b91c1c
+    }
+
+    a.station-link{
+      color:#2563eb;
+      text-decoration:none
+    }
+
+    a.station-link:hover{
+      text-decoration:underline
+    }
+
+    .info-panel{
+      margin-top:1rem;
+      padding:15px;
+      border-left:4px solid #3b82f6;
+      border-radius:0 8px 8px 0;
+      background:#eff6ff;
+      color:#1e3a8a;
+      font-size:.85rem;
+      line-height:1.45
+    }
+
+    .empty-row{
+      padding:1rem;
+      color:var(--muted);
+      text-align:center
     }
 
     .hidden{
       display:none !important
     }
 
-    .summary{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:12px
-    }
-
-    .summary .left,
-    .summary .right{
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:10px
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      padding:.4rem .7rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:#fafafa;
-      color:var(--muted);
-      font-size:.88rem
-    }
-
-    .pill strong{
-      color:var(--text)
-    }
-
-    .status{
-      color:var(--muted);
-      font-size:.9rem
-    }
-
-    .error{
-      padding:10px;
-      border:1px solid #efc9cf;
-      border-radius:12px;
-      background:#fff6f8;
-      color:#a13544;
-      font-weight:700;
-      white-space:pre-wrap
-    }
-
-    .legend{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px
-    }
-
-    .legend .item{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      padding:.35rem .6rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:#fbfbfb;
-      font-size:.84rem
-    }
-
-    .legend .dot{
-      display:inline-block;
-      width:10px;
-      height:10px;
-      border-radius:50%
-    }
-
-    .dot-rain{
-      background:#2f7a2f
-    }
-
-    .dot-cum{
-      background:#7b2cbf
-    }
-
-    .legend .selected-column{
-      width:10px;
-      height:10px;
-      border:1px solid var(--yellow-border);
-      background:var(--yellow)
-    }
-
-    .table-wrap{
-      overflow:auto;
-      border:1px solid var(--border);
-      border-radius:14px;
-      background:#fff
-    }
-
-    table{
-      width:100%;
-      min-width:1560px;
-      border-collapse:collapse;
-      table-layout:fixed;
-      font-size:.84rem
-    }
-
-    thead th{
-      position:sticky;
-      top:0;
-      z-index:2;
-      padding:6px 5px;
-      border-bottom:1px solid var(--border);
-      background:#eaf7fb;
-      color:#16484e;
-      font-weight:800
-    }
-
-    th,
-    td{
-      width:43px;
-      max-width:43px;
-      padding:6px 5px;
-      border-right:1px solid #e6e2da;
-      border-bottom:1px solid #e6e2da;
-      text-align:center;
-      vertical-align:middle;
-      overflow:hidden;
-      word-wrap:break-word;
-      overflow-wrap:anywhere
-    }
-
-    th:first-child,
-    td:first-child{
-      position:sticky;
-      left:0;
-      z-index:1;
-      width:280px;
-      max-width:280px;
-      background:#fff
-    }
-
-    thead th:first-child{
-      z-index:3;
-      background:#dff3f6
-    }
-
-    .name-cell{
-      min-width:280px;
-      color:#163338;
-      font-weight:700;
-      text-align:left
-    }
-
-    .station-name{
-      display:inline;
-      color:#163338;
-      font-weight:700
-    }
-
-    .selected-cumulative{
-      display:inline;
-      margin-left:.35rem;
-      color:#6a1d86;
-      font-size:.76rem;
-      font-weight:700
-    }
-
-    .rain-row td{
-      color:#124f1e;
-      font-weight:700
-    }
-
-    .cum-row td{
-      color:#6a1d86;
-      font-weight:700
-    }
-
-    .selected-column{
-      background:var(--yellow) !important;
-      color:#3b3000 !important;
-      border-left:1px solid var(--yellow-border) !important;
-      border-right:1px solid var(--yellow-border) !important
-    }
-
-    thead .selected-column{
-      background:#f2d733 !important;
-      color:#3b3000 !important
-    }
-
     @media (max-width:980px){
-      .app{
-        grid-template-columns:var(--sidebar-width) minmax(0,1fr)
-      }
-
-      .app.sidebar-collapsed{
-        grid-template-columns:var(--sidebar-collapsed-width) minmax(0,1fr)
-      }
-
       .report-main{
         padding:.75rem
       }
@@ -649,7 +634,7 @@
       }
 
       table{
-        min-width:1380px
+        min-width:700px
       }
     }
   </style>
@@ -666,7 +651,8 @@
         id="sidebarToggleMini"
         class="sidebar-toggle-mini"
         type="button"
-        title="Mostra contenuto">
+        title="Mostra contenuto"
+        aria-label="Mostra contenuto">
         ☰
       </button>
 
@@ -674,7 +660,8 @@
         id="sidebarToggleInside"
         class="sidebar-toggle-inside"
         type="button"
-        title="Nascondi contenuto">
+        title="Nascondi contenuto"
+        aria-label="Nascondi contenuto">
         ☰
       </button>
 
@@ -688,7 +675,8 @@
               class="logo"
               viewBox="0 0 64 64"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true">
 
               <path
                 d="M10 39C18 25 25 18 33 12C40 21 46 31 54 39C49 45 43 50 33 54C23 49 16 45 10 39Z"
@@ -722,7 +710,7 @@
               </h1>
 
               <span class="release">
-                Rel. 02-A-019
+                Rel. 03-C-007
               </span>
 
               <p class="subtitle-small">
@@ -746,41 +734,22 @@
 
         <div class="report-menu">
 
-          <div class="report-menu-title">
-            Report
-          </div>
-
-          <button
-            class="active"
-            type="button"
-            data-report="rain">
-            Piogge Giornaliere/Cumulate
-          </button>
-
           <a
             class="report-menu-link"
-            href="report_previsioni.html"
-            title="Previsioni Crescita Funghi">
-            🍄 Previsioni Crescita Funghi
+            href="report.html"
+            title="Piogge Giornaliere/Cumulate">
+
+            🌧️ Piogge Giornaliere/Cumulate
           </a>
 
-          <button
-            type="button"
-            data-report="max">
-            Temperature massime
-          </button>
+          <a
+            class="report-menu-link active"
+            href="report_previsioni.html"
+            title="Previsioni Crescita Funghi"
+            aria-current="page">
 
-          <button
-            type="button"
-            data-report="monthly">
-            Report mensile
-          </button>
-
-          <button
-            type="button"
-            data-report="annual">
-            Report annuale
-          </button>
+            🍄 Previsioni Crescita Funghi
+          </a>
         </div>
       </div>
     </aside>
@@ -790,146 +759,273 @@
       <header class="report-header">
 
         <div>
-          <h2
-            class="report-title"
-            id="reportTitle">
-            Piogge Giornaliere/Cumulate
+          <h2 class="report-title">
+            Previsioni Crescita Funghi
           </h2>
 
-          <p
-            class="report-subtitle"
-            id="reportSubtitle">
-            Seleziona un giorno e premi Esegui per calcolare il cumulativo.
+          <p class="report-subtitle">
+            Seleziona il giorno e la specie per ordinare
+            le stazioni dalla probabilità maggiore alla minore.
           </p>
         </div>
 
         <div class="report-badge">
-          TRIS · stessi CSV della mappa
+          TRIS · Rel. 03-C-007
         </div>
       </header>
 
       <section class="panel">
 
-        <div class="controls">
+        <div
+          id="status-text"
+          class="status-msg">
 
-          <div class="field">
-            <label for="daySelect">
-              Seleziona Giorno (0:-30)
-            </label>
-
-            <select
-              id="daySelect"
-              class="placeholder"
-              aria-label="Seleziona giorno">
-
-              <option value="">
-                Seleziona un giorno
-              </option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>&nbsp;</label>
-
-            <button
-              id="executeBtn"
-              class="btn-execute"
-              type="button">
-              Esegui
-            </button>
-          </div>
-
-          <div
-            class="field hidden"
-            id="savePdfField">
-
-            <label>&nbsp;</label>
-
-            <button
-              id="savePdfBtn"
-              class="btn-save"
-              type="button">
-              Salva PDF
-            </button>
-          </div>
+          Inizializzazione e caricamento
+          dei dataset in corso...
         </div>
 
-        <div class="legend">
+        <div
+          class="data-summary"
+          id="data-summary"
+          style="display:none">
 
-          <span class="item">
-            <span class="dot dot-rain"></span>
-            Riga superiore: pioggia giornaliera
+          <span class="summary-pill">
+            Stazioni:
+            <strong id="stations-count">0</strong>
           </span>
 
-          <span class="item">
-            <span class="dot dot-cum"></span>
-            Riga inferiore: cumulativo retrogrado
+          <span class="summary-pill">
+            Record meteorologici:
+            <strong id="records-count">0</strong>
           </span>
 
-          <span class="item">
-            Colonne: -30, -29, ... -1, 0
+          <span class="summary-pill">
+            Previsioni disponibili:
+            <strong>10 giorni</strong>
           </span>
 
-          <span class="item">
-            <span class="selected-column"></span>
-            Giorno selezionato
+          <span class="summary-pill update-pill">
+            Aggiornamento dati:
+            <strong id="data-last-update">
+              in lettura...
+            </strong>
           </span>
         </div>
       </section>
 
       <section
-        class="panel"
+        class="panel hidden"
+        id="controls-panel"
         style="margin-top:1rem">
 
-        <div class="summary">
+        <div class="controls">
 
-          <div class="left">
+          <div class="field">
 
-            <span class="pill">
-              Stazioni:
-              <strong id="stationsCount">0</strong>
-            </span>
+            <label for="day-select">
+              Giorno della previsione
+            </label>
 
-            <span class="pill">
-              Righe meteo:
-              <strong id="recordsCount">0</strong>
-            </span>
+            <select
+              id="day-select"
+              class="placeholder">
 
-            <span class="pill">
-              Ordine su:
-              <strong id="selectedDayLabel">—</strong>
-            </span>
+              <option value="">
+                Seleziona un giorno
+              </option>
+
+              <option value="1">
+                Giorno 1
+              </option>
+
+              <option value="2">
+                Giorno 2
+              </option>
+
+              <option value="3">
+                Giorno 3
+              </option>
+
+              <option value="4">
+                Giorno 4
+              </option>
+
+              <option value="5">
+                Giorno 5
+              </option>
+
+              <option value="6">
+                Giorno 6
+              </option>
+
+              <option value="7">
+                Giorno 7
+              </option>
+
+              <option value="8">
+                Giorno 8
+              </option>
+
+              <option value="9">
+                Giorno 9
+              </option>
+
+              <option value="10">
+                Giorno 10
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+
+            <label for="species-select">
+              Specie fungina
+            </label>
+
+            <select
+              id="species-select"
+              class="placeholder">
+
+              <option value="">
+                Seleziona una specie
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+
+            <label>&nbsp;</label>
+
+            <button
+              id="generate-button"
+              class="btn-genera"
+              type="button"
+              disabled>
+
+              Genera previsione
+            </button>
           </div>
 
           <div
-            class="right status"
-            id="statusText">
-            Seleziona un giorno e premi Esegui.
+            id="selection-status"
+            class="selection-status">
+
+            Seleziona giorno e specie.
           </div>
         </div>
+      </section>
 
-        <div
-          id="errorBox"
-          class="error"
-          style="display:none">
+      <section
+        class="panel hidden"
+        id="forecast-panel"
+        style="margin-top:1rem">
+
+        <div class="table-responsive">
+
+          <div class="table-heading">
+
+            <div>
+              <h3 id="current-mushroom-title">
+                Previsione di crescita
+              </h3>
+
+              <p id="current-selection-description">
+                Seleziona i parametri per visualizzare la tabella.
+              </p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="rank-cell">
+                  Pos.
+                </th>
+
+                <th>
+                  Stazione
+                </th>
+
+                <th>
+                  Altitudine
+                </th>
+
+                <th>
+                  Pioggia 30g
+                </th>
+
+                <th>
+                  Probabilità
+                </th>
+              </tr>
+            </thead>
+
+            <tbody id="table-body">
+            </tbody>
+          </table>
         </div>
 
-        <div class="table-wrap">
-
-          <table id="reportTable">
-
-            <thead id="tableHead"></thead>
-
-            <tbody id="tableBody"></tbody>
-          </table>
+        <div class="info-panel">
+          <strong>Interpretazione:</strong>
+          le percentuali sono stime sperimentali e non costituiscono
+          una garanzia di crescita o di presenza dei funghi.
+          Verifica sempre le condizioni reali del territorio e
+          la sicurezza delle specie raccolte.
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Nome originale dello script mantenuto -->
+  <script>
+    "use strict";
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        const app =
+          document.getElementById(
+            "app"
+          );
+
+        const toggleInside =
+          document.getElementById(
+            "sidebarToggleInside"
+          );
+
+        const toggleMini =
+          document.getElementById(
+            "sidebarToggleMini"
+          );
+
+        if (
+          toggleInside &&
+          toggleMini &&
+          app
+        ) {
+          toggleInside.addEventListener(
+            "click",
+            () => {
+              app.classList.add(
+                "sidebar-collapsed"
+              );
+            }
+          );
+
+          toggleMini.addEventListener(
+            "click",
+            () => {
+              app.classList.remove(
+                "sidebar-collapsed"
+              );
+            }
+          );
+        }
+      }
+    );
+  </script>
+
   <script
-    src="script.js"
+    src="report_previsioni.js"
     defer>
   </script>
 </body>

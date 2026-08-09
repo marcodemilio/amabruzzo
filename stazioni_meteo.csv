@@ -1,42 +1,44 @@
 Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione
-1,Il Ceppo Rifugio,"https://www.caputfrigoris.it/tabgraph.php?id=TE106",42.671,13.465,1334,Il Ceppo,TE106
-2,Prati Di Tivo,"https://www.caputfrigoris.it/tabgraph.php?id=TE037",42.499,13.558,1450,Prati Di Tivo,TE037
-3,Castel del Monte - Loc. Pietrattina,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=326&Itemid=487",42.411,13.755,1459,Campo Imperatore,AQ-48
-4,Villa Celiera,"https://www.caputfrigoris.it/tabgraph.php?id=PE110",42.385,13.868,682,Voltigno,PE110
-5,Pratola Peligna,"https://www.chietimeteo.it/pratolapeligna.htm",42.095,13.871,720,Goriano Sicoli,CH995
-6,Rocca di Mezzo Loc. Rovere,"https://www.caputfrigoris.it/tabgraph.php?id=AQ024",42.163,13.518,1370,Rocca di Mezzo,AQ024
-7,Rocca di Mezzo,"https://www.meteonetwork.eu/it/weather-station/abr128-stazione-meteorologica-di-rocca-di-mezzo/graphs",42.203,13.526,1280,Rocca di Mezzo,abr128
-8,Rocca di Mezzo Loc. Fonteavignone,"https://www.caputfrigoris.it/tabgraph.php?id=AQ023",42.203,13.526,1217,Rocca di Mezzo,AQ023
-9,Civitaretegna,"https://www.caputfrigoris.it/tabgraph.php?id=AQ044",42.249,13.693,723,Navelli,AQ044
-10,Prata d'Ansidonia,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=290&Itemid=362",42.276,13.638,772,San Pio delle Camere,AQ-32
-11,Passo San Leonardo,"https://www.meteonetwork.eu/it/weather-station/abr130-stazione-meteorologica-di-passo-san-leonardo/graphs",42.073,14.030,1252,Passo San Leonardo,abr130
-12,Roccacaramanico,"https://www.chietimeteo.it/roccacaramanico.htm",42.102,14.014,1050,Roccacaramanico,PE999
-13,Campo di Giove,"https://www.chietimeteo.it/campodigiove.htm",41.996,14.072,1060,Campo di Giove,AQ997
-14,Bosco di Sant'Antonio,"https://www.chietimeteo.it/pescocostanzo.htm?AQ112",41.950,14.028,1342,Bosco di Sant'Antonio,AQ112
-15,Palena Stazione,"https://www.chietimeteo.it/stazionedipalena.htm",41.927,14.101,1258,Palena,AQ999
-16,Pescocostanzo Loc. Vallefura,"https://www.chietimeteo.it/hotel_vallefura.htm",41.888,14.058,1470,Pescocostanzo,AQ998
-17,Roccaraso Loc. Aremogna,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&layout=edit&id=359&Itemid=532",41.797,14.060,1405,Roccaraso,AQ-79
-18,Castel di Sangro,"https://www.chietimeteo.it/casteldisangro.htm",41.784,14.108,800,Castel di Sangro,CH997
-19,San Pietro di Avellana,"https://www.meteonetwork.eu/it/weather-station/mls036-stazione-meteorologica-di-san-pietro-avellana/graphs",41.771,14.200,934,San Pietro di Avellana,mls036
-20,Monteferrante,"https://www.caputfrigoris.it/tabgraph.php?id=CH156",41.956,14.388,835,Rosello,CH156
-21,Passolanciano,"https://www.chietimeteo.it/passolanciano.htm?CH146",42.189,14.104,1310,Passolanciano,CH146
-22,Mammarosa,"https://www.chietimeteo.it/lochalet.htm?CH143",42.171,14.116,1652,Mammarosa,CH143
-23,Tagliacozzo Loc. Roccacerro,"https://www.meteonetwork.eu/it/weather-station/abr127-stazione-meteorologica-di-roccacerro/graphs",42.067,13.211,1040,Tagliacozzo,AQ-84
-24,Montereale - Aringo,"https://www.meteonetwork.eu/it/weather-station/abr111-stazione-meteorologica-di-aringo/graphs",42.556,13.265,984,Montereale,AQ-51
-25,Oricola Loc. Pezzetaglie,"https://www.meteonetwork.eu/it/weather-station/abr133-stazione-meteorologica-di-pezzetaglie",42.070,13.053,600,Oricola,abr133
-26,Rocca di Mezzo Loc. Terranera,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=338&Itemid=521",42.228,13.531,1258,Rocca di Mezzo,AQ-57
-27,Lago di Campotosto,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=350&Itemid=528",42.527,13.370,1320,Lago di Campotosto,AQ-65
-28,Castel di Sangro - Loc. Speno,"https://www.meteoregioneabruzzo.it/rete-meteo/casteldisangro/casteldisangro.php",41.759,14.090,823,Castel di Sangro,AQ-83
-29,Cagnano Amiterno,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=276&Itemid=253",42.465,13.240,855,Cagnano Amiterno,AQ-37
-30,Campo Felice Loc. Lentrata,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=252&Itemid=254",42.233,13.421,1545,Campo Felice,AQ-42
-31,Castel di Sangro 2,"https://www.chietimeteo.it/az.agr.cianflocca.htm",41.758,14.099,710,Castel di Sangro,CH999
-32,Campo di Giove Loc. Guado di Coccia,"https://www.chietimeteo.it/guadodicoccia.htm",42.003,14.084,1674,Campo di Giove,CH998
-33,Marsia,"https://www.meteoregioneabruzzo.it/rete-meteo/marsia/marsia.php",42.066,13.193,1410,Tagliacozzo,AQ-04
-34,Tagliacozzo Loc. Poggetello,"https://www.meteoregioneabruzzo.it/rete-meteo/poggetello/poggetello.php",42.091,13.230,750,Tagliacozzo,AQ-14
-35,Collebrincioni,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=259&Itemid=257",42.368,13.416,1090,Collebruncioni,AQ-25
-36,Campo Imperatore Loc. Prato del Bove,"https://www.meteoregioneabruzzo.it/rete-meteo/pratodelbove/pratodelbove.php",42.390,13.641,1551,Campo Imperatore,AQ-82
-37,Sella di Corno,"https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=325&Itemid=486",42.363,13.184,987,Sella di Corno,AQ-49
-38,Fara San Martino,"https://www.meteonetwork.eu/it/weather-station/abr063-stazione-meteorologica-di/graphs",42.089,14.205,456,Fara San Martino,CH997
-39,Cappadocia,"https://www.meteonetwork.eu/it/weather-station/abr132-stazione-meteorologica-di-camporotondo/graphs",41.983,13.277,1425,Cappadocia,AQ995
-40,Pizzoli fraz. Marruci,"https://www.meteonetwork.eu/it/weather-station/abr086-stazione-meteorologica-di-pizzoli-fraz-marruci/graphs",42.426,13.331,802,Pizzoli,AQ994
-41,Corfinio,"https://www.meteonetwork.eu/it/weather-station/abr121-stazione-meteorologica-di/graphs",42.126,13.841,348,Corfinio,abr121
+1,"Il Ceppo Rifugio","https://www.caputfrigoris.it/tabgraph.php?id=TE106",42.671,13.465,1334,"Il Ceppo",TE106
+2,"Prati Di Tivo","https://www.caputfrigoris.it/tabgraph.php?id=TE037",42.499,13.558,1450,"Prati Di Tivo",TE037
+3,"Castel del Monte - Loc. Pietrattina","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=326&Itemid=487",42.411,13.755,1459,"Campo Imperatore",AQ-48
+4,"Villa Celiera","https://www.caputfrigoris.it/tabgraph.php?id=PE110",42.385,13.868,682,"Voltigno",PE110
+5,"Pratola Peligna","https://www.chietimeteo.it/pratolapeligna.htm",42.095,13.871,720,"Goriano Sicoli",CH995
+6,"Rocca di Mezzo Loc. Rovere","https://www.caputfrigoris.it/tabgraph.php?id=AQ024",42.163,13.518,1370,"Rocca di Mezzo",AQ024
+7,"Rocca di Mezzo","https://www.meteonetwork.eu/it/weather-station/abr128-stazione-meteorologica-di-rocca-di-mezzo/graphs",42.203,13.526,1280,"Rocca di Mezzo",abr128
+8,"Rocca di Mezzo Loc. Fonteavignone","https://www.caputfrigoris.it/tabgraph.php?id=AQ023",42.203,13.526,1217,"Rocca di Mezzo",AQ023
+9,"Civitaretegna","https://www.caputfrigoris.it/tabgraph.php?id=AQ044",42.249,13.693,723,"Navelli",AQ044
+10,"Prata d'Ansidonia","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=290&Itemid=362",42.276,13.638,772,"San Pio delle Camere",AQ-32
+11,"Passo San Leonardo","https://www.meteonetwork.eu/it/weather-station/abr130-stazione-meteorologica-di-passo-san-leonardo/graphs",42.073,14.030,1252,"Passo San Leonardo",abr130
+12,"Roccacaramanico","https://www.chietimeteo.it/roccacaramanico.htm",42.102,14.014,1050,"Roccacaramanico",PE999
+13,"Campo di Giove","https://www.chietimeteo.it/campodigiove.htm",41.996,14.072,1060,"Campo di Giove",AQ997
+14,"Bosco di Sant'Antonio","https://www.chietimeteo.it/pescocostanzo.htm?AQ112",41.950,14.028,1342,"Bosco di Sant'Antonio",AQ112
+15,"Palena Stazione","https://www.chietimeteo.it/stazionedipalena.htm",41.927,14.101,1258,"Palena",AQ999
+16,"Pescocostanzo Loc. Vallefura","https://www.chietimeteo.it/hotel_vallefura.htm",41.888,14.058,1470,"Pescocostanzo",AQ998
+17,"Roccaraso Loc. Aremogna","https://www.meteoaquilano.it/index.php?option=com_content&view=article&layout=edit&id=359&Itemid=532",41.797,14.060,1405,"Roccaraso",AQ-79
+18,"Castel di Sangro","https://www.chietimeteo.it/casteldisangro.htm",41.784,14.108,800,"Castel di Sangro",CH997
+19,"San Pietro di Avellana","https://www.meteonetwork.eu/it/weather-station/mls036-stazione-meteorologica-di-san-pietro-avellana/graphs",41.771,14.200,934,"San Pietro di Avellana",mls036
+20,"Monteferrante","https://www.caputfrigoris.it/tabgraph.php?id=CH156",41.956,14.388,835,"Rosello",CH156
+21,"Passolanciano","https://www.chietimeteo.it/passolanciano.htm?CH146",42.189,14.104,1310,"Passolanciano",CH146
+22,"Mammarosa","https://www.chietimeteo.it/lochalet.htm?CH143",42.171,14.116,1652,"Mammarosa",CH143
+23,"Tagliacozzo Loc. Roccacerro","https://www.meteonetwork.eu/it/weather-station/abr127-stazione-meteorologica-di-roccacerro/graphs",42.067,13.211,1040,"Tagliacozzo",AQ-84
+24,"Montereale - Aringo","https://www.meteonetwork.eu/it/weather-station/abr111-stazione-meteorologica-di-aringo/graphs",42.556,13.265,984,"Montereale",AQ-51
+25,"Oricola Loc. Pezzetaglie","https://www.meteonetwork.eu/it/weather-station/abr133-stazione-meteorologica-di-pezzetaglie",42.070,13.053,600,"Oricola",abr133
+26,"Rocca di Mezzo Loc. Terranera","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=338&Itemid=521",42.228,13.531,1258,"Rocca di Mezzo",AQ-57
+27,"Lago di Campotosto","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=350&Itemid=528",42.527,13.370,1320,"Lago di Campotosto",AQ-65
+28,"Castel di Sangro - Loc. Speno","https://www.meteoregioneabruzzo.it/rete-meteo/casteldisangro/casteldisangro.php",41.759,14.090,823,"Castel di Sangro",AQ-83
+29,"Cagnano Amiterno","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=276&Itemid=253",42.465,13.240,855,"Cagnano Amiterno",AQ-37
+30,"Campo Felice Loc. Lentrata","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=252&Itemid=254",42.233,13.421,1545,"Campo Felice",AQ-42
+31,"Castel di Sangro 2","https://www.chietimeteo.it/az.agr.cianflocca.htm",41.758,14.099,710,"Castel di Sangro",CH999
+32,"Campo di Giove Loc. Guado di Coccia","https://www.chietimeteo.it/guadodicoccia.htm",42.003,14.084,1674,"Campo di Giove",CH998
+33,"Marsia","https://www.meteoregioneabruzzo.it/rete-meteo/marsia/marsia.php",42.066,13.193,1410,"Tagliacozzo",AQ-04
+34,"Tagliacozzo Loc. Poggetello","https://www.meteoregioneabruzzo.it/rete-meteo/poggetello/poggetello.php",42.091,13.230,750,"Tagliacozzo",AQ-14
+35,"Collebrincioni","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=259&Itemid=257",42.368,13.416,1090,"Collebruncioni",AQ-25
+36,"Campo Imperatore Loc. Prato del Bove","https://www.meteoregioneabruzzo.it/rete-meteo/pratodelbove/pratodelbove.php",42.390,13.641,1551,"Campo Imperatore",AQ-82
+37,"Sella di Corno","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=325&Itemid=486",42.363,13.184,987,"Sella di Corno",AQ-49
+38,"Fara San Martino","https://www.meteonetwork.eu/it/weather-station/abr063-stazione-meteorologica-di/graphs",42.089,14.205,456,"Fara San Martino",CH997
+39,"Cappadocia","https://www.meteonetwork.eu/it/weather-station/abr132-stazione-meteorologica-di-camporotondo/graphs",41.983,13.277,1425,"Cappadocia",AQ995
+40,"Pizzoli fraz.Marruci","https://www.meteonetwork.eu/it/weather-station/abr086-stazione-meteorologica-di-pizzoli-fraz-marruci/graphs",42.426,13.331,802,"Pizzoli",AQ994
+41,"Corfinio","https://www.meteonetwork.eu/it/weather-station/abr121-stazione-meteorologica-di/graphs",42.126,13.841,348,"Corfinio",abr121
+42,"Campo Felice Loc. Camardosa","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=332&Itemid=519",42.230,13.396,1530,"Campo Felice",LUC-003
+43,"Capitignano","https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=297&Itemid=364",42.520,13.300,863,"Capitignano",CAP-001
