@@ -1,0 +1,13 @@
+id,nome,nomeComune,attivo,ordine,habitat,altMin,altMax,mesiInizio,mesiFine,zeroFinoAlMese,rainReq,rainWindowDays,eventThresholdFactor,growthStartDays,growthPeakStartDays,growthPeakEndDays,growthEndDays,giorniMinDopoPioggia,giorniMaxDopoPioggia,tempMin,tempOttimale,tempMax,termofilo,pesoEvento,pesoTemperatura,pesoAltitudine,pesoStagione,note
+boletus-edulis,Boletus edulis,Porcino,true,1,"Boschi di latifoglie e conifere",700,2000,8,11,,60,3,1,4,10,12,21,5,12,8,15,23,false,0.65,0.55,0.40,1.00,"Specie autunnale favorita da piogge persistenti"
+boletus-aestivalis,Boletus aestivalis,Porcino estivo,true,2,"Boschi caldi di latifoglie",500,1600,5,9,,40,3,1,4,7,10,18,4,10,15,22,30,true,0.65,0.55,0.40,1.00,"Specie termofila estiva"
+boletus-aereus,Boletus aereus,Porcino nero,true,3,"Boschi termofili di latifoglie",200,1200,5,10,,35,3,1,5,7,10,18,5,12,17,24,32,true,0.65,0.55,0.40,1.00,"Preferisce ambienti caldi"
+agaricus-campestris,Agaricus campestris,Prataiolo,true,4,"Prati e pascoli",0,1500,4,11,,25,2,1,2,5,7,14,4,8,10,18,26,false,0.65,0.55,0.40,1.00,"Comune in prati e pascoli dopo le piogge"
+agaricus-arvensis,Agaricus arvensis,Prataiolo maggiore,true,5,"Prati e radure",200,1600,5,11,,30,2,1,2,5,8,15,4,9,9,16,25,false,0.65,0.55,0.40,1.00,"Specie tipica di prati e radure"
+macrolepiota-procera,Macrolepiota procera,Mazza di tamburo,true,6,"Radure prati e margini boschivi",0,1800,6,11,,35,3,1,3,6,9,18,4,15,9,11,19,27,false,0.65,0.55,0.40,1.00,"Favorita da piogge moderate"
+cantharellus-cibarius,Cantharellus cibarius,Finferlo,true,7,"Boschi di latifoglie e conifere",500,1800,6,10,,70,4,1,4,8,11,20,7,14,10,18,25,false,0.65,0.55,0.40,1.00,"Richiede umidità prolungata"
+tricholoma-terreum,Tricholoma terreum,Moretta,true,8,"Pinete e boschi di conifere",400,1800,9,12,,45,3,1,3,7,10,18,5,12,5,12,20,false,0.65,0.55,0.40,1.00,"Specie autunnale a preferenza fresca"
+russula-cyanoxantha,Russula cyanoxantha,Colombina maggiore,true,9,"Boschi di latifoglie soprattutto faggete",200,1500,5,10,,45,3,1,3,6,9,17,3,15,8,10,17,25,false,0.65,0.55,0.40,1.00,"Associata a boschi maturi di latifoglie"
+russula-virescens,Russula virescens,Verdone,true,10,"Boschi di latifoglie e radure",300,1400,5,10,,45,3,1,3,6,9,17,4,9,10,18,26,false,0.65,0.55,0.40,1.00,"Specie estiva e autunnale"
+lactarius-deliciosus,Lactarius deliciosus,Sanguinello,true,11,"Pinete e boschi con presenza di pini",100,1800,8,12,,50,3,1,3,7,10,19,7,14,8,16,24,false,0.65,0.55,0.40,1.00,"Legato alla presenza di pini"
+lycoperdon-perlatum,Lycoperdon perlatum,Vescia perlata,true,12,"Boschi prati radure e margini boschivi",0,1800,5,11,,35,3,1,3,6,9,15,3,8,8,15,24,false,0.65,0.55,0.40,1.00,"Specie adattabile presente in diversi habitat"

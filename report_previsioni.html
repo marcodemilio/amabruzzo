@@ -9,8 +9,8 @@
 
   <title>
     Previsioni Crescita Funghi -
-    Alcolisti Micologici Analcolici TRIS -
-    Rel. 03-C-008
+    TRIS -
+    Rel. 03-C-025
   </title>
 
   <link
@@ -19,7 +19,7 @@
 
   <link
     rel="preconnect"
-    href="https://fonts.googleapis.com"
+    href="https://fonts.gstatic.com"
     crossorigin>
 
   <link
@@ -31,612 +31,776 @@
   </script>
 
   <style>
-    :root{
-      --bg:#f7f6f2;
-      --surface:#ffffff;
-      --border:#d4d1ca;
-      --text:#28251d;
-      --muted:#6f6d68;
-      --primary:#01696f;
-      --tris:#7b2cbf;
-      --active-green:#a8df6f;
-      --radius:1rem;
-      --font:'Inter',system-ui,sans-serif;
-      --sidebar-width:360px;
-      --sidebar-collapsed-width:34px;
+    :root {
+      --bg: #f7f6f2;
+      --surface: #fff;
+      --border: #d4d1ca;
+      --text: #28251d;
+      --muted: #6f6d68;
+      --primary: #01696f;
+      --danger: #a13544;
+      --tris: #7b2cbf;
+      --active-green: #a8df6f;
+      --radius: 1rem;
+      --font: "Inter", system-ui, sans-serif;
+      --sidebar-width: 360px;
+      --sidebar-collapsed-width: 34px;
     }
 
-    *{
-      box-sizing:border-box
+    * {
+      box-sizing: border-box;
     }
 
     html,
-    body{
-      margin:0;
-      min-height:100%;
-      background:var(--bg);
-      color:var(--text);
-      font-family:var(--font)
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
     }
 
-    body{
-      overflow-x:hidden
+    body.popup-open {
+      overflow: hidden;
     }
 
-    .app{
-      display:grid;
+    .app {
+      display: grid;
       grid-template-columns:
         var(--sidebar-width)
-        minmax(0,1fr);
-      min-height:100vh;
-      transition:grid-template-columns .25s ease
+        minmax(0, 1fr);
+      min-height: 100vh;
+      transition: grid-template-columns .25s ease;
     }
 
-    .app.sidebar-collapsed{
+    .app.sidebar-collapsed {
       grid-template-columns:
         var(--sidebar-collapsed-width)
-        minmax(0,1fr)
+        minmax(0, 1fr);
     }
 
-    .sidebar{
-      position:relative;
-      z-index:10;
-      width:var(--sidebar-width);
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:1rem;
-      padding:1rem;
-      overflow:hidden;
-      background:var(--surface);
-      border-right:1px solid var(--border);
+    .sidebar {
+      position: relative;
+      z-index: 10;
+      width: var(--sidebar-width);
+      min-width: 0;
+      padding: 1rem;
+      overflow: hidden;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
       transition:
         width .25s ease,
-        padding .25s ease
+        padding .25s ease;
     }
 
-    .app.sidebar-collapsed .sidebar{
-      width:var(--sidebar-collapsed-width);
-      padding:.35rem .25rem
+    .app.sidebar-collapsed .sidebar {
+      width: var(--sidebar-collapsed-width);
+      padding: .35rem .25rem;
     }
 
-    .sidebar-toggle-inside{
-      position:absolute;
-      top:.5rem;
-      right:.5rem;
-      z-index:20;
-      min-height:34px;
-      padding:0 .7rem;
-      border:1px solid #9bb9d6;
-      border-radius:.6rem;
-      background:linear-gradient(
+    .sidebar-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: opacity .15s ease;
+    }
+
+    .app.sidebar-collapsed .sidebar-content {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .sidebar-toggle-inside {
+      position: absolute;
+      top: .5rem;
+      right: .5rem;
+      z-index: 20;
+      min-height: 34px;
+      padding: 0 .7rem;
+      border: 1px solid #9bb9d6;
+      border-radius: .6rem;
+      background: #dfeeff;
+      color: #173b5d;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .sidebar-toggle-mini {
+      display: none;
+      position: absolute;
+      top: 8px;
+      left: 6px;
+      z-index: 20;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: #e9c96b;
+      color: #2c2410;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .app.sidebar-collapsed .sidebar-toggle-inside {
+      display: none;
+    }
+
+    .app.sidebar-collapsed .sidebar-toggle-mini {
+      display: block;
+    }
+
+    .brand {
+      margin-top: 1.2rem;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+
+    .logo {
+      width: 34px;
+      height: 34px;
+      color: var(--primary);
+    }
+
+    h1 {
+      max-width: 270px;
+      margin: 0;
+      font-size: clamp(.84rem, 1.1vw, 1rem);
+      line-height: 1.08;
+    }
+
+    .tris-word {
+      color: var(--tris);
+      font-weight: 800;
+    }
+
+    .release {
+      display: block;
+      margin-top: .2rem;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 700;
+    }
+
+    .subtitle-small {
+      margin: .35rem 0 0;
+      color: var(--muted);
+      font-size: .76rem;
+      line-height: 1.25;
+    }
+
+    .subtitle-small strong {
+      color: #b00020;
+    }
+
+    .report-link,
+    .report-menu-link {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      width: 100%;
+      min-height: 38px;
+      padding: 0 .8rem;
+      border: 1px solid var(--border);
+      border-radius: .65rem;
+      background: var(--bg);
+      color: var(--text);
+      font-size: .86rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .08);
+      transition: all .2s ease;
+    }
+
+    .report-link {
+      margin-top: .8rem;
+      border-radius: 999px;
+      font-size: .9rem;
+    }
+
+    .report-link:hover,
+    .report-menu-link:hover,
+    .report-menu-link.active {
+      border-color: #87bf47;
+      background: var(--active-green);
+      color: #20310f;
+      transform: translateY(-1px);
+    }
+
+    .report-menu {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-top: .25rem;
+    }
+
+    .report-main {
+      min-width: 0;
+      padding: 1rem;
+      overflow: auto;
+    }
+
+    .report-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(
         180deg,
-        #edf7ff,
-        #cfe7ff
-      );
-      color:#173b5d;
-      cursor:pointer;
-      font-weight:800
-    }
-
-    .sidebar-toggle-mini{
-      display:none;
-      position:absolute;
-      top:8px;
-      left:6px;
-      z-index:20;
-      width:22px;
-      height:22px;
-      padding:0;
-      border:0;
-      border-radius:999px;
-      background:#e9c96b;
-      color:#2c2410;
-      font-weight:900;
-      cursor:pointer
-    }
-
-    .app.sidebar-collapsed
-    .sidebar-toggle-inside{
-      display:none
-    }
-
-    .app.sidebar-collapsed
-    .sidebar-toggle-mini{
-      display:block
-    }
-
-    .sidebar-content{
-      display:flex;
-      flex-direction:column;
-      gap:1rem;
-      transition:opacity .15s ease
-    }
-
-    .app.sidebar-collapsed
-    .sidebar-content{
-      opacity:0;
-      pointer-events:none
-    }
-
-    .brand{
-      display:flex;
-      justify-content:flex-start;
-      align-items:flex-start;
-      margin-top:1.2rem;
-      text-align:left
-    }
-
-    .logo-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:.55rem;
-      width:100%
-    }
-
-    .logo{
-      width:34px;
-      height:34px;
-      flex:0 0 auto;
-      color:var(--primary)
-    }
-
-    h1{
-      max-width:270px;
-      margin:0;
-      overflow:hidden;
-      font-size:clamp(.84rem,1.1vw,1rem);
-      line-height:1.08;
-      text-align:left;
-      text-overflow:ellipsis;
-      white-space:normal
-    }
-
-    .tris-word{
-      color:var(--tris);
-      font-weight:800
-    }
-
-    .release{
-      display:block;
-      margin-top:.2rem;
-      color:var(--muted);
-      font-size:.7rem;
-      font-weight:700;
-      text-align:left
-    }
-
-    .subtitle-small{
-      margin:.35rem 0 0;
-      color:var(--muted);
-      font-size:.76rem;
-      line-height:1.25;
-      text-align:left
-    }
-
-    .subtitle-small strong{
-      color:#b00020;
-      font-weight:800
-    }
-
-    .report-link{
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:.45rem;
-      width:100%;
-      min-height:38px;
-      margin-top:.8rem;
-      padding:0 .8rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:var(--bg);
-      color:var(--text);
-      font-size:.9rem;
-      font-weight:700;
-      text-decoration:none;
-      box-shadow:0 3px 8px rgba(0,0,0,.08);
-      transition:all .2s ease
-    }
-
-    .report-link:hover{
-      border-color:#87bf47;
-      background:var(--active-green);
-      color:#20310f;
-      transform:translateY(-1px)
-    }
-
-    .report-menu{
-      display:flex;
-      flex-direction:column;
-      gap:.5rem;
-      margin-top:.25rem
-    }
-
-    .report-menu-link{
-      display:flex;
-      align-items:center;
-      width:100%;
-      min-height:38px;
-      padding:0 .8rem;
-      border:1px solid var(--border);
-      border-radius:.65rem;
-      background:#fafafa;
-      color:var(--text);
-      font-size:.86rem;
-      font-weight:700;
-      text-align:left;
-      text-decoration:none;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);
-      transition:
-        transform .08s ease,
-        background .15s ease,
-        border-color .15s ease
-    }
-
-    .report-menu-link:hover{
-      transform:translateY(-1px);
-      border-color:#87bf47;
-      background:var(--active-green);
-      color:#20310f;
-      text-decoration:none
-    }
-
-    .report-menu-link.active{
-      border-color:#87bf47;
-      background:var(--active-green);
-      color:#20310f
-    }
-
-    .report-menu-link:visited{
-      color:var(--text)
-    }
-
-    .report-menu-link.active:visited{
-      color:#20310f
-    }
-
-    .report-link:focus-visible,
-    .report-menu-link:focus-visible,
-    .sidebar-toggle-inside:focus-visible,
-    .sidebar-toggle-mini:focus-visible,
-    select:focus-visible,
-    button:focus-visible{
-      outline:3px solid rgba(1,105,111,.35);
-      outline-offset:2px
-    }
-
-    .report-main{
-      min-width:0;
-      padding:1rem;
-      overflow:auto
-    }
-
-    .report-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:1rem;
-      margin-bottom:1rem;
-      padding:1rem;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:linear-gradient(
-        180deg,
-        #ffffff,
+        #fff,
         #f4fbfc
       );
-      box-shadow:0 1px 2px rgba(0,0,0,.08)
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
     }
 
-    .report-title{
-      margin:0;
-      font-size:1.25rem;
-      line-height:1.15
+    .report-title {
+      margin: 0;
+      font-size: 1.25rem;
     }
 
-    .report-subtitle{
-      margin:.35rem 0 0;
-      color:var(--muted);
-      font-size:.9rem
+    .report-subtitle {
+      margin: .35rem 0 0;
+      color: var(--muted);
+      font-size: .9rem;
     }
 
-    .report-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:.4rem;
-      padding:.4rem .75rem;
-      border:1px solid #cfe7d6;
-      border-radius:999px;
-      background:#eef8f1;
-      color:#215f2a;
-      font-size:.86rem;
-      font-weight:800
+    .report-badge {
+      display: inline-flex;
+      padding: .4rem .75rem;
+      border: 1px solid #cfe7d6;
+      border-radius: 999px;
+      background: #eef8f1;
+      color: #215f2a;
+      font-size: .86rem;
+      font-weight: 800;
     }
 
-    .panel{
-      padding:1rem;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:var(--surface);
-      box-shadow:0 1px 2px rgba(0,0,0,.08)
+    .panel {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
     }
 
-    .status-msg{
-      margin:0;
-      padding:1rem;
-      border:1px solid #f0dca4;
-      border-radius:.8rem;
-      background:#fff8df;
-      color:#7c5a0b;
-      font-size:.95rem;
-      font-weight:700;
-      text-align:center
+    .status-msg {
+      margin: 0;
+      padding: 1rem;
+      border: 1px solid #f0dca4;
+      border-radius: .8rem;
+      background: #fff8df;
+      color: #7c5a0b;
+      font-size: .95rem;
+      font-weight: 700;
+      text-align: center;
     }
 
-    .status-msg.error{
-      border-color:#efc9cf;
-      background:#fff6f8;
-      color:#a13544
+    .status-msg.error {
+      border-color: #efc9cf;
+      background: #fff6f8;
+      color: var(--danger);
     }
 
-    .controls{
-      display:flex;
-      align-items:flex-end;
-      flex-wrap:wrap;
-      gap:12px
+    .hidden {
+      display: none !important;
     }
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:240px
+    .report-mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1rem;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .field label{
-      color:var(--muted);
-      font-size:.86rem;
-      font-weight:800
+    .mode-tab {
+      min-height: 38px;
+      padding: 0 1rem;
+      border: 1px solid #b9c5cc;
+      border-radius: 999px;
+      background: #f5f7f8;
+      color: #475569;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .mode-tab.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .controls {
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 240px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: .86rem;
+      font-weight: 800;
     }
 
     select,
-    button{
-      min-height:42px;
-      padding:0 .75rem;
-      border:1px solid var(--border);
-      border-radius:.65rem;
-      background:var(--surface);
-      color:var(--text);
-      font:inherit
+    button {
+      min-height: 42px;
+      padding: 0 .75rem;
+      border: 1px solid var(--border);
+      border-radius: .65rem;
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
     }
 
-    select{
-      min-width:240px;
-      border-color:#9bb9d6;
-      background:linear-gradient(
-        180deg,
-        #f5fbff,
-        #dfeeff
-      );
-      color:#173b5d;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 3px 8px rgba(0,0,0,.08)
+    select {
+      min-width: 240px;
+      border-color: #9bb9d6;
+      background: #dfeeff;
+      color: #173b5d;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    select.placeholder{
-      border-color:#d9b900;
-      background:linear-gradient(
-        180deg,
-        #fff3a8,
-        #ffe66a
-      );
-      color:#5a4800
+    select.placeholder {
+      border-color: #d9b900;
+      background: #ffe66a;
+      color: #5a4800;
     }
 
-    button{
-      cursor:pointer;
-      font-weight:800;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);
-      transition:
-        transform .08s ease,
-        background .15s ease,
-        border-color .15s ease
+    button {
+      cursor: pointer;
+      font-weight: 800;
     }
 
-    button:hover:not(:disabled){
-      transform:translateY(-1px)
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .55;
     }
 
-    button:disabled{
-      cursor:not-allowed;
-      opacity:.55
+    .btn-genera {
+      border-color: #9bd5da;
+      background: #d6f0f2;
+      color: #0f4f54;
     }
 
-    .btn-genera{
-      border-color:#9bd5da;
-      background:linear-gradient(
-        180deg,
-        #f2fbfc,
-        #d6f0f2
-      );
-      color:#0f4f54
+    .selection-status {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: .86rem;
+      font-weight: 700;
     }
 
-    .selection-status{
-      min-height:42px;
-      display:flex;
-      align-items:center;
-      color:var(--muted);
-      font-size:.86rem;
-      font-weight:700
+    .data-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 1rem;
     }
 
-    .data-summary{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:1rem
+    .summary-pill {
+      display: inline-flex;
+      gap: .35rem;
+      padding: .4rem .65rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fafafa;
+      color: var(--muted);
+      font-size: .82rem;
     }
 
-    .summary-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      padding:.4rem .65rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:#fafafa;
-      color:var(--muted);
-      font-size:.82rem
+    .summary-pill strong {
+      color: var(--text);
     }
 
-    .summary-pill strong{
-      color:var(--text)
+    .update-pill {
+      border-color: #f0c8ce;
+      background: #fff5f6;
+      color: #8d1d2d;
     }
 
-    .update-pill{
-      border-color:#f0c8ce;
-      background:#fff5f6;
-      color:#8d1d2d
+    .table-responsive {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
     }
 
-    .update-pill strong{
-      color:#b00020
+    .table-heading {
+      padding: 1rem 1rem .6rem;
     }
 
-    .table-responsive{
-      overflow:auto;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:#fff
+    .table-heading h3 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 1.05rem;
     }
 
-    .table-heading{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:.8rem;
-      padding:1rem 1rem .6rem
+    .table-heading p {
+      margin: .35rem 0 0;
+      color: var(--muted);
+      font-size: .82rem;
     }
 
-    .table-heading h3{
-      margin:0;
-      color:var(--primary);
-      font-size:1.05rem
-    }
-
-    .table-heading p{
-      margin:.35rem 0 0;
-      color:var(--muted);
-      font-size:.82rem
-    }
-
-    table{
-      width:100%;
-      min-width:760px;
-      border-collapse:collapse;
-      text-align:left;
-      font-size:.86rem
+    table {
+      width: 100%;
+      min-width: 950px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: .86rem;
     }
 
     th,
-    td{
-      padding:10px;
-      border-bottom:1px solid #e5e7eb;
-      white-space:nowrap
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap;
     }
 
-    th{
-      background:#f9fafb;
-      color:#374151;
-      font-weight:800
+    th {
+      background: #f9fafb;
+      color: #374151;
+      font-weight: 800;
     }
 
-    tbody tr:hover{
-      background:#f9fafb
+    .rank-cell {
+      width: 60px;
+      color: var(--muted);
+      font-weight: 800;
+      text-align: center;
     }
 
-    .rank-cell{
-      width:70px;
-      color:var(--muted);
-      font-weight:800;
-      text-align:center
+    .probability-cell {
+      min-width: 110px;
+      font-size: 1rem;
+      font-weight: 900;
+      text-align: center;
     }
 
-    .probability-cell{
-      min-width:130px;
-      font-size:1rem;
-      font-weight:900;
-      text-align:center
+    .prob-high,
+    .station-forecast-high {
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 900;
     }
 
-    .prob-high{
-      background:#dcfce7;
-      color:#15803d
+    .prob-medium,
+    .station-forecast-medium {
+      background: #fef9c3;
+      color: #a16207;
+      font-weight: 900;
     }
 
-    .prob-medium{
-      background:#fef9c3;
-      color:#a16207
+    .prob-low,
+    .station-forecast-low {
+      background: #f3f4f6;
+      color: #6b7280;
+      font-weight: 900;
     }
 
-    .prob-low{
-      background:#f3f4f6;
-      color:#6b7280
+    .prob-none,
+    .station-forecast-none {
+      background: #fee2e2;
+      color: #b91c1c;
+      font-weight: 900;
     }
 
-    .prob-none{
-      background:#fee2e2;
-      color:#b91c1c
+    .station-name-button {
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #2563eb;
+      text-align: left;
+      box-shadow: none;
     }
 
-    a.station-link{
-      color:#2563eb;
-      text-decoration:none
+    .station-name-button:hover {
+      color: #1d4ed8;
+      text-decoration: underline;
     }
 
-    a.station-link:hover{
-      text-decoration:underline
+    .species-name-cell {
+      color: var(--primary);
+      font-weight: 800;
     }
 
-    .info-panel{
-      margin-top:1rem;
-      padding:15px;
-      border-left:4px solid #3b82f6;
-      border-radius:0 8px 8px 0;
-      background:#eff6ff;
-      color:#1e3a8a;
-      font-size:.85rem;
-      line-height:1.45
+    .species-name-button {
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--primary);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+      text-align: left;
+      text-decoration: none;
     }
 
-    .empty-row{
-      padding:1rem;
-      color:var(--muted);
-      text-align:center
+    .species-name-button:hover {
+      color: var(--tris);
+      text-decoration: underline;
     }
 
-    .hidden{
-      display:none !important
+    .species-popup-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: .75rem;
+      background: rgba(0, 0, 0, .42);
     }
 
-    @media (max-width:980px){
-      .report-main{
-        padding:.75rem
+    .species-popup-overlay.hidden {
+      display: none;
+    }
+
+    .species-popup {
+      position: relative;
+      width: min(760px, calc(100vw - 1.5rem));
+      max-height: calc(100vh - 1.5rem);
+      overflow: auto;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
+    }
+
+    .species-popup-close {
+      position: absolute;
+      top: .45rem;
+      right: .45rem;
+      width: 32px;
+      min-height: 32px;
+      padding: 0;
+      border-radius: 50%;
+      background: #f5f7f8;
+      color: var(--text);
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .species-popup-title {
+      margin: 0;
+      padding-right: 2.5rem;
+      color: var(--primary);
+      font-size: 1.15rem;
+    }
+
+    .species-popup-subtitle {
+      margin: .3rem 0 1rem;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .species-fields {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(210px, 1fr));
+      gap: 8px;
+    }
+
+    .species-field {
+      padding: .65rem .75rem;
+      border: 1px solid var(--border);
+      border-radius: .6rem;
+      background: #fafafa;
+    }
+
+    .species-field strong {
+      display: block;
+      margin-bottom: .2rem;
+      color: var(--muted);
+      font-size: .75rem;
+    }
+
+    .species-field span {
+      display: block;
+      color: var(--text);
+      font-size: .88rem;
+      overflow-wrap: anywhere;
+    }
+
+    .species-raw-fields {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .species-raw-fields h4 {
+      margin: 0 0 .65rem;
+      color: var(--primary);
+    }
+
+    .growth-event {
+      color: #7030a0;
+      font-weight: 800;
+    }
+
+    .growth-no-event {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .info-panel {
+      margin-top: 1rem;
+      padding: 15px;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: .85rem;
+      line-height: 1.45;
+    }
+
+    .station-popup-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: .5rem;
+      background: rgba(0, 0, 0, .42);
+    }
+
+    .station-popup-overlay.hidden {
+      display: none;
+    }
+
+    .station-popup {
+      position: relative;
+      width: min(520px, calc(100vw - 1rem));
+      max-height: calc(100vh - 1rem);
+      overflow: auto;
+      padding: .7rem;
+      border: 1px solid var(--border);
+      border-radius: .75rem;
+      background: #fff;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
+    }
+
+    .station-popup-close {
+      position: absolute;
+      top: .3rem;
+      right: .3rem;
+      width: 30px;
+      min-height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 1.2rem;
+    }
+
+    .popup-title {
+      margin-bottom: .3rem;
+      padding-right: 2rem;
+      color: var(--primary);
+      font-size: .98rem;
+      font-weight: 800;
+    }
+
+    .popup-meta {
+      font-size: .84rem;
+      line-height: 1.3;
+    }
+
+    .popup-table-wrap {
+      max-height: 330px;
+      margin-top: .4rem;
+      overflow: auto;
+    }
+
+    .popup-weather-table {
+      width: 100%;
+      min-width: 0;
+      border-collapse: collapse;
+      font-size: .76rem;
+    }
+
+    .popup-weather-table th,
+    .popup-weather-table td {
+      padding: .15rem;
+      text-align: right;
+    }
+
+    .popup-weather-table th:first-child,
+    .popup-weather-table td:first-child {
+      text-align: left;
+    }
+
+    .popup-rain-day {
+      color: #0b5d1e;
+      font-weight: 700;
+    }
+
+    .popup-temp-min {
+      color: #003f88;
+      font-weight: 800;
+    }
+
+    .popup-temp-max {
+      color: #a13544;
+      font-weight: 800;
+    }
+
+    @media (max-width: 980px) {
+      .report-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .species-popup {
+        padding: .8rem;
       }
 
-      .report-header{
-        align-items:flex-start;
-        flex-direction:column
+      .species-fields {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .sidebar,
+      .report-mode-tabs,
+      #controls-panel,
+      .station-popup-overlay,
+      .species-popup-overlay {
+        display: none !important;
       }
 
-      table{
-        min-width:700px
+      .app {
+        display: block;
+      }
+
+      .report-main {
+        padding: 0;
       }
     }
   </style>
@@ -653,7 +817,6 @@
         id="sidebarToggleMini"
         class="sidebar-toggle-mini"
         type="button"
-        title="Mostra contenuto"
         aria-label="Mostra contenuto">
         ☰
       </button>
@@ -662,7 +825,6 @@
         id="sidebarToggleInside"
         class="sidebar-toggle-inside"
         type="button"
-        title="Nascondi contenuto"
         aria-label="Nascondi contenuto">
         ☰
       </button>
@@ -670,15 +832,13 @@
       <div class="sidebar-content">
 
         <div class="brand">
-
           <div class="logo-wrap">
 
             <svg
               class="logo"
               viewBox="0 0 64 64"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true">
+              xmlns="http://www.w3.org/2000/svg">
 
               <path
                 d="M10 39C18 25 25 18 33 12C40 21 46 31 54 39C49 45 43 50 33 54C23 49 16 45 10 39Z"
@@ -705,14 +865,13 @@
             </svg>
 
             <div>
-
               <h1>
                 Alcolisti Micologici Analcolici
                 <span class="tris-word">TRIS</span>
               </h1>
 
               <span class="release">
-                Rel. 03-C-008
+                Rel. 03-C-025
               </span>
 
               <p class="subtitle-small">
@@ -727,29 +886,22 @@
 
         <a
           class="report-link"
-          href="index.html"
-          title="Torna alla Home Page">
-
-          <span>🏠</span>
-          <span>Torna alla Home Page</span>
+          href="index.html">
+          🏠 Torna alla Home Page
         </a>
 
         <div class="report-menu">
 
           <a
             class="report-menu-link"
-            href="report.html"
-            title="Piogge Giornaliere/Cumulate">
-
+            href="report.html">
             🌧️ Piogge Giornaliere/Cumulate
           </a>
 
           <a
             class="report-menu-link active"
             href="report_previsioni.html"
-            title="Previsioni Crescita Funghi"
             aria-current="page">
-
             🍄 Previsioni Crescita Funghi
           </a>
         </div>
@@ -766,13 +918,13 @@
           </h2>
 
           <p class="report-subtitle">
-            Seleziona il giorno e la specie per ordinare
-            le stazioni dalla probabilità maggiore alla minore.
+            Modello a eventi di pioggia, temperatura,
+            altitudine e stagione.
           </p>
         </div>
 
         <div class="report-badge">
-          TRIS · Rel. 03-C-008
+          TRIS · Rel. 03-C-025
         </div>
       </header>
 
@@ -793,17 +945,23 @@
 
           <span class="summary-pill">
             Stazioni:
-            <strong id="stations-count">0</strong>
+            <strong id="stations-count">
+              0
+            </strong>
           </span>
 
           <span class="summary-pill">
             Record meteorologici:
-            <strong id="records-count">0</strong>
+            <strong id="records-count">
+              0
+            </strong>
           </span>
 
           <span class="summary-pill">
-            Previsioni disponibili:
-            <strong>10 giorni</strong>
+            Previsioni:
+            <strong>
+              10 giorni
+            </strong>
           </span>
 
           <span class="summary-pill update-pill">
@@ -820,99 +978,283 @@
         id="controls-panel"
         style="margin-top:1rem">
 
-        <div class="controls">
+        <div class="report-mode-tabs">
 
-          <div class="field">
+          <button
+            id="mode-species-button"
+            class="mode-tab active"
+            type="button">
+            Report per specie
+          </button>
 
-            <label for="day-select">
-              Giorno della previsione
-            </label>
+          <button
+            id="mode-station-button"
+            class="mode-tab"
+            type="button">
+            Report per stazione
+          </button>
 
-            <select
-              id="day-select"
-              class="placeholder">
+          <button
+            id="mode-date-button"
+            class="mode-tab"
+            type="button">
+            Report per data
+          </button>
+        </div>
 
-              <option value="">
-                Seleziona un giorno
-              </option>
+        <div
+          id="species-report-controls">
 
-              <option value="1">
-                Giorno 1
-              </option>
+          <div class="controls">
 
-              <option value="2">
-                Giorno 2
-              </option>
+            <div class="field">
+              <label for="day-select">
+                Giorno della previsione
+              </label>
 
-              <option value="3">
-                Giorno 3
-              </option>
+              <select
+                id="day-select"
+                class="placeholder">
 
-              <option value="4">
-                Giorno 4
-              </option>
+                <option value="">
+                  Seleziona un giorno
+                </option>
 
-              <option value="5">
-                Giorno 5
-              </option>
+                <option value="1">
+                  Giorno 1 - (11/08)
+                </option>
 
-              <option value="6">
-                Giorno 6
-              </option>
+                <option value="2">
+                  Giorno 2 - (12/08)
+                </option>
 
-              <option value="7">
-                Giorno 7
-              </option>
+                <option value="3">
+                  Giorno 3 - (13/08)
+                </option>
 
-              <option value="8">
-                Giorno 8
-              </option>
+                <option value="4">
+                  Giorno 4 - (14/08)
+                </option>
 
-              <option value="9">
-                Giorno 9
-              </option>
+                <option value="5">
+                  Giorno 5 - (15/08)
+                </option>
 
-              <option value="10">
-                Giorno 10
-              </option>
-            </select>
+                <option value="6">
+                  Giorno 6 - (16/08)
+                </option>
+
+                <option value="7">
+                  Giorno 7 - (17/08)
+                </option>
+
+                <option value="8">
+                  Giorno 8 - (18/08)
+                </option>
+
+                <option value="9">
+                  Giorno 9 - (19/08)
+                </option>
+
+                <option value="10">
+                  Giorno 10 - (20/08)
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="species-select">
+                Specie fungina
+              </label>
+
+              <select
+                id="species-select"
+                class="placeholder">
+
+                <option value="">
+                  Seleziona una specie
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>&nbsp;</label>
+
+              <button
+                id="generate-button"
+                class="btn-genera"
+                type="button"
+                disabled>
+                Genera previsione
+              </button>
+            </div>
+
+            <div
+              id="selection-status"
+              class="selection-status">
+              Seleziona giorno e specie.
+            </div>
           </div>
+        </div>
 
-          <div class="field">
+        <div
+          id="station-report-controls"
+          class="hidden">
 
-            <label for="species-select">
-              Specie fungina
-            </label>
+          <div class="controls">
 
-            <select
-              id="species-select"
-              class="placeholder">
+            <div class="field">
+              <label for="station-select">
+                Stazione meteorologica
+              </label>
 
-              <option value="">
-                Seleziona una specie
-              </option>
-            </select>
+              <select
+                id="station-select"
+                class="placeholder">
+
+                <option value="">
+                  Seleziona una stazione
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="probability-filter">
+                Probabilità superiore a
+              </label>
+
+              <select
+                id="probability-filter"
+                class="placeholder">
+
+                <option value="">
+                  Seleziona soglia
+                </option>
+
+                <option value="0">
+                  0%
+                </option>
+
+                <option value="70">
+                  70%
+                </option>
+
+                <option value="75">
+                  75%
+                </option>
+
+                <option value="80">
+                  80%
+                </option>
+
+                <option value="85">
+                  85%
+                </option>
+
+                <option value="90">
+                  90%
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>&nbsp;</label>
+
+              <button
+                id="generate-station-button"
+                class="btn-genera"
+                type="button"
+                disabled>
+                Genera report stazione
+              </button>
+            </div>
+
+            <div
+              id="station-selection-status"
+              class="selection-status">
+              Seleziona stazione e soglia.
+            </div>
           </div>
+        </div>
 
-          <div class="field">
+        <div
+          id="date-report-controls"
+          class="hidden">
 
-            <label>&nbsp;</label>
+          <div class="controls">
 
-            <button
-              id="generate-button"
-              class="btn-genera"
-              type="button"
-              disabled>
+            <div class="field">
+              <label for="date-day-select">
+                Giorno della previsione
+              </label>
 
-              Genera previsione
-            </button>
-          </div>
+              <select
+                id="date-day-select"
+                class="placeholder">
 
-          <div
-            id="selection-status"
-            class="selection-status">
+                <option value="">
+                  Seleziona un giorno
+                </option>
 
-            Seleziona giorno e specie.
+                <option value="1">
+                  Giorno 1 - (11/08)
+                </option>
+
+                <option value="2">
+                  Giorno 2 - (12/08)
+                </option>
+
+                <option value="3">
+                  Giorno 3 - (13/08)
+                </option>
+
+                <option value="4">
+                  Giorno 4 - (14/08)
+                </option>
+
+                <option value="5">
+                  Giorno 5 - (15/08)
+                </option>
+
+                <option value="6">
+                  Giorno 6 - (16/08)
+                </option>
+
+                <option value="7">
+                  Giorno 7 - (17/08)
+                </option>
+
+                <option value="8">
+                  Giorno 8 - (18/08)
+                </option>
+
+                <option value="9">
+                  Giorno 9 - (19/08)
+                </option>
+
+                <option value="10">
+                  Giorno 10 - (20/08)
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>&nbsp;</label>
+
+              <button
+                id="generate-date-button"
+                class="btn-genera"
+                type="button"
+                disabled>
+                Genera report data
+              </button>
+            </div>
+
+            <div
+              id="date-selection-status"
+              class="selection-status">
+              Seleziona un giorno.
+            </div>
           </div>
         </div>
       </section>
@@ -925,57 +1267,91 @@
         <div class="table-responsive">
 
           <div class="table-heading">
+            <h3 id="current-mushroom-title">
+              Previsione di crescita
+            </h3>
 
-            <div>
-              <h3 id="current-mushroom-title">
-                Previsione di crescita
-              </h3>
-
-              <p id="current-selection-description">
-                Seleziona i parametri per visualizzare la tabella.
-              </p>
-            </div>
+            <p id="current-selection-description">
+              Seleziona i parametri per visualizzare la tabella.
+            </p>
           </div>
 
           <table>
-            <thead>
-              <tr>
-                <th class="rank-cell">
-                  Pos.
-                </th>
-
-                <th>
-                  Stazione
-                </th>
-
-                <th>
-                  Altitudine
-                </th>
-
-                <th>
-                  Pioggia 30g
-                </th>
-
-                <th>
-                  Probabilità
-                </th>
-              </tr>
-            </thead>
-
-            <tbody id="table-body">
-            </tbody>
+            <thead id="forecast-thead"></thead>
+            <tbody id="table-body"></tbody>
           </table>
         </div>
 
         <div class="info-panel">
-          <strong>Interpretazione:</strong>
-          le percentuali sono stime sperimentali e non costituiscono
-          una garanzia di crescita o di presenza dei funghi.
-          Verifica sempre le condizioni reali del territorio e
-          la sicurezza delle specie raccolte.
+          <strong>Modello Rel. 03-C-025:</strong>
+          la probabilità combina l'evento di pioggia,
+          la temperatura, l'altitudine e la stagione.
+
+          <br><br>
+
+          Il fattore stagionale vale
+          <strong>1</strong> se il mese della previsione
+          rientra nell'intervallo
+          <strong>mesiInizio–mesiFine</strong> della specie,
+          altrimenti vale <strong>0</strong>.
+
+          <br><br>
+
+          Se non viene riconosciuto alcun evento di pioggia,
+          cioè se non viene raggiunta la pioggia minima
+          richiesta dalla specie, il punteggio viene azzerato:
+
+          <strong>S = S × 0</strong>
+
+          e la probabilità visualizzata è quindi
+          <strong>0%</strong>.
         </div>
       </section>
     </main>
+  </div>
+
+  <div
+    id="station-popup-overlay"
+    class="station-popup-overlay hidden">
+
+    <section
+      class="station-popup"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="station-popup-title">
+
+      <button
+        id="station-popup-close"
+        class="station-popup-close"
+        type="button"
+        aria-label="Chiudi popup">
+        ×
+      </button>
+
+      <div id="station-popup-content"></div>
+    </section>
+  </div>
+
+  <div
+    id="species-popup-overlay"
+    class="species-popup-overlay hidden">
+
+    <section
+      class="species-popup"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="species-popup-title">
+
+      <button
+        id="species-popup-close"
+        class="species-popup-close"
+        type="button"
+        aria-label="Chiudi popup specie">
+        ×
+      </button>
+
+      <div id="species-popup-content"></div>
+    </section>
   </div>
 
   <script>
@@ -985,41 +1361,35 @@
       "DOMContentLoaded",
       () => {
         const app =
-          document.getElementById(
-            "app"
-          );
+          document.getElementById("app");
 
-        const toggleInside =
+        const inside =
           document.getElementById(
             "sidebarToggleInside"
           );
 
-        const toggleMini =
+        const mini =
           document.getElementById(
             "sidebarToggleMini"
           );
 
-        if (
-          toggleInside &&
-          toggleMini &&
-          app
-        ) {
-          toggleInside.addEventListener(
+        if (inside) {
+          inside.addEventListener(
             "click",
-            () => {
+            () =>
               app.classList.add(
                 "sidebar-collapsed"
-              );
-            }
+              )
           );
+        }
 
-          toggleMini.addEventListener(
+        if (mini) {
+          mini.addEventListener(
             "click",
-            () => {
+            () =>
               app.classList.remove(
                 "sidebar-collapsed"
-              );
-            }
+              )
           );
         }
       }
