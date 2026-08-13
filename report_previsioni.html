@@ -1,1404 +1,1333 @@
 <!DOCTYPE html>
+
 <html lang="it">
+
 <head>
+
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Previsioni Crescita Funghi -
-    TRIS -
-    Rel. 03-C-025
-  </title>
+  <title>Previsioni di Crescita - TRIS - Rel. 03-D-011</title>
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com">
 
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js">
-  </script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+
 
   <style>
+
     :root {
+
       --bg: #f7f6f2;
-      --surface: #fff;
+
+      --surface: #ffffff;
+
       --border: #d4d1ca;
+
       --text: #28251d;
+
       --muted: #6f6d68;
+
       --primary: #01696f;
-      --danger: #a13544;
+
       --tris: #7b2cbf;
+
       --active-green: #a8df6f;
+
       --radius: 1rem;
-      --font: "Inter", system-ui, sans-serif;
+
+      --font: 'Inter', system-ui, sans-serif;
+
       --sidebar-width: 360px;
+
       --sidebar-collapsed-width: 34px;
+
     }
 
-    * {
-      box-sizing: border-box;
-    }
 
-    html,
-    body {
+
+    * { box-sizing: border-box; }
+
+
+
+    html, body {
+
       margin: 0;
+
       min-height: 100%;
+
       background: var(--bg);
+
       color: var(--text);
+
       font-family: var(--font);
+
     }
 
-    body.popup-open {
-      overflow: hidden;
-    }
+
+
+    body.popup-open { overflow: hidden; }
+
+
 
     .app {
+
       display: grid;
-      grid-template-columns:
-        var(--sidebar-width)
-        minmax(0, 1fr);
+
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+
       min-height: 100vh;
+
       transition: grid-template-columns .25s ease;
+
     }
+
+
 
     .app.sidebar-collapsed {
-      grid-template-columns:
-        var(--sidebar-collapsed-width)
-        minmax(0, 1fr);
+
+      grid-template-columns: var(--sidebar-collapsed-width) minmax(0, 1fr);
+
     }
+
+
 
     .sidebar {
+
       position: relative;
+
       z-index: 10;
+
       width: var(--sidebar-width);
+
       min-width: 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 1rem;
+
       padding: 1rem;
+
       overflow: hidden;
+
       background: var(--surface);
+
       border-right: 1px solid var(--border);
-      transition:
-        width .25s ease,
-        padding .25s ease;
+
+      transition: width .25s ease, padding .25s ease;
+
     }
+
+
 
     .app.sidebar-collapsed .sidebar {
+
       width: var(--sidebar-collapsed-width);
+
       padding: .35rem .25rem;
+
     }
 
-    .sidebar-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      transition: opacity .15s ease;
-    }
 
-    .app.sidebar-collapsed .sidebar-content {
-      opacity: 0;
-      pointer-events: none;
-    }
 
     .sidebar-toggle-inside {
+
       position: absolute;
+
       top: .5rem;
+
       right: .5rem;
+
       z-index: 20;
+
       min-height: 34px;
+
       padding: 0 .7rem;
+
       border: 1px solid #9bb9d6;
+
       border-radius: .6rem;
-      background: #dfeeff;
+
+      background: linear-gradient(180deg,#edf7ff,#cfe7ff);
+
       color: #173b5d;
+
       cursor: pointer;
+
       font-weight: 800;
+
     }
+
+
 
     .sidebar-toggle-mini {
+
       display: none;
+
       position: absolute;
+
       top: 8px;
+
       left: 6px;
+
       z-index: 20;
+
       width: 22px;
+
       height: 22px;
+
       padding: 0;
+
       border: 0;
+
       border-radius: 999px;
+
       background: #e9c96b;
+
       color: #2c2410;
+
       font-weight: 900;
+
       cursor: pointer;
+
     }
 
-    .app.sidebar-collapsed .sidebar-toggle-inside {
-      display: none;
+
+
+    .app.sidebar-collapsed .sidebar-toggle-inside { display: none; }
+
+    .app.sidebar-collapsed .sidebar-toggle-mini { display: block; }
+
+
+
+    .sidebar-content {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 1rem;
+
+      transition: opacity .15s ease;
+
     }
 
-    .app.sidebar-collapsed .sidebar-toggle-mini {
-      display: block;
+
+
+    .app.sidebar-collapsed .sidebar-content {
+
+      opacity: 0;
+
+      pointer-events: none;
+
     }
+
+
 
     .brand {
+
+      display: flex;
+
+      align-items: flex-start;
+
       margin-top: 1.2rem;
+
+      text-align: left;
+
     }
+
+
 
     .logo-wrap {
+
       display: flex;
+
       align-items: center;
+
       gap: .55rem;
+
+      width: 100%;
+
     }
+
+
 
     .logo {
+
       width: 34px;
+
       height: 34px;
+
+      flex: 0 0 auto;
+
       color: var(--primary);
+
     }
+
+
 
     h1 {
+
       max-width: 270px;
+
       margin: 0;
+
+      overflow: hidden;
+
       font-size: clamp(.84rem, 1.1vw, 1rem);
+
       line-height: 1.08;
+
+      text-align: left;
+
     }
 
-    .tris-word {
-      color: var(--tris);
-      font-weight: 800;
-    }
+
+
+    .tris-word { color: var(--tris); font-weight: 800; }
+
+
 
     .release {
+
       display: block;
+
       margin-top: .2rem;
+
       color: var(--muted);
+
       font-size: .7rem;
+
       font-weight: 700;
+
     }
+
+
 
     .subtitle-small {
+
       margin: .35rem 0 0;
+
       color: var(--muted);
+
       font-size: .76rem;
+
       line-height: 1.25;
+
     }
 
-    .subtitle-small strong {
-      color: #b00020;
-    }
 
-    .report-link,
-    .report-menu-link {
-      display: flex;
-      align-items: center;
-      gap: .45rem;
-      width: 100%;
-      min-height: 38px;
-      padding: 0 .8rem;
-      border: 1px solid var(--border);
-      border-radius: .65rem;
-      background: var(--bg);
-      color: var(--text);
-      font-size: .86rem;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, .08);
-      transition: all .2s ease;
-    }
 
     .report-link {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: .45rem;
+
+      width: 100%;
+
+      min-height: 38px;
+
       margin-top: .8rem;
+
+      padding: 0 .8rem;
+
+      border: 1px solid var(--border);
+
       border-radius: 999px;
+
+      background: var(--bg);
+
+      color: var(--text);
+
       font-size: .9rem;
+
+      font-weight: 700;
+
+      text-decoration: none;
+
+      box-shadow: 0 3px 8px rgba(0,0,0,.08);
+
+      transition: all .2s ease;
+
     }
 
-    .report-link:hover,
-    .report-menu-link:hover,
-    .report-menu-link.active {
+
+
+    .report-link:hover, .report-link.active {
+
       border-color: #87bf47;
+
       background: var(--active-green);
+
       color: #20310f;
+
       transform: translateY(-1px);
+
     }
+
+
 
     .report-menu {
+
       display: flex;
+
       flex-direction: column;
+
       gap: .5rem;
+
       margin-top: .25rem;
+
     }
+
+
+
+    .report-menu-title {
+
+      margin: .5rem 0 0;
+
+      color: var(--muted);
+
+      font-size: .78rem;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+    }
+
+
 
     .report-main {
+
       min-width: 0;
-      padding: 1rem;
+
+      padding: 1.5rem;
+
       overflow: auto;
+
     }
+
+
 
     .report-header {
+
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       flex-wrap: wrap;
+
       gap: 1rem;
-      margin-bottom: 1rem;
-      padding: 1rem;
+
+      margin-bottom: 1.5rem;
+
+      padding: 1.2rem;
+
       border: 1px solid var(--border);
+
       border-radius: var(--radius);
-      background: linear-gradient(
-        180deg,
-        #fff,
-        #f4fbfc
-      );
-      box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+
+      background: linear-gradient(180deg,#ffffff,#f4fbfc);
+
+      box-shadow: 0 1px 2px rgba(0,0,0,.08);
+
     }
 
-    .report-title {
-      margin: 0;
-      font-size: 1.25rem;
-    }
 
-    .report-subtitle {
-      margin: .35rem 0 0;
-      color: var(--muted);
-      font-size: .9rem;
-    }
 
-    .report-badge {
-      display: inline-flex;
-      padding: .4rem .75rem;
-      border: 1px solid #cfe7d6;
+    .report-title { margin: 0; font-size: 1.25rem; line-height: 1.15; }
+
+    .report-subtitle { margin: .35rem 0 0; color: var(--muted); font-size: .9rem; }
+
+
+
+    button {
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      min-height: 42px;
+
+      padding: 0 1.5rem;
+
       border-radius: 999px;
-      background: #eef8f1;
-      color: #215f2a;
-      font-size: .86rem;
-      font-weight: 800;
+
+      border: 1px solid #9bb9d6;
+
+      font: inherit;
+
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+
+      transition: transform .08s ease, box-shadow .15s ease, background .15s ease;
+
     }
+
+
+
+    button:hover { transform: translateY(-1px); }
+
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+
+
+    .btn-esegui {
+
+      background: linear-gradient(180deg, #f4f9ff, #d6ebff);
+
+      color: #0b2545;
+
+      font-weight: 700;
+
+      min-width: 130px;
+
+    }
+
+
 
     .panel {
-      padding: 1rem;
+
+      margin-bottom: 1.5rem;
+
+      padding: 1.2rem;
+
       border: 1px solid var(--border);
+
       border-radius: var(--radius);
+
       background: var(--surface);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+
+      box-shadow: 0 1px 2px rgba(0,0,0,.08);
+
     }
 
-    .status-msg {
-      margin: 0;
-      padding: 1rem;
-      border: 1px solid #f0dca4;
-      border-radius: .8rem;
-      background: #fff8df;
-      color: #7c5a0b;
-      font-size: .95rem;
-      font-weight: 700;
-      text-align: center;
-    }
 
-    .status-msg.error {
-      border-color: #efc9cf;
-      background: #fff6f8;
-      color: var(--danger);
-    }
 
-    .hidden {
-      display: none !important;
-    }
+    .summary {
 
-    .report-mode-tabs {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 1rem;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
 
-    .mode-tab {
-      min-height: 38px;
-      padding: 0 1rem;
-      border: 1px solid #b9c5cc;
-      border-radius: 999px;
-      background: #f5f7f8;
-      color: #475569;
-      cursor: pointer;
-      font: inherit;
-      font-weight: 800;
-    }
-
-    .mode-tab.active {
-      border-color: var(--primary);
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .controls {
-      display: flex;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 240px;
-    }
-
-    .field label {
-      color: var(--muted);
-      font-size: .86rem;
-      font-weight: 800;
-    }
-
-    select,
-    button {
-      min-height: 42px;
-      padding: 0 .75rem;
-      border: 1px solid var(--border);
-      border-radius: .65rem;
-      background: var(--surface);
-      color: var(--text);
-      font: inherit;
-    }
-
-    select {
-      min-width: 240px;
-      border-color: #9bb9d6;
-      background: #dfeeff;
-      color: #173b5d;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    select.placeholder {
-      border-color: #d9b900;
-      background: #ffe66a;
-      color: #5a4800;
-    }
-
-    button {
-      cursor: pointer;
-      font-weight: 800;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      opacity: .55;
-    }
-
-    .btn-genera {
-      border-color: #9bd5da;
-      background: #d6f0f2;
-      color: #0f4f54;
-    }
-
-    .selection-status {
-      min-height: 42px;
-      display: flex;
       align-items: center;
-      color: var(--muted);
-      font-size: .86rem;
-      font-weight: 700;
-    }
 
-    .data-summary {
-      display: flex;
+      justify-content: space-between;
+
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 1rem;
+
+      gap: 10px;
+
+      margin-bottom: 6px;
+
     }
 
-    .summary-pill {
+
+
+    .pill {
+
       display: inline-flex;
-      gap: .35rem;
-      padding: .4rem .65rem;
+
+      align-items: center;
+
+      gap: .45rem;
+
+      padding: .4rem .7rem;
+
       border: 1px solid var(--border);
+
       border-radius: 999px;
+
       background: #fafafa;
+
       color: var(--muted);
-      font-size: .82rem;
+
+      font-size: .88rem;
+
     }
 
-    .summary-pill strong {
+
+
+    .pill strong { color: var(--text); }
+
+    .status { color: var(--muted); font-size: .9rem; }
+
+    .status.error { color: #a13544; font-weight: 700; background: #fff6f8; border: 1px solid #efc9cf; padding: 8px 12px; border-radius: 8px; }
+
+
+
+    .hidden { display: none !important; }
+
+
+
+    .mode-tabs {
+
+      display: flex;
+
+      gap: 0.5rem;
+
+      margin-bottom: 1rem;
+
+      flex-wrap: wrap;
+
+    }
+
+    .mode-tab-btn {
+
+      background: var(--bg);
+
       color: var(--text);
-    }
 
-    .update-pill {
-      border-color: #f0c8ce;
-      background: #fff5f6;
-      color: #8d1d2d;
-    }
-
-    .table-responsive {
-      overflow: auto;
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: #fff;
+
+      border-radius: 8px;
+
+      padding: 0.5rem 1rem;
+
+      font-size: 0.85rem;
+
+      font-weight: 700;
+
     }
 
-    .table-heading {
-      padding: 1rem 1rem .6rem;
+    .mode-tab-btn.active {
+
+      background: var(--primary);
+
+      color: #fff;
+
+      border-color: var(--primary);
+
     }
 
-    .table-heading h3 {
-      margin: 0;
-      color: var(--primary);
-      font-size: 1.05rem;
+
+
+    .control-group {
+
+      display: flex;
+
+      gap: 1rem;
+
+      align-items: flex-end;
+
+      flex-wrap: wrap;
+
+      margin-top: 0.5rem;
+
     }
 
-    .table-heading p {
-      margin: .35rem 0 0;
+    .control-field {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 0.35rem;
+
+      font-size: 0.85rem;
+
+      font-weight: 700;
+
+      color: #28251d;
+
+    }
+
+    
+
+    /* CASSELE DI SELEZIONE CON CARATTERE NERO E SFONDI DINAMICI */
+
+    .control-field select {
+
+      padding: 0.55rem 1.2rem;
+
+      border-radius: 999px;
+
+      border: 1.5px solid #6b8cae;
+
+      font: inherit;
+
+      background: #ffffff;
+
+      color: #000000 !important;
+
+      font-weight: 800;
+
+      min-width: 240px;
+
+      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+
+      outline: none;
+
+      cursor: pointer;
+
+    }
+
+    .control-field select:focus, .control-field select:active {
+
+      background: #eef7ff !important;
+
+      border-color: var(--primary) !important;
+
+      color: #000000 !important;
+
+    }
+
+    .control-field select option {
+
+      color: #000000;
+
+      background: #ffffff;
+
+    }
+
+
+
+    .legend-row {
+
+      display: flex;
+
+      gap: 0.75rem;
+
+      flex-wrap: wrap;
+
+      margin-top: 1rem;
+
+      padding-top: 0.8rem;
+
+      border-top: 1px solid #eee;
+
+    }
+
+    .legend-pill {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 0.4rem;
+
+      padding: 0.3rem 0.6rem;
+
+      border: 1px solid var(--border);
+
+      border-radius: 999px;
+
+      background: #fafafa;
+
+      font-size: 0.78rem;
+
       color: var(--muted);
-      font-size: .82rem;
+
+      font-weight: 500;
+
     }
+
+    .dot-green { width: 8px; height: 8px; background: #2e7d32; border-radius: 50%; display: inline-block; }
+
+    .dot-purple { width: 8px; height: 8px; background: #7b2cbf; border-radius: 50%; display: inline-block; }
+
+    .dot-yellow { width: 8px; height: 8px; background: #fbc02d; border-radius: 2px; display: inline-block; border: 1px solid #f57f17; }
+
+
+
+    .table-wrap {
+
+      overflow: auto;
+
+      border: 1px solid var(--border);
+
+      border-radius: 14px;
+
+      background: #fff;
+
+      margin-top: 1rem;
+
+    }
+
+
 
     table {
+
       width: 100%;
+
       min-width: 950px;
+
       border-collapse: collapse;
-      text-align: left;
-      font-size: .86rem;
+
+      font-size: .85rem;
+
     }
 
-    th,
+
+
+    thead th {
+
+      position: sticky;
+
+      top: 0;
+
+      z-index: 2;
+
+      padding: 10px 6px;
+
+      border-bottom: 1px solid var(--border);
+
+      border-right: 1px solid #e6e2da;
+
+      background: #eaf7fb;
+
+      color: #16484e;
+
+      font-weight: 800;
+
+      text-align: center;
+
+    }
+
+
+
     td {
-      padding: 10px;
-      border-bottom: 1px solid #e5e7eb;
-      white-space: nowrap;
-    }
 
-    th {
-      background: #f9fafb;
-      color: #374151;
-      font-weight: 800;
-    }
+      padding: 8px 6px;
 
-    .rank-cell {
-      width: 60px;
-      color: var(--muted);
-      font-weight: 800;
+      border-right: 1px solid #e6e2da;
+
+      border-bottom: 1px solid #e6e2da;
+
       text-align: center;
+
+      vertical-align: middle;
+
+      font-weight: 600;
+
     }
 
-    .probability-cell {
-      min-width: 110px;
-      font-size: 1rem;
-      font-weight: 900;
-      text-align: center;
+
+
+    .probability-cell { font-weight: 800; }
+
+    .p-0 { background: #fcfcfc; color: #d0d0d0; font-weight: 400; }
+
+    .p-low { background: #e8f5e9; color: #2e7d32; }
+
+    .p-mid { background: #a5d6a7; color: #1b5e20; }
+
+    .p-high { background: #66bb6a; color: #fff; }
+
+    .p-peak { background: #2e7d32; color: #fff; }
+
+
+
+    .row-today { background: #e0f2fe !important; }
+
+
+
+    /* STILI POPUP E MODALI */
+
+    .popup-overlay {
+
+      position: fixed;
+
+      top: 0; left: 0; width: 100vw; height: 100vh;
+
+      background: rgba(0,0,0,0.55);
+
+      display: flex; align-items: center; justify-content: center;
+
+      z-index: 99999;
+
+      backdrop-filter: blur(2px);
+
     }
 
-    .prob-high,
-    .station-forecast-high {
-      background: #dcfce7;
-      color: #15803d;
-      font-weight: 900;
+    .popup-box {
+
+      background: #ffffff;
+
+      padding: 1.8rem;
+
+      border-radius: var(--radius);
+
+      max-width: 550px;
+
+      width: 90%;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+      position: relative;
+
+      max-height: 85vh;
+
+      overflow-y: auto;
+
+      border: 1px solid var(--border);
+
     }
 
-    .prob-medium,
-    .station-forecast-medium {
-      background: #fef9c3;
-      color: #a16207;
-      font-weight: 900;
+    .popup-close {
+
+      position: absolute;
+
+      top: 12px; right: 16px;
+
+      background: #f0f0f0; 
+
+      border: none; 
+
+      border-radius: 50%;
+
+      width: 32px;
+
+      height: 32px;
+
+      font-size: 1.2rem; 
+
+      cursor: pointer; 
+
+      color: #333; 
+
+      font-weight: bold;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      transition: background .2s;
+
     }
 
-    .prob-low,
-    .station-forecast-low {
-      background: #f3f4f6;
-      color: #6b7280;
-      font-weight: 900;
-    }
+    .popup-close:hover { background: #e0e0e0; }
 
-    .prob-none,
-    .station-forecast-none {
-      background: #fee2e2;
-      color: #b91c1c;
-      font-weight: 900;
-    }
 
-    .station-name-button {
-      min-height: 0;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: #2563eb;
-      text-align: left;
-      box-shadow: none;
-    }
-
-    .station-name-button:hover {
-      color: #1d4ed8;
-      text-decoration: underline;
-    }
-
-    .species-name-cell {
-      color: var(--primary);
-      font-weight: 800;
-    }
 
     .species-name-button {
-      min-height: 0;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      color: var(--primary);
-      cursor: pointer;
-      font: inherit;
-      font-weight: 800;
-      text-align: left;
-      text-decoration: none;
+
+      background: transparent; border: 0; color: var(--primary); font: inherit; font-weight: 800; cursor: pointer; padding: 0; text-align: left;
+
     }
 
-    .species-name-button:hover {
-      color: var(--tris);
-      text-decoration: underline;
-    }
+    .species-name-button:hover { text-decoration: underline; color: var(--tris); }
 
-    .species-popup-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: .75rem;
-      background: rgba(0, 0, 0, .42);
-    }
 
-    .species-popup-overlay.hidden {
-      display: none;
-    }
-
-    .species-popup {
-      position: relative;
-      width: min(760px, calc(100vw - 1.5rem));
-      max-height: calc(100vh - 1.5rem);
-      overflow: auto;
-      padding: 1rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
-    }
-
-    .species-popup-close {
-      position: absolute;
-      top: .45rem;
-      right: .45rem;
-      width: 32px;
-      min-height: 32px;
-      padding: 0;
-      border-radius: 50%;
-      background: #f5f7f8;
-      color: var(--text);
-      font-size: 1.25rem;
-      line-height: 1;
-    }
-
-    .species-popup-title {
-      margin: 0;
-      padding-right: 2.5rem;
-      color: var(--primary);
-      font-size: 1.15rem;
-    }
-
-    .species-popup-subtitle {
-      margin: .3rem 0 1rem;
-      color: var(--muted);
-      font-size: .85rem;
-    }
-
-    .species-fields {
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(210px, 1fr));
-      gap: 8px;
-    }
-
-    .species-field {
-      padding: .65rem .75rem;
-      border: 1px solid var(--border);
-      border-radius: .6rem;
-      background: #fafafa;
-    }
-
-    .species-field strong {
-      display: block;
-      margin-bottom: .2rem;
-      color: var(--muted);
-      font-size: .75rem;
-    }
-
-    .species-field span {
-      display: block;
-      color: var(--text);
-      font-size: .88rem;
-      overflow-wrap: anywhere;
-    }
-
-    .species-raw-fields {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .species-raw-fields h4 {
-      margin: 0 0 .65rem;
-      color: var(--primary);
-    }
-
-    .growth-event {
-      color: #7030a0;
-      font-weight: 800;
-    }
-
-    .growth-no-event {
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .info-panel {
-      margin-top: 1rem;
-      padding: 15px;
-      border-left: 4px solid #3b82f6;
-      border-radius: 0 8px 8px 0;
-      background: #eff6ff;
-      color: #1e3a8a;
-      font-size: .85rem;
-      line-height: 1.45;
-    }
-
-    .station-popup-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: .5rem;
-      background: rgba(0, 0, 0, .42);
-    }
-
-    .station-popup-overlay.hidden {
-      display: none;
-    }
-
-    .station-popup {
-      position: relative;
-      width: min(520px, calc(100vw - 1rem));
-      max-height: calc(100vh - 1rem);
-      overflow: auto;
-      padding: .7rem;
-      border: 1px solid var(--border);
-      border-radius: .75rem;
-      background: #fff;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
-    }
-
-    .station-popup-close {
-      position: absolute;
-      top: .3rem;
-      right: .3rem;
-      width: 30px;
-      min-height: 30px;
-      padding: 0;
-      border-radius: 50%;
-      font-size: 1.2rem;
-    }
-
-    .popup-title {
-      margin-bottom: .3rem;
-      padding-right: 2rem;
-      color: var(--primary);
-      font-size: .98rem;
-      font-weight: 800;
-    }
-
-    .popup-meta {
-      font-size: .84rem;
-      line-height: 1.3;
-    }
-
-    .popup-table-wrap {
-      max-height: 330px;
-      margin-top: .4rem;
-      overflow: auto;
-    }
-
-    .popup-weather-table {
-      width: 100%;
-      min-width: 0;
-      border-collapse: collapse;
-      font-size: .76rem;
-    }
-
-    .popup-weather-table th,
-    .popup-weather-table td {
-      padding: .15rem;
-      text-align: right;
-    }
-
-    .popup-weather-table th:first-child,
-    .popup-weather-table td:first-child {
-      text-align: left;
-    }
-
-    .popup-rain-day {
-      color: #0b5d1e;
-      font-weight: 700;
-    }
-
-    .popup-temp-min {
-      color: #003f88;
-      font-weight: 800;
-    }
-
-    .popup-temp-max {
-      color: #a13544;
-      font-weight: 800;
-    }
 
     @media (max-width: 980px) {
-      .report-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
+
+      .app { grid-template-columns: var(--sidebar-width) minmax(0,1fr); }
+
+      .app.sidebar-collapsed { grid-template-columns: var(--sidebar-collapsed-width) minmax(0,1fr); }
+
+      .report-main { padding: .75rem; }
+
+      .report-header { align-items: flex-start; flex-direction: column; }
+
     }
 
-    @media (max-width: 650px) {
-      .species-popup {
-        padding: .8rem;
-      }
-
-      .species-fields {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media print {
-      .sidebar,
-      .report-mode-tabs,
-      #controls-panel,
-      .station-popup-overlay,
-      .species-popup-overlay {
-        display: none !important;
-      }
-
-      .app {
-        display: block;
-      }
-
-      .report-main {
-        padding: 0;
-      }
-    }
   </style>
+
 </head>
 
+
+
 <body>
-  <div
-    class="app"
-    id="app">
+
+  <div class="app" id="app">
+
+
 
     <aside class="sidebar">
 
-      <button
-        id="sidebarToggleMini"
-        class="sidebar-toggle-mini"
-        type="button"
-        aria-label="Mostra contenuto">
-        ☰
-      </button>
+      <button id="sidebarToggleMini" class="sidebar-toggle-mini" type="button" title="Mostra contenuto">☰</button>
 
-      <button
-        id="sidebarToggleInside"
-        class="sidebar-toggle-inside"
-        type="button"
-        aria-label="Nascondi contenuto">
-        ☰
-      </button>
+      <button id="sidebarToggleInside" class="sidebar-toggle-inside" type="button" title="Nascondi contenuto">☰</button>
+
+
 
       <div class="sidebar-content">
 
         <div class="brand">
+
           <div class="logo-wrap">
 
-            <svg
-              class="logo"
-              viewBox="0 0 64 64"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+            <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-              <path
-                d="M10 39C18 25 25 18 33 12C40 21 46 31 54 39C49 45 43 50 33 54C23 49 16 45 10 39Z"
-                stroke="currentColor"
-                stroke-width="3"/>
+              <path d="M10 39C18 25 25 18 33 12C40 21 46 31 54 39C49 45 43 50 33 54C23 49 16 45 10 39Z" stroke="currentColor" stroke-width="3"/>
 
-              <path
-                d="M24 39C24 34 27 31 32 31C37 31 40 34 40 39"
-                stroke="currentColor"
-                stroke-width="3"
-                stroke-linecap="round"/>
+              <path d="M24 39C24 34 27 31 32 31C37 31 40 34 40 39" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
 
-              <path
-                d="M22 44H42"
-                stroke="currentColor"
-                stroke-width="3"
-                stroke-linecap="round"/>
+              <path d="M22 44H42" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
 
-              <path
-                d="M32 18V27"
-                stroke="currentColor"
-                stroke-width="3"
-                stroke-linecap="round"/>
+              <path d="M32 18V27" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+
             </svg>
 
             <div>
-              <h1>
-                Alcolisti Micologici Analcolici
-                <span class="tris-word">TRIS</span>
-              </h1>
 
-              <span class="release">
-                Rel. 03-C-025
-              </span>
+              <h1>Alcolisti Micologici Analcolici <span class="tris-word">TRIS</span></h1>
+
+              <span class="release">Rel. 03-D-011</span>
 
               <p class="subtitle-small">
-                dati aggiornati al
-                <strong id="lastUpdate">
-                  caricamento...
-                </strong>
+
+                dati aggiornati al <strong id="lastUpdate">caricamento...</strong>
+
               </p>
+
             </div>
+
           </div>
+
         </div>
 
-        <a
-          class="report-link"
-          href="index.html">
-          🏠 Torna alla Home Page
+
+
+        <a class="report-link" href="index.html" title="Torna alla Home Page">
+
+          <span>🏠</span> <span>Torna alla Home Page</span>
+
         </a>
+
+
 
         <div class="report-menu">
 
-          <a
-            class="report-menu-link"
-            href="report.html">
-            🌧️ Piogge Giornaliere/Cumulate
+          <div class="report-menu-title">Report</div>
+
+          <a class="report-link" href="report.html" title="Apri il report piogge">
+
+            <span>🌧️</span> <span>Piogge Giornaliere/Cumulate</span>
+
           </a>
 
-          <a
-            class="report-menu-link active"
-            href="report_previsioni.html"
-            aria-current="page">
-            🍄 Previsioni Crescita Funghi
+          <a class="report-link active" href="report_previsioni.html" title="Apri le previsioni di crescita">
+
+            <span>🍄</span> <span>Previsioni di crescita</span>
+
           </a>
+
+          <a class="report-link" href="report_crescita.html" title="Apri la tabella crescita specie">
+
+            <span>📊</span> <span>Tabella crescita specie</span>
+
+          </a>
+
+          <a class="report-link" href="report_specie.html" title="Apri la tabella dati specie">
+
+            <span>📋</span> <span>Tabella dati specie</span>
+
+          </a>
+
         </div>
+
       </div>
+
     </aside>
 
+
+
     <main class="report-main">
+
+
 
       <header class="report-header">
 
         <div>
-          <h2 class="report-title">
-            Previsioni Crescita Funghi
-          </h2>
+
+          <h2 class="report-title">Previsioni di Crescita Specie per Data</h2>
 
           <p class="report-subtitle">
-            Modello a eventi di pioggia, temperatura,
-            altitudine e stagione.
+
+            Modello TRIS a filtri booleani (Quota/Stagione) e calcolo: (Crescita × Temperatura × 0,98).
+
           </p>
+
         </div>
 
-        <div class="report-badge">
-          TRIS · Rel. 03-C-025
-        </div>
       </header>
+
+
 
       <section class="panel">
 
-        <div
-          id="status-text"
-          class="status-msg">
+        <div class="summary">
 
-          Inizializzazione e caricamento
-          dei dataset in corso...
+          <div class="left" style="display:flex; gap:10px; flex-wrap:wrap;">
+
+            <span class="pill">Stazioni: <strong id="stations-count">0</strong></span>
+
+            <span class="pill">Specie: <strong id="speciesCount">0</strong></span>
+
+            <span class="pill">Record Meteo: <strong id="records-count">0</strong></span>
+
+            <span class="pill">Aggiornamento: <strong id="data-last-update">-</strong></span>
+
+          </div>
+
+          <div class="right status" id="status-text">Caricamento dati in corso...</div>
+
         </div>
 
-        <div
-          class="data-summary"
-          id="data-summary"
-          style="display:none">
+        <div id="errorBox" class="status error hidden" style="margin-top: 10px;"></div>
 
-          <span class="summary-pill">
-            Stazioni:
-            <strong id="stations-count">
-              0
-            </strong>
-          </span>
-
-          <span class="summary-pill">
-            Record meteorologici:
-            <strong id="records-count">
-              0
-            </strong>
-          </span>
-
-          <span class="summary-pill">
-            Previsioni:
-            <strong>
-              10 giorni
-            </strong>
-          </span>
-
-          <span class="summary-pill update-pill">
-            Aggiornamento dati:
-            <strong id="data-last-update">
-              in lettura...
-            </strong>
-          </span>
-        </div>
       </section>
 
-      <section
-        class="panel hidden"
-        id="controls-panel"
-        style="margin-top:1rem">
 
-        <div class="report-mode-tabs">
 
-          <button
-            id="mode-species-button"
-            class="mode-tab active"
-            type="button">
-            Report per specie
-          </button>
+      <section class="panel hidden" id="controls-panel">
 
-          <button
-            id="mode-station-button"
-            class="mode-tab"
-            type="button">
-            Report per stazione
-          </button>
+        <div class="mode-tabs">
 
-          <button
-            id="mode-date-button"
-            class="mode-tab"
-            type="button">
-            Report per data
-          </button>
+          <button id="mode-species-button" class="mode-tab-btn active" type="button">Per Specie / Data</button>
+
+          <button id="mode-station-button" class="mode-tab-btn" type="button">Per Stazione</button>
+
+          <button id="mode-date-button" class="mode-tab-btn" type="button">Panoramica Data</button>
+
+          <button id="mode-station-species-button" class="mode-tab-btn" type="button">Incrociato Stazione-Specie</button>
+
         </div>
 
-        <div
-          id="species-report-controls">
 
-          <div class="controls">
 
-            <div class="field">
-              <label for="day-select">
-                Giorno della previsione
-              </label>
+        <!-- Controlli Modalità 1: Specie / Data -->
 
-              <select
-                id="day-select"
-                class="placeholder">
+        <div id="species-report-controls" class="control-group">
 
-                <option value="">
-                  Seleziona un giorno
-                </option>
+          <div class="control-field">
 
-                <option value="1">
-                  Giorno 1 - (11/08)
-                </option>
+            <label for="species-select">Seleziona Specie</label>
 
-                <option value="2">
-                  Giorno 2 - (12/08)
-                </option>
+            <select id="species-select">
 
-                <option value="3">
-                  Giorno 3 - (13/08)
-                </option>
+              <option value="">-- Seleziona specie --</option>
 
-                <option value="4">
-                  Giorno 4 - (14/08)
-                </option>
+            </select>
 
-                <option value="5">
-                  Giorno 5 - (15/08)
-                </option>
-
-                <option value="6">
-                  Giorno 6 - (16/08)
-                </option>
-
-                <option value="7">
-                  Giorno 7 - (17/08)
-                </option>
-
-                <option value="8">
-                  Giorno 8 - (18/08)
-                </option>
-
-                <option value="9">
-                  Giorno 9 - (19/08)
-                </option>
-
-                <option value="10">
-                  Giorno 10 - (20/08)
-                </option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="species-select">
-                Specie fungina
-              </label>
-
-              <select
-                id="species-select"
-                class="placeholder">
-
-                <option value="">
-                  Seleziona una specie
-                </option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>&nbsp;</label>
-
-              <button
-                id="generate-button"
-                class="btn-genera"
-                type="button"
-                disabled>
-                Genera previsione
-              </button>
-            </div>
-
-            <div
-              id="selection-status"
-              class="selection-status">
-              Seleziona giorno e specie.
-            </div>
           </div>
-        </div>
 
-        <div
-          id="station-report-controls"
-          class="hidden">
+          <div class="control-field">
 
-          <div class="controls">
+            <label for="day-select">Seleziona Data</label>
 
-            <div class="field">
-              <label for="station-select">
-                Stazione meteorologica
-              </label>
+            <select id="day-select">
 
-              <select
-                id="station-select"
-                class="placeholder">
+              <option value="">-- Seleziona data --</option>
 
-                <option value="">
-                  Seleziona una stazione
-                </option>
-              </select>
-            </div>
+            </select>
 
-            <div class="field">
-              <label for="probability-filter">
-                Probabilità superiore a
-              </label>
-
-              <select
-                id="probability-filter"
-                class="placeholder">
-
-                <option value="">
-                  Seleziona soglia
-                </option>
-
-                <option value="0">
-                  0%
-                </option>
-
-                <option value="70">
-                  70%
-                </option>
-
-                <option value="75">
-                  75%
-                </option>
-
-                <option value="80">
-                  80%
-                </option>
-
-                <option value="85">
-                  85%
-                </option>
-
-                <option value="90">
-                  90%
-                </option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>&nbsp;</label>
-
-              <button
-                id="generate-station-button"
-                class="btn-genera"
-                type="button"
-                disabled>
-                Genera report stazione
-              </button>
-            </div>
-
-            <div
-              id="station-selection-status"
-              class="selection-status">
-              Seleziona stazione e soglia.
-            </div>
           </div>
+
+          <button id="generate-button" class="btn-esegui" type="button" disabled>Esegui</button>
+
         </div>
 
-        <div
-          id="date-report-controls"
-          class="hidden">
 
-          <div class="controls">
 
-            <div class="field">
-              <label for="date-day-select">
-                Giorno della previsione
-              </label>
+        <!-- Controlli Modalità 2: Stazione -->
 
-              <select
-                id="date-day-select"
-                class="placeholder">
+        <div id="station-report-controls" class="control-group hidden">
 
-                <option value="">
-                  Seleziona un giorno
-                </option>
+          <div class="control-field">
 
-                <option value="1">
-                  Giorno 1 - (11/08)
-                </option>
+            <label for="station-select">Seleziona Stazione</label>
 
-                <option value="2">
-                  Giorno 2 - (12/08)
-                </option>
+            <select id="station-select">
 
-                <option value="3">
-                  Giorno 3 - (13/08)
-                </option>
+              <option value="">-- Seleziona stazione --</option>
 
-                <option value="4">
-                  Giorno 4 - (14/08)
-                </option>
+            </select>
 
-                <option value="5">
-                  Giorno 5 - (15/08)
-                </option>
-
-                <option value="6">
-                  Giorno 6 - (16/08)
-                </option>
-
-                <option value="7">
-                  Giorno 7 - (17/08)
-                </option>
-
-                <option value="8">
-                  Giorno 8 - (18/08)
-                </option>
-
-                <option value="9">
-                  Giorno 9 - (19/08)
-                </option>
-
-                <option value="10">
-                  Giorno 10 - (20/08)
-                </option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label>&nbsp;</label>
-
-              <button
-                id="generate-date-button"
-                class="btn-genera"
-                type="button"
-                disabled>
-                Genera report data
-              </button>
-            </div>
-
-            <div
-              id="date-selection-status"
-              class="selection-status">
-              Seleziona un giorno.
-            </div>
           </div>
+
+          <div class="control-field">
+
+            <label for="probability-filter">Probabilità Minima (%)</label>
+
+            <select id="probability-filter">
+
+              <option value="0">0% (Tutte)</option>
+
+              <option value="25">25%</option>
+
+              <option value="50" selected>50%</option>
+
+              <option value="75">75%</option>
+
+            </select>
+
+          </div>
+
+          <button id="generate-station-button" class="btn-esegui" type="button" disabled>Esegui</button>
+
         </div>
+
+
+
+        <!-- Controlli Modalità 3: Data -->
+
+        <div id="date-report-controls" class="control-group hidden">
+
+          <div class="control-field">
+
+            <label for="date-day-select">Seleziona Data</label>
+
+            <select id="date-day-select">
+
+              <option value="">-- Seleziona data --</option>
+
+            </select>
+
+          </div>
+
+          <button id="generate-date-button" class="btn-esegui" type="button" disabled>Esegui</button>
+
+        </div>
+
+
+
+        <!-- Controlli Modalità 4: Incrociato -->
+
+        <div id="station-species-report-controls" class="control-group hidden">
+
+          <div class="control-field">
+
+            <label for="ss-station-select">Seleziona Stazione</label>
+
+            <select id="ss-station-select">
+
+              <option value="">-- Seleziona stazione --</option>
+
+            </select>
+
+          </div>
+
+          <div class="control-field">
+
+            <label for="ss-species-select">Seleziona Specie</label>
+
+            <select id="ss-species-select">
+
+              <option value="">-- Seleziona specie --</option>
+
+            </select>
+
+          </div>
+
+          <button id="generate-station-species-button" class="btn-esegui" type="button" disabled>Esegui</button>
+
+        </div>
+
+
+
+        <div class="legend-row">
+
+          <span class="legend-pill"><span class="dot-green"></span> Condizioni ottimali</span>
+
+          <span class="legend-pill"><span class="dot-purple"></span> Trigger pioggia attivo</span>
+
+          <span class="legend-pill"><span class="dot-yellow"></span> Giorno corrente / selezionato</span>
+
+        </div>
+
       </section>
 
-      <section
-        class="panel hidden"
-        id="forecast-panel"
-        style="margin-top:1rem">
 
-        <div class="table-responsive">
 
-          <div class="table-heading">
-            <h3 id="current-mushroom-title">
-              Previsione di crescita
-            </h3>
+      <section class="panel hidden" id="forecast-panel">
 
-            <p id="current-selection-description">
-              Seleziona i parametri per visualizzare la tabella.
-            </p>
-          </div>
+        <div style="margin-bottom: 1rem;">
 
-          <table>
+          <h3 id="current-mushroom-title" style="margin:0 0 0.3rem 0; font-size:1.1rem; color:var(--primary);">Titolo Report</h3>
+
+          <div id="current-selection-description" style="color:var(--muted); font-size:0.88rem;">Descrizione selezione</div>
+
+        </div>
+
+
+
+        <div class="table-wrap">
+
+          <table id="previsioniTable">
+
             <thead id="forecast-thead"></thead>
+
             <tbody id="table-body"></tbody>
+
           </table>
+
         </div>
 
-        <div class="info-panel">
-          <strong>Modello Rel. 03-C-025:</strong>
-          la probabilità combina l'evento di pioggia,
-          la temperatura, l'altitudine e la stagione.
-
-          <br><br>
-
-          Il fattore stagionale vale
-          <strong>1</strong> se il mese della previsione
-          rientra nell'intervallo
-          <strong>mesiInizio–mesiFine</strong> della specie,
-          altrimenti vale <strong>0</strong>.
-
-          <br><br>
-
-          Se non viene riconosciuto alcun evento di pioggia,
-          cioè se non viene raggiunta la pioggia minima
-          richiesta dalla specie, il punteggio viene azzerato:
-
-          <strong>S = S × 0</strong>
-
-          e la probabilità visualizzata è quindi
-          <strong>0%</strong>.
-        </div>
       </section>
+
+
+
     </main>
+
   </div>
 
-  <div
-    id="station-popup-overlay"
-    class="station-popup-overlay hidden">
 
-    <section
-      class="station-popup"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="station-popup-title">
 
-      <button
-        id="station-popup-close"
-        class="station-popup-close"
-        type="button"
-        aria-label="Chiudi popup">
-        ×
-      </button>
+  <!-- MODALI POPUP -->
+
+  <div id="station-popup-overlay" class="popup-overlay hidden">
+
+    <div class="popup-box">
+
+      <button class="popup-close" type="button">×</button>
 
       <div id="station-popup-content"></div>
-    </section>
+
+    </div>
+
   </div>
 
-  <div
-    id="species-popup-overlay"
-    class="species-popup-overlay hidden">
 
-    <section
-      class="species-popup"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="species-popup-title">
 
-      <button
-        id="species-popup-close"
-        class="species-popup-close"
-        type="button"
-        aria-label="Chiudi popup specie">
-        ×
-      </button>
+  <div id="species-popup-overlay" class="popup-overlay hidden">
+
+    <div class="popup-box">
+
+      <button class="popup-close" type="button">×</button>
 
       <div id="species-popup-content"></div>
-    </section>
+
+    </div>
+
   </div>
 
-  <script>
-    "use strict";
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
-        const app =
-          document.getElementById("app");
 
-        const inside =
-          document.getElementById(
-            "sidebarToggleInside"
-          );
+  <div id="calc-popup-overlay" class="popup-overlay hidden">
 
-        const mini =
-          document.getElementById(
-            "sidebarToggleMini"
-          );
+    <div class="popup-box">
 
-        if (inside) {
-          inside.addEventListener(
-            "click",
-            () =>
-              app.classList.add(
-                "sidebar-collapsed"
-              )
-          );
-        }
+      <button class="popup-close" type="button">×</button>
 
-        if (mini) {
-          mini.addEventListener(
-            "click",
-            () =>
-              app.classList.remove(
-                "sidebar-collapsed"
-              )
-          );
-        }
-      }
-    );
-  </script>
+      <div id="calc-popup-content"></div>
 
-  <script
-    src="report_previsioni.js"
-    defer>
-  </script>
+    </div>
+
+  </div>
+
+
+
+  <script src="report_previsioni.js" defer></script>
+
 </body>
+
 </html>
