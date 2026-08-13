@@ -1,3082 +1,838 @@
-(() => {
-  "use strict";
+// TRIS Rel. 03-D-017 - Gestione errori robusta per il comando Genera PDF
+"use strict";
 
-  const RELEASE = "Rel. 03-C-025";
+const RELEASE = "Rel. 03-D-017";
 
-  const GIORNI_PREVISIONE = 10;
-  const GIORNI_STORICO = 30;
-  const MASSIMO_PROBABILITA = 98;
-  const GIORNI_PROFILO_INIZIALE = 3;
+const PATHS = {
+  STATIONS: "stazioni_meteo.csv",
+  WEATHER: "dati_meteo_30g.csv",
+  SPECIES: "speciefunghi.csv",
+  GROWTH: "speciecrescita.csv"
+};
 
-  const SOGLIA_RESET_PRATO = 20;
-  const SOGLIA_RESET_BOSCO = 35;
+const FORECAST_DAYS_AHEAD = 10;
+const STATION_SPECIES_DAYS_BACK = 30;
 
-  let stazioni = [];
-  let specieFunghi = [];
-  let specieAttive = [];
-  let profiliCrescita = {};
-  let datiPrevisioniMeteo = {};
+const MESI_NOMI = ["", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 
-  let giornoSelezionato = null;
-  let giornoDataSelezionato = null;
-  let specieSelezionata = "";
-  let stazioneSelezionata = "";
-  let filtroProbabilita = null;
+let state = {
+  stations: [],
+  weatherRecords: [],
+  species: [],
+  growthProfiles: {},
+  weatherByStationDate: new Map(),
+  speciesMap: new Map(),
+  stationsMap: new Map(),
+  referenceTodayStr: ''
+};
 
-  const els = {};
+function initSidebarToggle() {
+  const app = document.getElementById('app');
+  const miniBtn = document.getElementById('sidebarToggleMini');
+  const insideBtn = document.getElementById('sidebarToggleInside');
+  if (miniBtn) miniBtn.addEventListener('click', () => app.classList.remove('sidebar-collapsed'));
+  if (insideBtn) insideBtn.addEventListener('click', () => app.classList.add('sidebar-collapsed'));
+}
 
-  function el(id) {
-    return document.getElementById(id);
+function delimiter(text) {
+  const candidates = [';', ',', '\t', '|'];
+  return candidates.map(character => ({
+    character,
+    count: (text.match(new RegExp('\\' + character, 'g')) || []).length
+  })).sort((a, b) => b.count - a.count)[0].character;
+}
+
+function parseCSV(text) {
+  if (typeof Papa === "undefined") throw new Error("PapaParse non è caricato.");
+  const cleanedText = String(text).replace(/^\uFEFF/, "");
+  const result = Papa.parse(cleanedText, {
+    header: true,
+    skipEmptyLines: true,
+    delimiter: delimiter(cleanedText),
+    transformHeader: header => header.trim(),
+    transform: value => String(value ?? "").trim()
+  });
+  return { rows: Array.isArray(result.data) ? result.data : [], fields: Array.isArray(result.meta?.fields) ? result.meta.fields : [] };
+}
+
+async function fetchCSV(path) {
+  const res = await fetch(`${path}?v=${Date.now()}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Impossibile caricare il file ${path}`);
+  return parseCSV(await res.text());
+}
+
+function setError(message) {
+  const errorBox = document.getElementById('errorBox');
+  if (errorBox) {
+    errorBox.style.display = message ? 'block' : 'none';
+    errorBox.textContent = message || '';
   }
+}
 
-  function inizializzaElementi() {
-    els.app = el("app");
-    els.statusText = el("status-text");
-    els.lastUpdate = el("lastUpdate");
-    els.dataLastUpdate = el("data-last-update");
+function numero(value) {
+  if (value === null || value === undefined || String(value).trim() === "") return null;
+  const res = Number.parseFloat(String(value).trim().replace(",", "."));
+  return Number.isFinite(res) ? res : null;
+}
 
-    els.controlsPanel = el("controls-panel");
-    els.forecastPanel = el("forecast-panel");
+function estraiData(value) {
+  if (!value) return null;
+  const testo = String(value).trim();
+  let match = testo.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);
+  if (match) return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`;
+  match = testo.match(/^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})/);
+  if (match) return `${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}`;
+  return testo.split('T')[0];
+}
 
-    els.stationsCount = el("stations-count");
-    els.recordsCount = el("records-count");
+async function loadDatasets() {
+  const statusEl = document.getElementById('status-text');
+  try {
+    const [stCSV, weCSV, spCSV, grCSV] = await Promise.all([
+      fetchCSV(PATHS.STATIONS),
+      fetchCSV(PATHS.WEATHER),
+      fetchCSV(PATHS.SPECIES),
+      fetchCSV(PATHS.GROWTH)
+    ]);
 
-    els.daySelect = el("day-select");
-    els.speciesSelect = el("species-select");
-    els.stationSelect = el("station-select");
-    els.probabilityFilter =
-      el("probability-filter");
-    els.dateDaySelect = el("date-day-select");
+    processStations(stCSV);
+    processWeather(weCSV);
+    processSpecies(spCSV);
+    processGrowth(grCSV);
 
-    els.generateButton =
-      el("generate-button");
+    statusEl.classList.add('hidden');
+    document.getElementById('data-summary')?.style.setProperty('display', 'flex');
+    document.getElementById('controls-panel').classList.remove('hidden');
 
-    els.generateStationButton =
-      el("generate-station-button");
-
-    els.generateDateButton =
-      el("generate-date-button");
-
-    els.selectionStatus =
-      el("selection-status");
-
-    els.stationSelectionStatus =
-      el("station-selection-status");
-
-    els.dateSelectionStatus =
-      el("date-selection-status");
-
-    els.forecastThead =
-      el("forecast-thead");
-
-    els.tableBody =
-      el("table-body");
-
-    els.currentMushroomTitle =
-      el("current-mushroom-title");
-
-    els.currentSelectionDescription =
-      el("current-selection-description");
-
-    els.speciesPopupOverlay =
-      el("species-popup-overlay");
-
-    els.speciesPopupClose =
-      el("species-popup-close");
-
-    els.speciesPopupContent =
-      el("species-popup-content");
-
-    els.stationPopupOverlay =
-      el("station-popup-overlay");
-
-    els.stationPopupClose =
-      el("station-popup-close");
-
-    els.stationPopupContent =
-      el("station-popup-content");
-
-    els.sidebarToggleInside =
-      el("sidebarToggleInside");
-
-    els.sidebarToggleMini =
-      el("sidebarToggleMini");
-
-    els.modeSpeciesButton =
-      el("mode-species-button");
-
-    els.modeStationButton =
-      el("mode-station-button");
-
-    els.modeDateButton =
-      el("mode-date-button");
-
-    els.speciesReportControls =
-      el("species-report-controls");
-
-    els.stationReportControls =
-      el("station-report-controls");
-
-    els.dateReportControls =
-      el("date-report-controls");
+    populateControls();
+    setError('');
+  } catch (err) {
+    statusEl.classList.add('error');
+    statusEl.textContent = `${RELEASE} · Errore caricamento dati.`;
+    setError(String(err?.stack || err));
+    console.error(err);
   }
+}
 
-  function numero(value) {
-    if (
-      value === null ||
-      value === undefined ||
-      String(value).trim() === ""
-    ) {
-      return null;
-    }
+function trovaCampo(fields, candidati) {
+  const normalizzaChiave = v => String(v ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const normalizzati = candidati.map(normalizzaChiave);
+  return fields.find(campo => normalizzati.includes(normalizzaChiave(campo))) || fields.find(campo => normalizzati.some(nome => normalizzaChiave(campo).includes(nome))) || "";
+}
 
-    const risultato = Number.parseFloat(
-      String(value)
-        .trim()
-        .replace(",", ".")
-    );
+function processStations(csv) {
+  const campoID = trovaCampo(csv.fields, ["id", "idstazione", "stationid", "codicestatione"]);
+  const campoNome = trovaCampo(csv.fields, ["nome", "stazionemeteo", "nomestazione", "localita", "riferimento"]);
+  const campoAlt = trovaCampo(csv.fields, ["altitudine", "quota", "altitude"]);
 
-    return Number.isFinite(risultato)
-      ? risultato
-      : null;
-  }
+  csv.rows.forEach(riga => {
+    const id = String(riga[campoID] || "").trim();
+    if (!id) return;
+    const nome = String(riga[campoNome] || id).trim();
+    const quota = numero(riga[campoAlt]) || 0;
 
-  function booleano(value) {
-    return [
-      "true",
-      "1",
-      "si",
-      "sì",
-      "yes",
-      "on"
-    ].includes(
-      String(value ?? "")
-        .trim()
-        .toLowerCase()
-    );
-  }
+    const stObj = { id, nome, quota };
+    state.stations.push(stObj);
+    state.stationsMap.set(id, stObj);
+  });
 
-  function normalizzaChiave(value) {
-    return String(value ?? "")
-      .replace(/^\uFEFF/, "")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "");
-  }
+  const countEl = document.getElementById('stations-count');
+  if (countEl) countEl.textContent = state.stations.length;
+}
 
-  function escapeHTML(value) {
-    return String(value ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+function processWeather(csv) {
+  const campoID = trovaCampo(csv.fields, ["id", "idstazione", "stationid", "stazionemeteo"]);
+  const campoData = trovaCampo(csv.fields, ["datarilevamento", "data", "date"]);
+  const campoPioggia = trovaCampo(csv.fields, ["pioggiagiornaliera", "pioggia", "rain"]);
+  const campoTMin = trovaCampo(csv.fields, ["temperaturamin", "tmin", "tempmin"]);
+  const campoTMax = trovaCampo(csv.fields, ["temperaturamax", "tmax", "tempmax"]);
 
-  function trovaCampo(fields, candidati) {
-    const normalizzati =
-      candidati.map(normalizzaChiave);
+  let maxDate = "2026-01-01";
 
-    return (
-      fields.find(campo =>
-        normalizzati.includes(
-          normalizzaChiave(campo)
-        )
-      ) ||
-      fields.find(campo =>
-        normalizzati.some(nome =>
-          normalizzaChiave(campo)
-            .includes(nome)
-        )
-      ) ||
-      ""
-    );
-  }
+  csv.rows.forEach(riga => {
+    const id = String(riga[campoID] || "").trim();
+    const dataRaw = riga[campoData];
+    const data = estraiData(dataRaw);
+    if (!id || !data) return;
 
-  function parseCSV(testo) {
-    if (
-      typeof Papa === "undefined"
-    ) {
-      throw new Error(
-        "PapaParse non è stato caricato."
-      );
-    }
+    const rain = numero(riga[campoPioggia]) || 0;
+    const tmin = numero(riga[campoTMin]);
+    const tmax = numero(riga[campoTMax]);
+    const tavg = (Number.isFinite(tmin) && Number.isFinite(tmax)) ? (tmin + tmax) / 2 : 15;
 
-    const primaRiga =
-      String(testo)
-        .replace(/^\uFEFF/, "")
-        .split(/\r?\n/)
-        .find(riga => riga.trim()) || "";
+    const key = `${id}_${data}`;
+    state.weatherByStationDate.set(key, { rain, tmin, tmax, tavg });
+    state.weatherRecords.push({ id, data, rain });
 
-    const delimitatore =
-      primaRiga.includes(";")
-        ? ";"
-        : ",";
+    if (data > maxDate) maxDate = data;
+  });
 
-    const risultato = Papa.parse(
-      String(testo),
-      {
-        header: true,
-        skipEmptyLines: true,
-        delimiter: delimitatore,
-        transformHeader: header =>
-          String(header)
-            .replace(/^\uFEFF/, "")
-            .trim(),
-        transform: value =>
-          String(value ?? "").trim()
-      }
-    );
+  state.referenceTodayStr = maxDate;
+  const updateEl = document.getElementById('lastUpdate');
+  if (updateEl) updateEl.textContent = maxDate;
+  const dataUpdateEl = document.getElementById('data-last-update');
+  if (dataUpdateEl) dataUpdateEl.textContent = maxDate;
+  const recCountEl = document.getElementById('records-count');
+  if (recCountEl) recCountEl.textContent = state.weatherRecords.length;
+}
 
-    return {
-      rows: Array.isArray(
-        risultato.data
-      )
-        ? risultato.data
-        : [],
+function processSpecies(csv) {
+  csv.rows.forEach(riga => {
+    const id = String(riga.id || "").trim();
+    if (!id) return;
+    if (riga.attivo !== undefined && riga.attivo === 'false') return;
 
-      fields: Array.isArray(
-        risultato.meta?.fields
-      )
-        ? risultato.meta.fields
-        : []
+    const spObj = {
+      id: id,
+      nomeComune: String(riga.nomeComune || "").trim(),
+      nomeScientifico: String(riga.nome || "").trim(),
+      tempMin: numero(riga.tempMin) || 5,
+      tempMax: numero(riga.tempMax) || 30,
+      altMin: numero(riga.altMin) || 0,
+      altMax: numero(riga.altMax) || 3000,
+      mesiInizio: parseInt(riga.mesiInizio) || 1,
+      mesiFine: parseInt(riga.mesiFine) || 12,
+      growthStartDays: numero(riga.growthStartDays) || 1,
+      growthPeakStartDays: numero(riga.growthPeakStartDays) || 5,
+      growthPeakEndDays: numero(riga.growthPeakEndDays) || 15,
+      growthEndDays: numero(riga.growthEndDays) || 25,
+      pioggiaTrigger: numero(riga.rainReq) || 10,
+      habitat: String(riga.habitat || "").trim(),
+      note: String(riga.note || "").trim()
     };
-  }
+    state.species.push(spObj);
+    state.speciesMap.set(id, spObj);
+  });
 
-  async function caricaCSV(percorso) {
-    const risposta =
-      await fetch(
-        percorso,
-        {
-          cache: "no-store"
-        }
-      );
+  const spCountEl = document.getElementById('speciesCount');
+  if (spCountEl) spCountEl.textContent = state.species.length;
+}
 
-    if (!risposta.ok) {
-      throw new Error(
-        `Impossibile caricare ${percorso}.`
-      );
-    }
+function processGrowth(csv) {
+  const campoID = trovaCampo(csv.fields, ["id", "specie", "specieid"]);
+  if (!campoID) return;
 
-    return parseCSV(
-      await risposta.text()
-    );
-  }
+  csv.rows.forEach(riga => {
+    const spId = String(riga[campoID] || "").trim();
+    if (!spId) return;
+    if (!state.growthProfiles[spId]) state.growthProfiles[spId] = new Map();
 
-  function estraiData(value) {
-    if (
-      value === null ||
-      value === undefined ||
-      String(value).trim() === ""
-    ) {
-      return null;
-    }
-
-    const testo = String(value).trim();
-
-    let match = testo.match(
-      /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/
-    );
-
-    if (match) {
-      return new Date(
-        Number(match[3]),
-        Number(match[2]) - 1,
-        Number(match[1])
-      );
-    }
-
-    match = testo.match(
-      /^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})/
-    );
-
-    if (match) {
-      return new Date(
-        Number(match[1]),
-        Number(match[2]) - 1,
-        Number(match[3])
-      );
-    }
-
-    const data = new Date(testo);
-
-    return Number.isNaN(data.getTime())
-      ? null
-      : data;
-  }
-
-  function giornoLocale(data) {
-    return new Date(
-      data.getFullYear(),
-      data.getMonth(),
-      data.getDate()
-    );
-  }
-
-  function oggiLocale() {
-    return giornoLocale(new Date());
-  }
-
-  function chiaveGiorno(data) {
-    const giorno =
-      giornoLocale(data);
-
-    return [
-      giorno.getFullYear(),
-      String(giorno.getMonth() + 1)
-        .padStart(2, "0"),
-      String(giorno.getDate())
-        .padStart(2, "0")
-    ].join("-");
-  }
-
-  function dataPrevisione(indice) {
-    const data =
-      oggiLocale();
-
-    data.setDate(
-      data.getDate() +
-        indice +
-        1
-    );
-
-    return data;
-  }
-
-  function differenzaGiorni(prima, dopo) {
-    return Math.round(
-      (
-        giornoLocale(dopo) -
-        giornoLocale(prima)
-      ) / 86400000
-    );
-  }
-
-  function media(valori) {
-    const validi =
-      valori.filter(valore =>
-        Number.isFinite(valore)
-      );
-
-    if (!validi.length) {
-      return null;
-    }
-
-    return validi.reduce(
-      (somma, valore) =>
-        somma + valore,
-      0
-    ) / validi.length;
-  }
-
-  function formattaNumero(
-    value,
-    decimali = 1
-  ) {
-    if (!Number.isFinite(value)) {
-      return "n/d";
-    }
-
-    return value.toLocaleString(
-      "it-IT",
-      {
-        minimumFractionDigits:
-          decimali,
-
-        maximumFractionDigits:
-          decimali
-      }
-    );
-  }
-
-  function etichettaGiorno(indice) {
-    const data =
-      dataPrevisione(indice);
-
-    const dataBreve = [
-      String(data.getDate())
-        .padStart(2, "0"),
-
-      String(data.getMonth() + 1)
-        .padStart(2, "0")
-    ].join("/");
-
-    return `Giorno ${indice + 1} - (${dataBreve})`;
-  }
-
-  function etichettaGiornoBreve(indice) {
-    const data =
-      dataPrevisione(indice);
-
-    const dataBreve = [
-      String(data.getDate())
-        .padStart(2, "0"),
-
-      String(data.getMonth() + 1)
-        .padStart(2, "0")
-    ].join("/");
-
-    return `${indice + 1} (${dataBreve})`;
-  }
-
-  function costruisciStorico(
-    righe,
-    fields
-  ) {
-    const campoID =
-      trovaCampo(
-        fields,
-        [
-          "id",
-          "idstazione",
-          "stationid",
-          "stazioneid"
-        ]
-      );
-
-    const campoData =
-      trovaCampo(
-        fields,
-        [
-          "data",
-          "date",
-          "giorno",
-          "datetime",
-          "timestamp"
-        ]
-      );
-
-    const campoPioggia =
-      trovaCampo(
-        fields,
-        [
-          "rain_sum",
-          "rain",
-          "pioggia",
-          "rainmm",
-          "precipitazione",
-          "precipitation_sum"
-        ]
-      );
-
-    const campoTMin =
-      trovaCampo(
-        fields,
-        [
-          "tmin",
-          "tempmin",
-          "temperaturemin",
-          "temperaturamin",
-          "temperaturaminima"
-        ]
-      );
-
-    const campoTMax =
-      trovaCampo(
-        fields,
-        [
-          "tmax",
-          "tempmax",
-          "temperaturemax",
-          "temperaturamax",
-          "temperaturamassima"
-        ]
-      );
-
-    if (
-      !campoID ||
-      !campoData
-    ) {
-      throw new Error(
-        "Nel CSV meteo mancano le colonne ID o data."
-      );
-    }
-
-    const perStazione = {};
-
-    righe.forEach(riga => {
-      const id = String(
-        riga[campoID] ?? ""
-      ).trim();
-
-      const data =
-        estraiData(
-          riga[campoData]
-        );
-
-      if (!id || !data) {
-        return;
-      }
-
-      if (!perStazione[id]) {
-        perStazione[id] = {};
-      }
-
-      const chiave =
-        chiaveGiorno(data);
-
-      if (
-        !perStazione[id][chiave]
-      ) {
-        perStazione[id][chiave] = {
-          data: giornoLocale(data),
-          pioggia: 0,
-          tmin: null,
-          tmax: null
-        };
-      }
-
-      const giorno =
-        perStazione[id][chiave];
-
-      const pioggia =
-        numero(
-          campoPioggia
-            ? riga[campoPioggia]
-            : null
-        );
-
-      const tmin =
-        numero(
-          campoTMin
-            ? riga[campoTMin]
-            : null
-        );
-
-      const tmax =
-        numero(
-          campoTMax
-            ? riga[campoTMax]
-            : null
-        );
-
-      if (
-        Number.isFinite(pioggia)
-      ) {
-        giorno.pioggia += pioggia;
-      }
-
-      if (Number.isFinite(tmin)) {
-        giorno.tmin =
-          giorno.tmin === null
-            ? tmin
-            : Math.min(
-                giorno.tmin,
-                tmin
-              );
-      }
-
-      if (Number.isFinite(tmax)) {
-        giorno.tmax =
-          giorno.tmax === null
-            ? tmax
-            : Math.max(
-                giorno.tmax,
-                tmax
-              );
+    Object.keys(riga).forEach(col => {
+      const giorno = parseInt(col);
+      const perc = numero(riga[col]);
+      if (Number.isInteger(giorno) && Number.isFinite(perc)) {
+        state.growthProfiles[spId].set(giorno, perc);
       }
     });
-
-    const risultato = {};
-
-    Object.entries(
-      perStazione
-    ).forEach(
-      ([id, valori]) => {
-        const giorni =
-          Object.values(valori)
-            .sort(
-              (a, b) =>
-                a.data - b.data
-            )
-            .slice(-GIORNI_STORICO);
-
-        risultato[id] = {
-          giorni,
-
-          mediaTMin: media(
-            giorni.map(
-              giorno =>
-                giorno.tmin
-            )
-          ),
-
-          mediaTMax: media(
-            giorni.map(
-              giorno =>
-                giorno.tmax
-            )
-          ),
-
-          records: giorni.length
-        };
-      }
-    );
-
-    return risultato;
-  }
-
-  function costruisciStazioni(
-    righe,
-    fields,
-    storico
-  ) {
-    const campoID =
-      trovaCampo(
-        fields,
-        [
-          "id",
-          "idstazione",
-          "stationid",
-          "stazioneid"
-        ]
-      );
-
-    const campoNome =
-      trovaCampo(
-        fields,
-        [
-          "nome",
-          "stazione",
-          "nomestazione",
-          "localita"
-        ]
-      );
-
-    const campoAlt =
-      trovaCampo(
-        fields,
-        [
-          "altitudine",
-          "altitude",
-          "quota"
-        ]
-      );
-
-    const campoLat =
-      trovaCampo(
-        fields,
-        [
-          "lat",
-          "latitudine",
-          "latitude"
-        ]
-      );
-
-    const campoLon =
-      trovaCampo(
-        fields,
-        [
-          "lon",
-          "long",
-          "longitudine",
-          "longitude"
-        ]
-      );
-
-    const campoLink =
-      trovaCampo(
-        fields,
-        [
-          "link",
-          "url"
-        ]
-      );
-
-    if (!campoID) {
-      throw new Error(
-        "Nel CSV stazioni manca la colonna ID."
-      );
-    }
-
-    return righe
-      .map(riga => {
-        const id = String(
-          riga[campoID] ?? ""
-        ).trim();
-
-        if (!id) {
-          return null;
-        }
-
-        const dati =
-          storico[id] || {
-            giorni: [],
-            mediaTMin: null,
-            mediaTMax: null,
-            records: 0
-          };
-
-        const temperaturaMedia =
-          Number.isFinite(
-            dati.mediaTMin
-          ) &&
-          Number.isFinite(
-            dati.mediaTMax
-          )
-            ? (
-                dati.mediaTMin +
-                dati.mediaTMax
-              ) / 2
-            : 15;
-
-        return {
-          id,
-
-          nome:
-            String(
-              campoNome
-                ? riga[campoNome]
-                : ""
-            ).trim() || id,
-
-          alt:
-            numero(
-              campoAlt
-                ? riga[campoAlt]
-                : null
-            ) ?? 0,
-
-          lat:
-            numero(
-              campoLat
-                ? riga[campoLat]
-                : null
-            ) ?? 42.35,
-
-          lon:
-            numero(
-              campoLon
-                ? riga[campoLon]
-                : null
-            ) ?? 13.4,
-
-          link:
-            campoLink
-              ? String(
-                  riga[campoLink] ?? ""
-                ).trim()
-              : "",
-
-          storicoGiorni:
-            dati.giorni,
-
-          mediaTMin:
-            dati.mediaTMin,
-
-          mediaTMax:
-            dati.mediaTMax,
-
-          storicoTMedia:
-            temperaturaMedia,
-
-          records:
-            dati.records
-        };
-      })
-      .filter(Boolean);
-  }
-
-  function costruisciSpecie(
-    righe
-  ) {
-    return righe
-      .map(riga => ({
-        id:
-          String(
-            riga.id ?? ""
-          ).trim(),
-
-        nome:
-          String(
-            riga.nome ?? ""
-          ).trim(),
-
-        nomeComune:
-          String(
-            riga.nomeComune ?? ""
-          ).trim(),
-
-        attivo:
-          riga.attivo === undefined ||
-          riga.attivo === ""
-            ? true
-            : booleano(
-                riga.attivo
-              ),
-
-        ordine:
-          numero(
-            riga.ordine
-          ) ?? 999,
-
-        habitat:
-          String(
-            riga.habitat ?? ""
-          ).trim(),
-
-        altMin:
-          numero(
-            riga.altMin
-          ) ?? 0,
-
-        altMax:
-          numero(
-            riga.altMax
-          ) ?? 3000,
-
-        mesiInizio:
-          numero(
-            riga.mesiInizio
-          ) ?? 1,
-
-        mesiFine:
-          numero(
-            riga.mesiFine
-          ) ?? 12,
-
-        rainReq:
-          numero(
-            riga.rainReq
-          ) ?? 0,
-
-        rainWindowDays:
-          numero(
-            riga.rainWindowDays
-          ) ?? 3,
-
-        eventThresholdFactor:
-          numero(
-            riga.eventThresholdFactor
-          ) ?? 1,
-
-        giorniMinDopoPioggia:
-          numero(
-            riga.giorniMinDopoPioggia
-          ) ?? 3,
-
-        giorniMaxDopoPioggia:
-          numero(
-            riga.giorniMaxDopoPioggia
-          ) ?? 12,
-
-        tempMin:
-          numero(
-            riga.tempMin
-          ) ?? 5,
-
-        tempOttimale:
-          numero(
-            riga.tempOttimale
-          ) ?? 18,
-
-        tempMax:
-          numero(
-            riga.tempMax
-          ) ?? 30,
-
-        termofilo:
-          booleano(
-            riga.termofilo
-          ),
-
-        pesoEvento:
-          numero(
-            riga.pesoEvento
-          ) ?? 0.65,
-
-        pesoTemperatura:
-          numero(
-            riga.pesoTemperatura
-          ) ?? 0.55,
-
-        pesoAltitudine:
-          numero(
-            riga.pesoAltitudine
-          ) ?? 0.4,
-
-        pesoStagione:
-          numero(
-            riga.pesoStagione
-          ) ?? 1,
-
-        note:
-          String(
-            riga.note ?? ""
-          ).trim(),
-
-        raw: riga
-      }))
-      .filter(fungo =>
-        fungo.id &&
-        fungo.nome
-      )
-      .sort(
-        (a, b) =>
-          a.ordine - b.ordine
-      );
-  }
-
-  function eFungoDiPrato(fungo) {
-    const habitat =
-      fungo.habitat
-        .toLowerCase();
-
-    return [
-      "prat",
-      "pascol",
-      "radur",
-      "margin",
-      "campo"
-    ].some(parola =>
-      habitat.includes(parola)
-    );
-  }
-
-  function sogliaReset(fungo) {
-    return eFungoDiPrato(fungo)
-      ? SOGLIA_RESET_PRATO
-      : SOGLIA_RESET_BOSCO;
-  }
-
-  async function caricaSpecie() {
-    const csv =
-      await caricaCSV(
-        "speciefunghi.csv"
-      );
-
-    specieFunghi =
-      costruisciSpecie(
-        csv.rows
-      );
-
-    specieAttive =
-      specieFunghi.filter(
-        fungo =>
-          fungo.attivo
-      );
-
-    if (!specieAttive.length) {
-      throw new Error(
-        "Nessuna specie attiva trovata."
-      );
-    }
-  }
-
-  async function caricaProfili() {
-    const csv =
-      await caricaCSV(
-        "speciecrescita.csv"
-      );
-
-    const campoID =
-      trovaCampo(
-        csv.fields,
-        [
-          "id",
-          "specie",
-          "specieid"
-        ]
-      );
-
-    if (!campoID) {
-      throw new Error(
-        "Nel CSV profili manca la colonna ID."
-      );
-    }
-
-    profiliCrescita = {};
-
-    csv.rows.forEach(riga => {
-      const id =
-        String(
-          riga[campoID] ?? ""
-        ).trim();
-
-      if (!id) {
-        return;
-      }
-
-      profiliCrescita[id] = {};
-
-      csv.fields.forEach(
-        campo => {
-          if (campo === campoID) {
-            return;
-          }
-
-          const giorno =
-            Number(campo);
-
-          const valore =
-            numero(riga[campo]);
-
-          if (
-            Number.isInteger(giorno) &&
-            Number.isFinite(valore)
-          ) {
-            profiliCrescita[id][
-              String(giorno)
-            ] = Math.max(
-              0,
-              Math.min(
-                100,
-                valore
-              )
-            );
-          }
-        }
-      );
+  });
+}
+
+function populateControls() {
+  state.stations.sort((a, b) => a.nome.localeCompare(b.nome));
+
+  const spSelect = document.getElementById('species-select');
+  const ssSpSelect = document.getElementById('ss-species-select');
+  state.species.forEach(sp => {
+    const opt = document.createElement('option');
+    opt.value = sp.id;
+    opt.textContent = sp.nomeComune ? `${sp.nomeComune} (${sp.nomeScientifico || sp.id})` : sp.id;
+    spSelect?.appendChild(opt.cloneNode(true));
+    ssSpSelect?.appendChild(opt);
+  });
+
+  const stSelect = document.getElementById('station-select');
+  const ssStSelect = document.getElementById('ss-station-select');
+  state.stations.forEach(st => {
+    const opt = document.createElement('option');
+    opt.value = st.id;
+    opt.textContent = `${st.nome} (${st.quota}m)`;
+    stSelect?.appendChild(opt.cloneNode(true));
+    ssStSelect?.appendChild(opt);
+  });
+
+  const daySelect = document.getElementById('day-select');
+  const dateDaySelect = document.getElementById('date-day-select');
+  const dates = getForecastDateRange(state.referenceTodayStr, FORECAST_DAYS_AHEAD);
+  dates.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d;
+    opt.textContent = d === state.referenceTodayStr ? `${d} (Oggi)` : d;
+    daySelect?.appendChild(opt.cloneNode(true));
+    dateDaySelect?.appendChild(opt);
+  });
+
+  document.getElementById('mode-species-button').addEventListener('click', () => switchTab('species'));
+  document.getElementById('mode-station-button').addEventListener('click', () => switchTab('station'));
+  document.getElementById('mode-date-button').addEventListener('click', () => switchTab('date'));
+  document.getElementById('mode-station-species-button').addEventListener('click', () => switchTab('station-species'));
+
+  document.getElementById('generate-button').addEventListener('click', generateSpeciesReport);
+  document.getElementById('generate-station-button').addEventListener('click', generateStationReport);
+  document.getElementById('generate-date-button').addEventListener('click', generateDateReport);
+  document.getElementById('generate-station-species-button').addEventListener('click', generateStationSpeciesReport);
+
+  ['day-select', 'species-select'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => {
+      const d = document.getElementById('day-select').value;
+      const s = document.getElementById('species-select').value;
+      document.getElementById('generate-button').disabled = !(d && s);
     });
-  }
-
-  async function caricaPrevisioni() {
-    const risultati =
-      await Promise.allSettled(
-        stazioni.map(
-          async stazione => {
-            const parametri =
-              new URLSearchParams({
-                latitude:
-                  String(
-                    stazione.lat
-                  ),
-
-                longitude:
-                  String(
-                    stazione.lon
-                  ),
-
-                daily:
-                  "temperature_2m_max,temperature_2m_min",
-
-                timezone:
-                  "Europe/Rome",
-
-                forecast_days:
-                  String(
-                    GIORNI_PREVISIONE + 1
-                  )
-              });
-
-            const risposta =
-              await fetch(
-                "https://api.open-meteo.com/v1/forecast?" +
-                  parametri.toString()
-              );
-
-            if (!risposta.ok) {
-              throw new Error(
-                `Previsione non disponibile per ${stazione.nome}.`
-              );
-            }
-
-            const json =
-              await risposta.json();
-
-            return {
-              id: stazione.id,
-              daily: json.daily
-            };
-          }
-        )
-      );
-
-    datiPrevisioniMeteo = {};
-
-    risultati.forEach(
-      risultato => {
-        if (
-          risultato.status ===
-          "fulfilled"
-        ) {
-          datiPrevisioniMeteo[
-            risultato.value.id
-          ] =
-            risultato.value.daily;
-        } else {
-          console.warn(
-            risultato.reason
-          );
-        }
-      }
-    );
-  }
-
-  function valoreProfilo(
-    fungo,
-    giorno
-  ) {
-    const profilo =
-      profiliCrescita[fungo.id] || {};
-
-    const valore =
-      profilo[String(giorno)];
-
-    if (
-      Number.isFinite(valore)
-    ) {
-      return Math.max(
-        0,
-        Math.min(
-          100,
-          valore
-        )
-      );
-    }
-
-    return 0;
-  }
-
-  function trovaEventi(
-    stazione,
-    fungo
-  ) {
-    const giorni =
-      stazione.storicoGiorni
-        .slice()
-        .sort(
-          (a, b) =>
-            a.data - b.data
-        );
-
-    if (!giorni.length) {
-      return [];
-    }
-
-    const eventi = [];
-
-    const pioggiaMinima =
-      Math.max(
-        0,
-        fungo.rainReq *
-          fungo.eventThresholdFactor
-      );
-
-    const finestra =
-      Math.max(
-        1,
-        Math.round(
-          fungo.rainWindowDays
-        )
-      );
-
-    const reset =
-      sogliaReset(fungo);
-
-    let eventoAttivo = null;
-
-    giorni.forEach(
-      (giorno, indice) => {
-        const inizio =
-          Math.max(
-            0,
-            indice -
-              finestra +
-              1
-          );
-
-        const giorniFinestra =
-          giorni.slice(
-            inizio,
-            indice + 1
-          );
-
-        const pioggiaCumulata =
-          giorniFinestra.reduce(
-            (totale, elemento) =>
-              totale +
-              (
-                Number.isFinite(
-                  elemento.pioggia
-                )
-                  ? elemento.pioggia
-                  : 0
-              ),
-            0
-          );
-
-        const raggiunta =
-          pioggiaCumulata >=
-          pioggiaMinima;
-
-        if (
-          !eventoAttivo &&
-          raggiunta
-        ) {
-          eventoAttivo = {
-            startDate:
-              giornoLocale(
-                giorno.data
-              ),
-
-            rainAmount:
-              pioggiaCumulata
-          };
-
-          eventi.push(
-            eventoAttivo
-          );
-
-          return;
-        }
-
-        if (
-          eventoAttivo &&
-          giorno.pioggia > reset
-        ) {
-          eventoAttivo = {
-            startDate:
-              giornoLocale(
-                giorno.data
-              ),
-
-            rainAmount:
-              pioggiaCumulata
-          };
-
-          eventi.push(
-            eventoAttivo
-          );
-        }
-      }
-    );
-
-    return eventi;
-  }
-
-  function eventoPerData(
-    stazione,
-    fungo,
-    data
-  ) {
-    const eventi =
-      trovaEventi(
-        stazione,
-        fungo
-      );
-
-    const validi =
-      eventi
-        .filter(
-          evento =>
-            evento.startDate <=
-            data
-        )
-        .sort(
-          (a, b) =>
-            b.startDate -
-            a.startDate
-        );
-
-    return validi[0] || null;
-  }
-
-  function giornoProfilo(
-    evento,
-    data
-  ) {
-    return Math.max(
-      GIORNI_PROFILO_INIZIALE,
-      GIORNI_PROFILO_INIZIALE +
-        differenzaGiorni(
-          evento.startDate,
-          data
-        )
-    );
-  }
-
-  function fattoreEvento(
-    stazione,
-    fungo,
-    data
-  ) {
-    const evento =
-      eventoPerData(
-        stazione,
-        fungo,
-        data
-      );
-
-    if (!evento) {
-      return 0;
-    }
-
-    const giorno =
-      giornoProfilo(
-        evento,
-        data
-      );
-
-    return valoreProfilo(
-      fungo,
-      giorno
-    ) / 100;
-  }
-
-  function fattoreStagione(
-    fungo,
-    data
-  ) {
-    const mese =
-      data.getMonth() + 1;
-
-    const inStagione =
-      fungo.mesiInizio <=
-      fungo.mesiFine
-        ? (
-            mese >=
-              fungo.mesiInizio &&
-            mese <=
-              fungo.mesiFine
-          )
-        : (
-            mese >=
-              fungo.mesiInizio ||
-            mese <=
-              fungo.mesiFine
-          );
-
-    return inStagione
-      ? 1
-      : 0;
-  }
-
-  function fattoreTemperatura(
-    temperatura,
-    fungo
-  ) {
-    if (
-      !Number.isFinite(
-        temperatura
-      )
-    ) {
-      return 0.55;
-    }
-
-    if (
-      temperatura <=
-        fungo.tempMin ||
-      temperatura >=
-        fungo.tempMax
-    ) {
-      return 0.12;
-    }
-
-    if (
-      temperatura ===
-      fungo.tempOttimale
-    ) {
-      return 1;
-    }
-
-    const distanza =
-      Math.abs(
-        temperatura -
-          fungo.tempOttimale
-      );
-
-    const ampiezza =
-      temperatura <
-      fungo.tempOttimale
-        ? fungo.tempOttimale -
-          fungo.tempMin
-        : fungo.tempMax -
-          fungo.tempOttimale;
-
-    return Math.max(
-      0.2,
-      1 -
-        (
-          0.8 *
-          (
-            distanza /
-            Math.max(
-              1,
-              ampiezza
-            )
-          )
-        )
-    );
-  }
-
-  function fattoreAltitudine(
-    stazione,
-    fungo
-  ) {
-    if (
-      stazione.alt >=
-        fungo.altMin &&
-      stazione.alt <=
-        fungo.altMax
-    ) {
-      return 1;
-    }
-
-    const distanza =
-      stazione.alt <
-      fungo.altMin
-        ? fungo.altMin -
-          stazione.alt
-        : stazione.alt -
-          fungo.altMax;
-
-    const ampiezza =
-      Math.max(
-        100,
-        fungo.altMax -
-          fungo.altMin
-      );
-
-    return Math.max(
-      0.25,
-      1 -
-        (
-          0.75 *
-          Math.min(
-            1,
-            distanza /
-              ampiezza
-          )
-        )
-    );
-  }
-
-  function temperaturaPrevisione(
-    stazione,
-    indice
-  ) {
-    const daily =
-      datiPrevisioniMeteo[
-        stazione.id
-      ];
-
-    const posizione =
-      indice + 1;
-
-    const tmin =
-      daily?.temperature_2m_min?.[
-        posizione
-      ];
-
-    const tmax =
-      daily?.temperature_2m_max?.[
-        posizione
-      ];
-
-    if (
-      Number.isFinite(tmin) &&
-      Number.isFinite(tmax)
-    ) {
-      return (
-        tmin +
-        tmax
-      ) / 2;
-    }
-
-    return stazione.storicoTMedia;
-  }
-
-  function calcolaProbabilita(
-    stazione,
-    fungo,
-    indice
-  ) {
-    const data =
-      dataPrevisione(indice);
-
-    const evento =
-      fattoreEvento(
-        stazione,
-        fungo,
-        data
-      );
-
-    /*
-     * Nessun evento significa
-     * pioggia minima non raggiunta.
-     * In questo caso: S = S × 0
-     * e la probabilità finale è 0%.
-     */
-    if (evento === 0) {
-      return 0;
-    }
-
-    const stagione =
-      fattoreStagione(
-        fungo,
-        data
-      );
-
-    /*
-     * Fuori dal periodo di crescita (mesiInizio - mesiFine).
-     * In questo caso la probabilità diventa 0%.
-     */
-    if (stagione === 0) {
-      return 0;
-    }
-
-    const temperatura =
-      temperaturaPrevisione(
-        stazione,
-        indice
-      );
-
-    const temperaturaFattore =
-      fattoreTemperatura(
-        temperatura,
-        fungo
-      );
-
-    const altitudine =
-      fattoreAltitudine(
-        stazione,
-        fungo
-      );
-
-    const pesoEvento =
-      Math.max(
-        0.05,
-        fungo.pesoEvento
-      );
-
-    const pesoTemperatura =
-      Math.max(
-        0.05,
-        fungo.pesoTemperatura
-      );
-
-    const pesoAltitudine =
-      Math.max(
-        0.05,
-        fungo.pesoAltitudine
-      );
-
-    const pesoStagione =
-      Math.max(
-        0.05,
-        fungo.pesoStagione
-      );
-
-    const sommaPesi =
-      pesoEvento +
-      pesoTemperatura +
-      pesoAltitudine +
-      pesoStagione;
-
-    let score =
-      (
-        evento *
-          pesoEvento +
-
-        temperaturaFattore *
-          pesoTemperatura +
-
-        altitudine *
-          pesoAltitudine +
-
-        stagione *
-          pesoStagione
-      ) / sommaPesi;
-
-    if (
-      fungo.termofilo &&
-      temperatura <
-        fungo.tempOttimale
-    ) {
-      score *= 0.88;
-    }
-
-    if (
-      !fungo.termofilo &&
-      temperatura >
-        fungo.tempMax
-    ) {
-      score *= 0.82;
-    }
-
-    if (
-      evento >= 0.8 &&
-      temperaturaFattore >= 0.8 &&
-      altitudine >= 0.8 &&
-      stagione >= 0.9
-    ) {
-      score += 0.08;
-    }
-
-    return Math.max(
-      0,
-      Math.min(
-        MASSIMO_PROBABILITA,
-        Math.round(
-          score * 100
-        )
-      )
-    );
-  }
-
-  function classeProbabilita(
-    probabilita
-  ) {
-    if (probabilita >= 75) {
-      return "prob-high";
-    }
-
-    if (probabilita >= 40) {
-      return "prob-medium";
-    }
-
-    if (probabilita >= 15) {
-      return "prob-low";
-    }
-
-    return "prob-none";
-  }
-
-  function aggiornaUltimoAggiornamento() {
-    const testo =
-      new Date().toLocaleString(
-        "it-IT"
-      );
-
-    if (els.lastUpdate) {
-      els.lastUpdate.textContent =
-        testo;
-    }
-
-    if (els.dataLastUpdate) {
-      els.dataLastUpdate.textContent =
-        testo;
-    }
-  }
-
-  function aggiornaRiepilogo() {
-    if (els.stationsCount) {
-      els.stationsCount.textContent =
-        String(stazioni.length);
-    }
-
-    if (els.recordsCount) {
-      els.recordsCount.textContent =
-        String(
-          stazioni.reduce(
-            (totale, stazione) =>
-              totale +
-              stazione.records,
-            0
-          )
-        );
-    }
-
-    const summary =
-      el("data-summary");
-
-    if (summary) {
-      summary.style.display =
-        "flex";
-    }
-  }
-
-  function aggiornaPlaceholder(select) {
-    if (!select) {
-      return;
-    }
-
-    select.classList.toggle(
-      "placeholder",
-      select.value === ""
-    );
-  }
-
-  function popolaSelettoriGiorni() {
-    const selettori = [
-      els.daySelect,
-      els.dateDaySelect
-    ];
-
-    selettori.forEach(select => {
-      if (!select) {
-        return;
-      }
-
-      const valoreCorrente =
-        select.value;
-
-      select.innerHTML =
-        `<option value="">
-          Seleziona un giorno
-        </option>`;
-
-      for (
-        let i = 0;
-        i < GIORNI_PREVISIONE;
-        i++
-      ) {
-        const option =
-          document.createElement(
-            "option"
-          );
-
-        option.value =
-          String(i + 1);
-
-        option.textContent =
-          etichettaGiorno(i);
-
-        select.appendChild(
-          option
-        );
-      }
-
-      select.value =
-        valoreCorrente;
-
-      aggiornaPlaceholder(select);
+  });
+
+  ['station-select', 'probability-filter'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => {
+      const st = document.getElementById('station-select').value;
+      const p = document.getElementById('probability-filter').value;
+      document.getElementById('generate-station-button').disabled = !(st && p !== "");
     });
-  }
-
-  function popolaSpecie() {
-    if (!els.speciesSelect) {
-      return;
-    }
-
-    els.speciesSelect.innerHTML =
-      `<option value="">
-        Seleziona una specie
-      </option>`;
-
-    specieAttive.forEach(
-      fungo => {
-        const option =
-          document.createElement(
-            "option"
-          );
-
-        option.value =
-          fungo.id;
-
-        option.textContent =
-          fungo.nomeComune
-            ? `${fungo.nome} - ${fungo.nomeComune}`
-            : fungo.nome;
-
-        els.speciesSelect.appendChild(
-          option
-        );
-      }
-    );
-  }
-
-  function popolaStazioni() {
-    if (!els.stationSelect) {
-      return;
-    }
-
-    els.stationSelect.innerHTML =
-      `<option value="">
-        Seleziona una stazione
-      </option>`;
-
-    stazioni
-      .slice()
-      .sort(
-        (a, b) =>
-          a.nome.localeCompare(
-            b.nome,
-            "it",
-            {
-              sensitivity: "base"
-            }
-          )
-      )
-      .forEach(
-        stazione => {
-          const option =
-            document.createElement(
-              "option"
-            );
-
-          option.value =
-            stazione.id;
-
-          option.textContent =
-            stazione.nome;
-
-          els.stationSelect.appendChild(
-            option
-          );
-        }
-      );
-  }
-
-  function aggiornaStatoSpecie() {
-    aggiornaPlaceholder(
-      els.daySelect
-    );
-
-    aggiornaPlaceholder(
-      els.speciesSelect
-    );
-
-    const valido =
-      els.daySelect &&
-      els.speciesSelect &&
-      els.daySelect.value !== "" &&
-      els.speciesSelect.value !== "";
-
-    if (els.generateButton) {
-      els.generateButton.disabled =
-        !valido;
-    }
-
-    if (els.selectionStatus) {
-      els.selectionStatus.textContent =
-        valido
-          ? "Parametri completi."
-          : "Seleziona giorno e specie.";
-    }
-  }
-
-  function aggiornaStatoStazione() {
-    aggiornaPlaceholder(
-      els.stationSelect
-    );
-
-    aggiornaPlaceholder(
-      els.probabilityFilter
-    );
-
-    const valido =
-      els.stationSelect &&
-      els.probabilityFilter &&
-      els.stationSelect.value !== "" &&
-      els.probabilityFilter.value !== "";
-
-    if (els.generateStationButton) {
-      els.generateStationButton.disabled =
-        !valido;
-    }
-
-    if (els.stationSelectionStatus) {
-      els.stationSelectionStatus.textContent =
-        valido
-          ? "Parametri completi."
-          : "Seleziona stazione e soglia.";
-    }
-  }
-
-  function aggiornaStatoData() {
-    aggiornaPlaceholder(
-      els.dateDaySelect
-    );
-
-    const valido =
-      els.dateDaySelect &&
-      els.dateDaySelect.value !== "";
-
-    if (els.generateDateButton) {
-      els.generateDateButton.disabled =
-        !valido;
-    }
-
-    if (els.dateSelectionStatus) {
-      els.dateSelectionStatus.textContent =
-        valido
-          ? "Parametri completi."
-          : "Seleziona un giorno.";
-    }
-  }
-
-  function cambiaModalita(modalita) {
-    const specie =
-      modalita === "species";
-
-    const stazione =
-      modalita === "station";
-
-    const data =
-      modalita === "date";
-
-    if (els.modeSpeciesButton) {
-      els.modeSpeciesButton.classList.toggle(
-        "active",
-        specie
-      );
-    }
-
-    if (els.modeStationButton) {
-      els.modeStationButton.classList.toggle(
-        "active",
-        stazione
-      );
-    }
-
-    if (els.modeDateButton) {
-      els.modeDateButton.classList.toggle(
-        "active",
-        data
-      );
-    }
-
-    if (els.speciesReportControls) {
-      els.speciesReportControls.classList.toggle(
-        "hidden",
-        !specie
-      );
-    }
-
-    if (els.stationReportControls) {
-      els.stationReportControls.classList.toggle(
-        "hidden",
-        !stazione
-      );
-    }
-
-    if (els.dateReportControls) {
-      els.dateReportControls.classList.toggle(
-        "hidden",
-        !data
-      );
-    }
-
-    if (els.forecastPanel) {
-      els.forecastPanel.classList.add(
-        "hidden"
-      );
-    }
-  }
-
-  function creaCella(
-    testo,
-    classe = ""
-  ) {
-    const td =
-      document.createElement(
-        "td"
-      );
-
-    td.textContent =
-      String(testo);
-
-    if (classe) {
-      td.className =
-        classe;
-    }
-
-    return td;
-  }
-
-  function renderReportSpecie() {
-    const fungo =
-      specieAttive.find(
-        elemento =>
-          elemento.id ===
-          specieSelezionata
-      );
-
-    const indice =
-      Number(giornoSelezionato) - 1;
-
-    if (
-      !fungo ||
-      indice < 0 ||
-      indice >= GIORNI_PREVISIONE
-    ) {
-      return;
-    }
-
-    const data =
-      dataPrevisione(indice);
-
-    if (els.currentMushroomTitle) {
-      els.currentMushroomTitle.textContent =
-        `Previsione · ${fungo.nome}`;
-    }
-
-    if (
-      els.currentSelectionDescription
-    ) {
-      els.currentSelectionDescription.textContent =
-        `${etichettaGiorno(indice)} · stazioni ordinate per probabilità.`;
-    }
-
-    if (els.forecastThead) {
-      els.forecastThead.innerHTML = `
-        <tr>
-          <th class="rank-cell">
-            Pos.
-          </th>
-
-          <th>
-            Stazione
-          </th>
-
-          <th>
-            Altitudine
-          </th>
-
-          <th>
-            Evento pioggia
-          </th>
-
-          <th>
-            Profilo
-          </th>
-
-          <th>
-            Probabilità
-          </th>
-        </tr>
-      `;
-    }
-
-    if (!els.tableBody) {
-      return;
-    }
-
-    els.tableBody.innerHTML =
-      "";
-
-    const righe =
-      stazioni
-        .map(stazione => {
-          const evento =
-            eventoPerData(
-              stazione,
-              fungo,
-              data
-            );
-
-          const probabilita =
-            calcolaProbabilita(
-              stazione,
-              fungo,
-              indice
-            );
-
-          return {
-            stazione,
-            evento,
-            probabilita
-          };
-        })
-        .sort(
-          (a, b) =>
-            b.probabilita -
-            a.probabilita
-        );
-
-    righe.forEach(
-      (riga, posizione) => {
-        const tr =
-          document.createElement(
-            "tr"
-          );
-
-        tr.appendChild(
-          creaCella(
-            posizione + 1,
-            "rank-cell"
-          )
-        );
-
-        const tdNome =
-          document.createElement(
-            "td"
-          );
-
-        const button =
-          document.createElement(
-            "button"
-          );
-
-        button.type =
-          "button";
-
-        button.className =
-          "station-name-button";
-
-        button.textContent =
-          riga.stazione.nome;
-
-        button.addEventListener(
-          "click",
-          () =>
-            mostraPopupStazione(
-              riga.stazione
-            )
-        );
-
-        tdNome.appendChild(
-          button
-        );
-
-        tr.appendChild(
-          tdNome
-        );
-
-        tr.appendChild(
-          creaCella(
-            `${formattaNumero(
-              riga.stazione.alt,
-              0
-            )} m`
-          )
-        );
-
-        tr.appendChild(
-          creaCella(
-            riga.evento
-              ? `${formattaNumero(
-                  riga.evento.rainAmount,
-                  1
-                )} mm`
-              : "Nessun evento",
-
-            riga.evento
-              ? "growth-event"
-              : "growth-no-event"
-          )
-        );
-
-        tr.appendChild(
-          creaCella(
-            riga.evento
-              ? String(
-                  giornoProfilo(
-                    riga.evento,
-                    data
-                  )
-                )
-              : "—",
-
-            riga.evento
-              ? "growth-event"
-              : "growth-no-event"
-          )
-        );
-
-        tr.appendChild(
-          creaCella(
-            `${riga.probabilita}%`,
-            `probability-cell ${classeProbabilita(
-              riga.probabilita
-            )}`
-          )
-        );
-
-        els.tableBody.appendChild(
-          tr
-        );
-      }
-    );
-
-    if (els.forecastPanel) {
-      els.forecastPanel.classList.remove(
-        "hidden"
-      );
-    }
-  }
-
-  function renderReportStazione() {
-    const stazione =
-      stazioni.find(
-        elemento =>
-          elemento.id ===
-          stazioneSelezionata
-      );
-
-    if (!stazione) {
-      return;
-    }
-
-    const soglia =
-      Number(
-        filtroProbabilita
-      );
-
-    const righe =
-      specieAttive
-        .map(fungo => ({
-          fungo,
-
-          valori:
-            Array.from(
-              {
-                length:
-                  GIORNI_PREVISIONE
-              },
-              (_, indice) =>
-                calcolaProbabilita(
-                  stazione,
-                  fungo,
-                  indice
-                )
-            )
-        }))
-        .filter(riga =>
-          riga.valori.some(
-            valore =>
-              valore > soglia
-          )
-        );
-
-    if (els.currentMushroomTitle) {
-      els.currentMushroomTitle.textContent =
-        `Previsione stazione · ${stazione.nome}`;
-    }
-
-    if (
-      els.currentSelectionDescription
-    ) {
-      els.currentSelectionDescription.textContent =
-        `Specie con almeno un valore superiore a ${soglia}%.`;
-    }
-
-    if (els.forecastThead) {
-      const colonne =
-        Array.from(
-          {
-            length:
-              GIORNI_PREVISIONE
-          },
-          (_, indice) =>
-            `<th>${etichettaGiornoBreve(
-              indice
-            )}</th>`
-        ).join("");
-
-      els.forecastThead.innerHTML = `
-        <tr>
-          <th class="species-name-cell">
-            Specie
-          </th>
-
-          ${colonne}
-        </tr>
-      `;
-    }
-
-    if (!els.tableBody) {
-      return;
-    }
-
-    els.tableBody.innerHTML =
-      "";
-
-    if (!righe.length) {
-      const tr =
-        document.createElement(
-          "tr"
-        );
-
-      const td =
-        document.createElement(
-          "td"
-        );
-
-      td.colSpan =
-        GIORNI_PREVISIONE + 1;
-
-      td.textContent =
-        "Nessuna specie supera la soglia selezionata.";
-
-      tr.appendChild(td);
-
-      els.tableBody.appendChild(
-        tr
-      );
-    }
-
-    righe.forEach(
-      riga => {
-        const tr =
-          document.createElement(
-            "tr"
-          );
-
-        const tdSpecie =
-          document.createElement(
-            "td"
-          );
-
-        const button =
-          document.createElement(
-            "button"
-          );
-
-        button.type =
-          "button";
-
-        button.className =
-          "species-name-button";
-
-        button.textContent =
-          riga.fungo.nome;
-
-        button.addEventListener(
-          "click",
-          () =>
-            mostraPopupSpecie(
-              riga.fungo
-            )
-        );
-
-        tdSpecie.appendChild(
-          button
-        );
-
-        tr.appendChild(
-          tdSpecie
-        );
-
-        riga.valori.forEach(
-          probabilita => {
-            tr.appendChild(
-              creaCella(
-                `${probabilita}%`,
-                `probability-cell ${classeProbabilita(
-                  probabilita
-                )}`
-              )
-            );
-          }
-        );
-
-        els.tableBody.appendChild(
-          tr
-        );
-      }
-    );
-
-    if (els.forecastPanel) {
-      els.forecastPanel.classList.remove(
-        "hidden"
-      );
-    }
-  }
-
-  function renderReportData() {
-    const indice =
-      Number(giornoDataSelezionato) - 1;
-
-    if (
-      indice < 0 ||
-      indice >= GIORNI_PREVISIONE
-    ) {
-      return;
-    }
-
-    const data =
-      dataPrevisione(indice);
-
-    if (els.currentMushroomTitle) {
-      els.currentMushroomTitle.textContent =
-        `Previsione per data · ${etichettaGiorno(indice)}`;
-    }
-
-    if (els.currentSelectionDescription) {
-      els.currentSelectionDescription.textContent =
-        `${etichettaGiorno(indice)} · specie e stazioni ordinate per probabilità decrescente.`;
-    }
-
-    if (els.forecastThead) {
-      els.forecastThead.innerHTML = `
-        <tr>
-          <th class="rank-cell">
-            Pos.
-          </th>
-
-          <th>
-            Specie
-          </th>
-
-          <th>
-            Stazione
-          </th>
-
-          <th>
-            Evento pioggia
-          </th>
-
-          <th>
-            Profilo
-          </th>
-
-          <th>
-            Probabilità
-          </th>
-        </tr>
-      `;
-    }
-
-    if (!els.tableBody) {
-      return;
-    }
-
-    els.tableBody.innerHTML = "";
-
-    const righe = [];
-
-    specieAttive.forEach(fungo => {
-      stazioni.forEach(stazione => {
-        const evento =
-          eventoPerData(
-            stazione,
-            fungo,
-            data
-          );
-
-        const probabilita =
-          calcolaProbabilita(
-            stazione,
-            fungo,
-            indice
-          );
-
-        righe.push({
-          fungo,
-          stazione,
-          evento,
-          probabilita
-        });
-      });
+  });
+
+  document.getElementById('date-day-select')?.addEventListener('change', () => {
+    const d = document.getElementById('date-day-select').value;
+    document.getElementById('generate-date-button').disabled = !d;
+  });
+
+  ['ss-station-select', 'ss-species-select'].forEach(id => {
+    document.getElementById(id)?.addEventListener('change', () => {
+      const st = document.getElementById('ss-station-select').value;
+      const sp = document.getElementById('ss-species-select').value;
+      document.getElementById('generate-station-species-button').disabled = !(st && sp);
     });
+  });
+}
 
-    righe.sort(
-      (a, b) =>
-        b.probabilita -
-        a.probabilita
-    );
-
-    righe.forEach((riga, posizione) => {
-      const tr =
-        document.createElement("tr");
-
-      tr.appendChild(
-        creaCella(
-          posizione + 1,
-          "rank-cell"
-        )
-      );
-
-      const tdSpecie =
-        document.createElement("td");
-
-      const buttonSpecie =
-        document.createElement("button");
-
-      buttonSpecie.type = "button";
-      buttonSpecie.className = "species-name-button";
-      buttonSpecie.textContent = riga.fungo.nome;
-
-      buttonSpecie.addEventListener(
-        "click",
-        () => mostraPopupSpecie(riga.fungo)
-      );
-
-      tdSpecie.appendChild(buttonSpecie);
-      tr.appendChild(tdSpecie);
-
-      const tdStazione =
-        document.createElement("td");
-
-      const buttonStazione =
-        document.createElement("button");
-
-      buttonStazione.type = "button";
-      buttonStazione.className = "station-name-button";
-      buttonStazione.textContent = riga.stazione.nome;
-
-      buttonStazione.addEventListener(
-        "click",
-        () => mostraPopupStazione(riga.stazione)
-      );
-
-      tdStazione.appendChild(buttonStazione);
-      tr.appendChild(tdStazione);
-
-      tr.appendChild(
-        creaCella(
-          riga.evento
-            ? `${formattaNumero(
-                riga.evento.rainAmount,
-                1
-              )} mm`
-            : "Nessun evento",
-          riga.evento
-            ? "growth-event"
-            : "growth-no-event"
-        )
-      );
-
-      tr.appendChild(
-        creaCella(
-          riga.evento
-            ? String(
-                giornoProfilo(
-                  riga.evento,
-                  data
-                )
-              )
-            : "—",
-          riga.evento
-            ? "growth-event"
-            : "growth-no-event"
-        )
-      );
-
-      tr.appendChild(
-        creaCella(
-          `${riga.probabilita}%`,
-          `probability-cell ${classeProbabilita(
-            riga.probabilita
-          )}`
-        )
-      );
-
-      els.tableBody.appendChild(tr);
-    });
-
-    if (els.forecastPanel) {
-      els.forecastPanel.classList.remove("hidden");
-    }
+window.goToStationSpecies = (stationId, speciesId) => {
+  const modeBtn = document.getElementById('mode-station-species-button');
+  if (modeBtn) modeBtn.click();
+  
+  const stationSelect = document.getElementById('ss-station-select');
+  const speciesSelect = document.getElementById('ss-species-select');
+  
+  if (stationSelect) stationSelect.value = stationId;
+  if (speciesSelect) speciesSelect.value = speciesId;
+  
+  const execBtn = document.getElementById('generate-station-species-button');
+  if (execBtn) {
+    execBtn.disabled = false;
+    execBtn.click();
   }
+};
 
-  function mostraPopupSpecie(fungo) {
-    if (
-      !els.speciesPopupOverlay ||
-      !els.speciesPopupContent
-    ) {
-      return;
-    }
+function switchTab(tab) {
+  const tabs = {
+    'species': { btn: 'mode-species-button', ctrl: 'species-report-controls' },
+    'station': { btn: 'mode-station-button', ctrl: 'station-report-controls' },
+    'date': { btn: 'mode-date-button', ctrl: 'date-report-controls' },
+    'station-species': { btn: 'mode-station-species-button', ctrl: 'station-species-report-controls' }
+  };
 
-    const campi = [
-      ["ID", "id"],
-      ["Nome scientifico", "nome"],
-      ["Nome comune", "nomeComune"],
-      ["Attivo", "attivo"],
-      ["Habitat", "habitat"],
-      ["Altitudine minima", "altMin"],
-      ["Altitudine massima", "altMax"],
-      ["Mese iniziale", "mesiInizio"],
-      ["Mese finale", "mesiFine"],
-      ["Pioggia richiesta", "rainReq"],
-      ["Finestra pioggia", "rainWindowDays"],
-      [
-        "Fattore soglia evento",
-        "eventThresholdFactor"
-      ],
-      [
-        "Giorni minimi dopo pioggia",
-        "giorniMinDopoPioggia"
-      ],
-      [
-        "Giorni massimi dopo pioggia",
-        "giorniMaxDopoPioggia"
-      ],
-      ["Temperatura minima", "tempMin"],
-      ["Temperatura ottimale", "tempOttimale"],
-      ["Temperatura massima", "tempMax"],
-      ["Termofilo", "termofilo"],
-      ["Peso evento", "pesoEvento"],
-      ["Peso temperatura", "pesoTemperatura"],
-      ["Peso altitudine", "pesoAltitudine"],
-      ["Peso stagione", "pesoStagione"],
-      ["Note", "note"]
-    ];
+  Object.keys(tabs).forEach(k => {
+    document.getElementById(tabs[k].btn).classList.toggle('active', k === tab);
+    document.getElementById(tabs[k].ctrl).classList.toggle('hidden', k !== tab);
+  });
 
-    const campiHTML =
-      campi
-        .filter(
-          ([, chiave]) =>
-            Object.prototype.hasOwnProperty.call(
-              fungo,
-              chiave
-            )
-        )
-        .map(
-          ([etichetta, chiave]) => `
-            <div class="species-field">
-              <strong>
-                ${escapeHTML(etichetta)}
-              </strong>
+  document.getElementById('forecast-panel').classList.add('hidden');
+}
 
-              <span>
-                ${escapeHTML(
-                  String(
-                    fungo[chiave] ?? "—"
-                  )
-                )}
-              </span>
-            </div>
-          `
-        )
-        .join("");
-
-    els.speciesPopupContent.innerHTML = `
-      <h3
-        id="species-popup-title"
-        class="species-popup-title">
-
-        ${escapeHTML(fungo.nome)}
-      </h3>
-
-      <p class="species-popup-subtitle">
-        Caratteristiche della specie.
-      </p>
-
-      <div class="species-fields">
-        ${campiHTML}
-      </div>
-    `;
-
-    els.speciesPopupOverlay.classList.remove(
-      "hidden"
-    );
-
-    document.body.classList.add(
-      "popup-open"
-    );
+function getForecastDateRange(baseDateStr, daysAhead) {
+  const dates = [];
+  const base = new Date(baseDateStr);
+  for (let i = 0; i <= daysAhead; i++) {
+    const d = new Date(base);
+    d.setDate(base.getDate() + i);
+    dates.push(d.toISOString().split('T')[0]);
   }
+  return dates;
+}
 
-  function chiudiPopupSpecie() {
-    if (
-      !els.speciesPopupOverlay
-    ) {
-      return;
-    }
-
-    els.speciesPopupOverlay.classList.add(
-      "hidden"
-    );
-
-    document.body.classList.remove(
-      "popup-open"
-    );
+function getDateRange(baseDateStr, daysBack, daysAhead) {
+  const dates = [];
+  const base = new Date(baseDateStr);
+  for (let i = -daysBack; i <= daysAhead; i++) {
+    const d = new Date(base);
+    d.setDate(base.getDate() + i);
+    dates.push(d.toISOString().split('T')[0]);
   }
+  return dates;
+}
 
-  function mostraPopupStazione(stazione) {
-    if (
-      !els.stationPopupOverlay ||
-      !els.stationPopupContent
-    ) {
-      return;
-    }
+function getOffsetDate(baseStr, offset) {
+  const d = new Date(baseStr);
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().split('T')[0];
+}
 
-    const giorni =
-      stazione.storicoGiorni
-        .slice()
-        .reverse()
-        .slice(0, 30);
+function getMesiNome(inizio, fine) {
+  const mIni = MESI_NOMI[inizio] || inizio;
+  const mFin = MESI_NOMI[fine] || fine;
+  return `${mIni} - ${mFin}`;
+}
 
-    const righe =
-      giorni.map(
-        giorno => `
-          <tr>
-            <td>
-              ${giorno.data.toLocaleDateString(
-                "it-IT"
-              )}
-            </td>
+function calculateTRISMetrics(stationId, speciesId, targetDateStr) {
+  const station = state.stationsMap.get(stationId);
+  const species = state.speciesMap.get(speciesId);
+  if (!station || !species) return null;
 
-            <td class="popup-rain-day">
-              ${formattaNumero(
-                giorno.pioggia,
-                1
-              )} mm
-            </td>
+  const quotaValid = (station.quota >= species.altMin && station.quota <= species.altMax);
+  const month = new Date(targetDateStr).getMonth() + 1;
+  const seasonValid = (month >= species.mesiInizio && month <= species.mesiFine);
 
-            <td class="popup-temp-min">
-              ${
-                Number.isFinite(
-                  giorno.tmin
-                )
-                  ? `${formattaNumero(
-                      giorno.tmin,
-                      1
-                    )} °C`
-                  : "n/d"
-              }
-            </td>
+  const curWeather = state.weatherByStationDate.get(`${stationId}_${targetDateStr}`) || { rain: 0, tavg: 15 };
+  const d1 = getOffsetDate(targetDateStr, -1);
+  const d2 = getOffsetDate(targetDateStr, -2);
+  const w1 = state.weatherByStationDate.get(`${stationId}_${d1}`) || { rain: 0 };
+  const w2 = state.weatherByStationDate.get(`${stationId}_${d2}`) || { rain: 0 };
+  const rain3d = curWeather.rain + w1.rain + w2.rain;
 
-            <td class="popup-temp-max">
-              ${
-                Number.isFinite(
-                  giorno.tmax
-                )
-                  ? `${formattaNumero(
-                      giorno.tmax,
-                      1
-                    )} °C`
-                  : "n/d"
-              }
-            </td>
-          </tr>
-        `
-      )
-      .join("");
-
-    els.stationPopupContent.innerHTML = `
-      <div
-        id="station-popup-title"
-        class="popup-title">
-
-        ${escapeHTML(stazione.nome)}
-      </div>
-
-      <div class="popup-meta">
-        Altitudine:
-        ${formattaNumero(
-          stazione.alt,
-          0
-        )} m
-      </div>
-
-      <div class="popup-table-wrap">
-        <table class="popup-weather-table">
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Pioggia</th>
-              <th>T min</th>
-              <th>T max</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            ${righe}
-          </tbody>
-        </table>
-      </div>
-    `;
-
-    els.stationPopupOverlay.classList.remove(
-      "hidden"
-    );
-
-    document.body.classList.add(
-      "popup-open"
-    );
-  }
-
-  function chiudiPopupStazione() {
-    if (
-      !els.stationPopupOverlay
-    ) {
-      return;
-    }
-
-    els.stationPopupOverlay.classList.add(
-      "hidden"
-    );
-
-    document.body.classList.remove(
-      "popup-open"
-    );
-  }
-
-  function toggleSidebar() {
-    if (!els.app) {
-      return;
-    }
-
-    els.app.classList.toggle(
-      "sidebar-collapsed"
-    );
-  }
-
-  function inizializzaEventi() {
-    if (els.modeSpeciesButton) {
-      els.modeSpeciesButton.addEventListener(
-        "click",
-        () =>
-          cambiaModalita(
-            "species"
-          )
-      );
-    }
-
-    if (els.modeStationButton) {
-      els.modeStationButton.addEventListener(
-        "click",
-        () =>
-          cambiaModalita(
-            "station"
-          )
-      );
-    }
-
-    if (els.modeDateButton) {
-      els.modeDateButton.addEventListener(
-        "click",
-        () =>
-          cambiaModalita(
-            "date"
-          )
-      );
-    }
-
-    if (els.daySelect) {
-      els.daySelect.addEventListener(
-        "change",
-        aggiornaStatoSpecie
-      );
-    }
-
-    if (els.speciesSelect) {
-      els.speciesSelect.addEventListener(
-        "change",
-        aggiornaStatoSpecie
-      );
-    }
-
-    if (els.stationSelect) {
-      els.stationSelect.addEventListener(
-        "change",
-        aggiornaStatoStazione
-      );
-    }
-
-    if (els.probabilityFilter) {
-      els.probabilityFilter.addEventListener(
-        "change",
-        aggiornaStatoStazione
-      );
-    }
-
-    if (els.dateDaySelect) {
-      els.dateDaySelect.addEventListener(
-        "change",
-        aggiornaStatoData
-      );
-    }
-
-    if (els.generateButton) {
-      els.generateButton.addEventListener(
-        "click",
-        () => {
-          giornoSelezionato =
-            Number(
-              els.daySelect.value
-            );
-
-          specieSelezionata =
-            els.speciesSelect.value;
-
-          renderReportSpecie();
-        }
-      );
-    }
-
-    if (
-      els.generateStationButton
-    ) {
-      els.generateStationButton.addEventListener(
-        "click",
-        () => {
-          stazioneSelezionata =
-            els.stationSelect.value;
-
-          filtroProbabilita =
-            Number(
-              els.probabilityFilter
-                .value
-            );
-
-          renderReportStazione();
-        }
-      );
-    }
-
-    if (els.generateDateButton) {
-      els.generateDateButton.addEventListener(
-        "click",
-        () => {
-          giornoDataSelezionato =
-            Number(
-              els.dateDaySelect.value
-            );
-
-          renderReportData();
-        }
-      );
-    }
-
-    if (
-      els.sidebarToggleInside
-    ) {
-      els.sidebarToggleInside.addEventListener(
-        "click",
-        () =>
-          els.app.classList.add(
-            "sidebar-collapsed"
-          )
-      );
-    }
-
-    if (
-      els.sidebarToggleMini
-    ) {
-      els.sidebarToggleMini.addEventListener(
-        "click",
-        () =>
-          els.app.classList.remove(
-            "sidebar-collapsed"
-          )
-      );
-    }
-
-    if (
-      els.speciesPopupClose
-    ) {
-      els.speciesPopupClose.addEventListener(
-        "click",
-        chiudiPopupSpecie
-      );
-    }
-
-    if (
-      els.speciesPopupOverlay
-    ) {
-      els.speciesPopupOverlay.addEventListener(
-        "click",
-        evento => {
-          if (
-            evento.target ===
-            els.speciesPopupOverlay
-          ) {
-            chiudiPopupSpecie();
-          }
-        }
-      );
-    }
-
-    if (
-      els.stationPopupClose
-    ) {
-      els.stationPopupClose.addEventListener(
-        "click",
-        chiudiPopupStazione
-      );
-    }
-
-    if (
-      els.stationPopupOverlay
-    ) {
-      els.stationPopupOverlay.addEventListener(
-        "click",
-        evento => {
-          if (
-            evento.target ===
-            els.stationPopupOverlay
-          ) {
-            chiudiPopupStazione();
-          }
-        }
-      );
-    }
-
-    document.addEventListener(
-      "keydown",
-      evento => {
-        if (
-          evento.key !== "Escape"
-        ) {
-          return;
-        }
-
-        chiudiPopupSpecie();
-        chiudiPopupStazione();
-      }
-    );
-  }
-
-  async function caricaDataset() {
-    const csvStazioni =
-      await caricaCSV(
-        "stazioni_meteo.csv"
-      );
-
-    const csvMeteo =
-      await caricaCSV(
-        "dati_meteo_30g.csv"
-      );
-
-    const storico =
-      costruisciStorico(
-        csvMeteo.rows,
-        csvMeteo.fields
-      );
-
-    stazioni =
-      costruisciStazioni(
-        csvStazioni.rows,
-        csvStazioni.fields,
-        storico
-      );
-
-    await caricaSpecie();
-    await caricaProfili();
-    await caricaPrevisioni();
-
-    aggiornaRiepilogo();
-    aggiornaUltimoAggiornamento();
-    popolaSelettoriGiorni();
-    popolaSpecie();
-    popolaStazioni();
-
-    if (els.controlsPanel) {
-      els.controlsPanel.classList.remove(
-        "hidden"
-      );
-    }
-  }
-
-  function mostraErrore(errore) {
-    if (!els.statusText) {
-      return;
-    }
-
-    els.statusText.textContent =
-      errore?.message ||
-      String(errore);
-
-    els.statusText.classList.add(
-      "error"
-    );
-  }
-
-  async function init() {
-    inizializzaElementi();
-    inizializzaEventi();
-
-    try {
-      await caricaDataset();
-
-      if (els.statusText) {
-        els.statusText.textContent =
-          `Dataset caricati correttamente · ${RELEASE}`;
-      }
-    } catch (errore) {
-      mostraErrore(errore);
-      console.error(errore);
-    }
-  }
-
-  if (
-    document.readyState ===
-    "loading"
-  ) {
-    document.addEventListener(
-      "DOMContentLoaded",
-      init,
-      {
-        once: true
-      }
-    );
+  let tempScore = 0;
+  const t = curWeather.tavg;
+  if (t >= species.tempMin && t <= species.tempMax) {
+    tempScore = 100;
+  } else if (t < species.tempMin) {
+    tempScore = Math.max(0, 100 - (species.tempMin - t) * 20);
   } else {
-    init();
+    tempScore = Math.max(0, 100 - (t - species.tempMax) * 20);
   }
-})();
+
+  let growthDay = null;
+  let growthPerc = 0;
+  let activeStart = null;
+
+  for (let offset = -30; offset <= 0; offset++) {
+    const checkDate = getOffsetDate(targetDateStr, offset);
+    const dC0 = getOffsetDate(checkDate, 0);
+    const dC1 = getOffsetDate(checkDate, -1);
+    const dC2 = getOffsetDate(checkDate, -2);
+    const wC0 = state.weatherByStationDate.get(`${stationId}_${dC0}`) || { rain: 0 };
+    const wC1 = state.weatherByStationDate.get(`${stationId}_${dC1}`) || { rain: 0 };
+    const wC2 = state.weatherByStationDate.get(`${stationId}_${dC2}`) || { rain: 0 };
+    const rain3dCheck = wC0.rain + wC1.rain + wC2.rain;
+
+    if (rain3dCheck >= species.pioggiaTrigger) {
+      activeStart = checkDate;
+    }
+  }
+
+  if (activeStart) {
+    const startD = new Date(activeStart);
+    const targetD = new Date(targetDateStr);
+    const diffDays = Math.round((targetD - startD) / (1000 * 3600 * 24));
+    if (diffDays >= species.growthStartDays && diffDays <= species.growthEndDays) {
+      growthDay = diffDays;
+      const profileMap = state.growthProfiles[speciesId];
+      growthPerc = profileMap ? (profileMap.get(diffDays) || 0) : 0;
+    }
+  }
+
+  let finalProb = 0;
+  if (quotaValid && seasonValid && growthPerc > 0) {
+    finalProb = (growthPerc * tempScore * 0.98) / 100;
+  }
+
+  return {
+    rain: curWeather.rain,
+    rain3d: rain3d,
+    growthDay: growthDay,
+    growthPerc: growthPerc,
+    tempScore: Math.round(tempScore),
+    quotaValid: quotaValid,
+    seasonValid: seasonValid,
+    finalProb: Math.round(finalProb)
+  };
+}
+
+function generatePdf() {
+  try {
+    if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
+      setError('Libreria jsPDF non disponibile o non caricata correttamente nell\'HTML.');
+      return;
+    }
+
+    setError('');
+    const title = document.getElementById('current-mushroom-title')?.innerText || 'Report TRIS';
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('l', 'mm', 'a4');
+
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(12);
+    pdf.text(title, 14, 10);
+
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(8);
+    pdf.text(`Alcolisti Micologici Analcolici - TRIS (${RELEASE}) · Generato il ${new Date().toLocaleString('it-IT')}`, 14, 15);
+
+    const tableEl = document.querySelector('#previsioniTable');
+    if (tableEl && typeof pdf.autoTable === 'function') {
+      pdf.autoTable({
+        html: tableEl,
+        startY: 18,
+        theme: 'grid',
+        styles: { fontSize: 5.5, cellPadding: 1, halign: 'center', valign: 'middle' },
+        headStyles: { fillColor: [1, 105, 111], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 5.5 },
+        alternateRowStyles: { fillColor: [248, 250, 252] }
+      });
+    } else {
+      pdf.text('Tabella non disponibile per l\'export PDF diretto.', 14, 25);
+    }
+
+    const blob = pdf.output('blob');
+    const url = URL.createObjectURL(blob);
+    const popup = window.open(url, '_blank');
+    if (!popup) {
+      window.location.href = url;
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  } catch (err) {
+    setError('Errore durante la generazione del PDF: ' + err.message);
+    console.error(err);
+  }
+}
+
+function generateStationSpeciesReport() {
+  const stationId = document.getElementById('ss-station-select').value;
+  const speciesId = document.getElementById('ss-species-select').value;
+  if (!stationId || !speciesId) return;
+
+  const station = state.stationsMap.get(stationId);
+  const species = state.speciesMap.get(speciesId);
+  const mesiStr = getMesiNome(species.mesiInizio, species.mesiFine);
+
+  document.getElementById('current-mushroom-title').textContent = `Report Stazione-Specie: ${station.nome} — ${species.nomeComune} [${RELEASE}]`;
+  
+  const descEl = document.getElementById('current-selection-description');
+  descEl.innerHTML = `
+    <div style="font-size: 0.9rem; color: var(--text); line-height: 1.6;">
+      Analisi incrociata dal ${getOffsetDate(state.referenceTodayStr, -30)} al ${getOffsetDate(state.referenceTodayStr, 10)} (Oggi: ${state.referenceTodayStr}).
+    </div>
+    <div style="margin-top: 10px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; line-height: 1.6;">
+      <div>🌲 <strong>Habitat:</strong> ${species.habitat || 'N/D'} | 💧 <strong>Pioggia Trigger (3g):</strong> ${species.pioggiaTrigger} mm | 📅 <strong>Mesi:</strong> ${mesiStr}</div>
+      <div style="margin-top: 4px;">🌱 <strong>Periodo di crescita:</strong> da ${species.growthStartDays} a ${species.growthEndDays} giorni con Picco da ${species.growthPeakStartDays} a ${species.growthPeakEndDays} giorni</div>
+      <div style="margin-top: 4px;">📝 <strong>Note:</strong> ${species.note || 'Nessuna nota'}</div>
+    </div>
+    <button id="pdf-btn" class="btn-esegui" style="margin-top: 12px; font-size: 0.85rem; min-height: 36px;">Genera PDF</button>
+  `;
+  document.getElementById('pdf-btn').addEventListener('click', generatePdf);
+
+  const thead = document.getElementById('forecast-thead');
+  thead.innerHTML = `
+    <tr>
+      <th>Data</th>
+      <th>Pioggia (mm)</th>
+      <th>Pioggia 3g (mm)</th>
+      <th>Giorno Crescita (%)</th>
+      <th>% Temp.</th>
+      <th>Stagione</th>
+      <th>Quota</th>
+      <th style="text-align:center">Probabilità</th>
+    </tr>
+  `;
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  const dateList = getDateRange(state.referenceTodayStr, STATION_SPECIES_DAYS_BACK, FORECAST_DAYS_AHEAD);
+  dateList.sort((a, b) => new Date(b) - new Date(a));
+
+  dateList.forEach(dateStr => {
+    const res = calculateTRISMetrics(stationId, speciesId, dateStr);
+    const tr = document.createElement('tr');
+
+    if (dateStr === state.referenceTodayStr) tr.className = 'row-today';
+    const probClass = getProbabilityClass(res.finalProb);
+
+    tr.innerHTML = `
+      <td><strong>${dateStr}${dateStr === state.referenceTodayStr ? ' (Oggi)' : ''}</strong></td>
+      <td>${res.rain.toFixed(1)}</td>
+      <td><strong>${res.rain3d.toFixed(1)}</strong></td>
+      <td>${res.growthDay ? `Giorno ${res.growthDay} (${res.growthPerc}%)` : '—'}</td>
+      <td>${res.tempScore}%</td>
+      <td>${res.seasonValid ? '✔️' : '❌'}</td>
+      <td>${res.quotaValid ? '✔️' : '❌'}</td>
+      <td class="probability-cell ${probClass}">${res.finalProb}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('forecast-panel').classList.remove('hidden');
+}
+
+function generateSpeciesReport() {
+  const dateStr = document.getElementById('day-select').value;
+  const speciesId = document.getElementById('species-select').value;
+  if (!dateStr || !speciesId) return;
+
+  const species = state.speciesMap.get(speciesId);
+  const mesiStr = getMesiNome(species.mesiInizio, species.mesiFine);
+
+  document.getElementById('current-mushroom-title').textContent = `Previsione per ${species.nomeComune} (${dateStr}) [${RELEASE}]`;
+  
+  const descEl = document.getElementById('current-selection-description');
+  descEl.innerHTML = `
+    <div style="font-size: 0.9rem; color: var(--text); line-height: 1.6;">
+      Analisi per la specie su tutte le stazioni meteorologiche monitorate in data ${dateStr}.
+    </div>
+    <div style="margin-top: 10px; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.85rem; line-height: 1.6;">
+      <div>🌲 <strong>Habitat:</strong> ${species.habitat || 'N/D'} | 💧 <strong>Pioggia Trigger (3g):</strong> ${species.pioggiaTrigger} mm | 📅 <strong>Mesi:</strong> ${mesiStr}</div>
+      <div style="margin-top: 4px;">🌱 <strong>Periodo di crescita:</strong> da ${species.growthStartDays} a ${species.growthEndDays} giorni con Picco da ${species.growthPeakStartDays} a ${species.growthPeakEndDays} giorni</div>
+      <div style="margin-top: 4px;">📝 <strong>Note:</strong> ${species.note || 'Nessuna nota'}</div>
+    </div>
+    <button id="pdf-btn" class="btn-esegui" style="margin-top: 12px; font-size: 0.85rem; min-height: 36px;">Genera PDF</button>
+  `;
+  document.getElementById('pdf-btn').addEventListener('click', generatePdf);
+
+  const thead = document.getElementById('forecast-thead');
+  thead.innerHTML = `
+    <tr>
+      <th>#</th>
+      <th>Stazione</th>
+      <th>Quota</th>
+      <th>Pioggia 3g</th>
+      <th>Giorno Crescita</th>
+      <th>% Temp</th>
+      <th style="text-align:center">Probabilità</th>
+    </tr>
+  `;
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  const results = [];
+  state.stations.forEach(st => {
+    const res = calculateTRISMetrics(st.id, speciesId, dateStr);
+    if (res.finalProb > 0) {
+      results.push({ station: st, res: res });
+    }
+  });
+
+  results.sort((a, b) => b.res.finalProb - a.res.finalProb);
+
+  results.forEach((item, index) => {
+    const tr = document.createElement('tr');
+    const probClass = getProbabilityClass(item.res.finalProb);
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${item.station.nome}</td>
+      <td>${item.station.quota} m</td>
+      <td>${item.res.rain3d.toFixed(1)} mm</td>
+      <td>${item.res.growthDay ? `Giorno ${item.res.growthDay} (${item.res.growthPerc}%)` : '—'}</td>
+      <td>${item.res.tempScore}%</td>
+      <td class="probability-cell ${probClass}">${item.res.finalProb}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('forecast-panel').classList.remove('hidden');
+}
+
+function formatDateDDMM(dateStr) {
+  const parts = dateStr.split('-');
+  if (parts.length < 3) return dateStr;
+  return `${parts[2]}/${parts[1]}`;
+}
+
+function generateStationReport() {
+  const stationId = document.getElementById('station-select').value;
+  const minProb = parseFloat(document.getElementById('probability-filter').value) || 0;
+  if (!stationId) return;
+
+  const station = state.stationsMap.get(stationId);
+
+  document.getElementById('current-mushroom-title').textContent = `Report Previsionale Stazione: ${station.nome} [${RELEASE}]`;
+  
+  const descEl = document.getElementById('current-selection-description');
+  descEl.innerHTML = `
+    <div style="font-size: 0.9rem; color: var(--text); line-height: 1.6;">
+      Specie con probabilità ≥ ${minProb}% per i prossimi 10 giorni.
+    </div>
+    <button id="pdf-btn" class="btn-esegui" style="margin-top: 10px; font-size: 0.85rem; min-height: 36px;">Genera PDF</button>
+  `;
+  document.getElementById('pdf-btn').addEventListener('click', generatePdf);
+
+  const thead = document.getElementById('forecast-thead');
+  thead.innerHTML = `
+    <tr>
+      <th>Data</th>
+      <th>Specie Fungina</th>
+      <th>Giorno Crescita</th>
+      <th>% Temp</th>
+      <th>Stagione</th>
+      <th>Quota</th>
+      <th style="text-align:center">Probabilità</th>
+    </tr>
+  `;
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  const dateList = getForecastDateRange(state.referenceTodayStr, FORECAST_DAYS_AHEAD);
+  const results = [];
+
+  dateList.forEach(dateStr => {
+    state.species.forEach(sp => {
+      const res = calculateTRISMetrics(stationId, sp.id, dateStr);
+      if (res.finalProb >= minProb) {
+        results.push({ species: sp, res: res, date: dateStr });
+      }
+    });
+  });
+
+  results.sort((a, b) => new Date(a.date) - new Date(b.date) || b.res.finalProb - a.res.finalProb);
+
+  results.forEach((item) => {
+    const tr = document.createElement('tr');
+    if (item.date === state.referenceTodayStr) tr.className = 'row-today';
+    
+    const probClass = getProbabilityClass(item.res.finalProb);
+
+    const tdDate = document.createElement('td');
+    tdDate.textContent = formatDateDDMM(item.date);
+    tr.appendChild(tdDate);
+
+    const tdSpecie = document.createElement('td');
+    const spBtn = document.createElement('button');
+    spBtn.type = 'button';
+    spBtn.className = 'species-name-button';
+    spBtn.title = "Clicca per aprire la vista incrociata Stazione-Specie";
+    spBtn.textContent = `${item.species.nomeComune} (${item.species.nomeScientifico})`;
+    spBtn.addEventListener('click', () => {
+      window.goToStationSpecies(stationId, item.species.id);
+    });
+    tdSpecie.appendChild(spBtn);
+    tr.appendChild(tdSpecie);
+
+    const tdGrowth = document.createElement('td');
+    tdGrowth.textContent = item.res.growthDay ? `Giorno ${item.res.growthDay} (${item.res.growthPerc}%)` : '—';
+    tr.appendChild(tdGrowth);
+
+    const tdTemp = document.createElement('td');
+    tdTemp.textContent = `${item.res.tempScore}%`;
+    tr.appendChild(tdTemp);
+
+    const tdSeason = document.createElement('td');
+    tdSeason.textContent = item.res.seasonValid ? '✔️' : '❌';
+    tr.appendChild(tdSeason);
+
+    const tdQuota = document.createElement('td');
+    tdQuota.textContent = item.res.quotaValid ? '✔️' : '❌';
+    tr.appendChild(tdQuota);
+
+    const tdProb = document.createElement('td');
+    tdProb.className = `probability-cell ${probClass}`;
+    tdProb.textContent = `${item.res.finalProb}%`;
+    tr.appendChild(tdProb);
+
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('forecast-panel').classList.remove('hidden');
+}
+
+function generateDateReport() {
+  const dateStr = document.getElementById('date-day-select').value;
+  if (!dateStr) return;
+
+  document.getElementById('current-mushroom-title').textContent = `Report Panoramico Data: ${dateStr} [${RELEASE}]`;
+  
+  const descEl = document.getElementById('current-selection-description');
+  descEl.innerHTML = `
+    <div style="font-size: 0.9rem; color: var(--text); line-height: 1.6;">
+      Matrice riassuntiva Stazioni (solo stazioni con probabilità > 0) vs Specie (colonne) per la data ${dateStr}.
+    </div>
+    <button id="pdf-btn" class="btn-esegui" style="margin-top: 10px; font-size: 0.85rem; min-height: 36px;">Genera PDF</button>
+  `;
+  document.getElementById('pdf-btn').addEventListener('click', generatePdf);
+
+  const thead = document.getElementById('forecast-thead');
+  let headerHTML = `<tr><th style="min-width: 160px; text-align: left; padding-left: 8px; vertical-align: bottom;">Stazione</th>`;
+  
+  state.species.forEach(sp => {
+    headerHTML += `<th class="vertical-th" title="${sp.nomeComune} (${sp.nomeScientifico})">${sp.nomeComune || sp.id}</th>`;
+  });
+  headerHTML += `</tr>`;
+  thead.innerHTML = headerHTML;
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  state.stations.forEach(st => {
+    let hasValidSpecies = false;
+    const rowProbs = {};
+
+    state.species.forEach(sp => {
+      const res = calculateTRISMetrics(st.id, sp.id, dateStr);
+      const prob = res ? res.finalProb : 0;
+      rowProbs[sp.id] = prob;
+      if (prob > 0) {
+        hasValidSpecies = true;
+      }
+    });
+
+    if (hasValidSpecies) {
+      const tr = document.createElement('tr');
+
+      const tdSt = document.createElement('td');
+      tdSt.style.textAlign = 'left';
+      tdSt.style.fontWeight = 'bold';
+      tdSt.style.paddingLeft = '8px';
+      tdSt.textContent = `${st.nome} (${st.quota}m)`;
+      tr.appendChild(tdSt);
+
+      state.species.forEach(sp => {
+        const prob = rowProbs[sp.id];
+        const tdSp = document.createElement('td');
+        const probClass = getProbabilityClass(prob);
+
+        tdSp.className = `probability-cell ${probClass}`;
+        tdSp.textContent = prob > 0 ? `${prob}%` : '—';
+        tr.appendChild(tdSp);
+      });
+
+      tbody.appendChild(tr);
+    }
+  });
+
+  document.getElementById('forecast-panel').classList.remove('hidden');
+}
+
+function openCalcPopup(station, species, dateStr, res) {
+  const overlay = document.getElementById('calc-popup-overlay');
+  const content = document.getElementById('calc-popup-content');
+
+  content.innerHTML = `
+    <button id="calc-popup-close" class="popup-close" type="button">×</button>
+    <h3 style="color:var(--primary); margin-top:0;">Dettaglio Calcolo TRIS</h3>
+    <p style="font-size:0.85rem; color:var(--muted);">${station.nome} — ${species.nomeComune} (${dateStr})</p>
+    <div style="background:#f8fafc; padding:10px; border-radius:8px; font-size:0.88rem; line-height:1.5;">
+      <p style="margin:0 0 6px 0; font-weight:bold;">Formula: Crescita × Temperatura × 0.98</p>
+      <ul>
+        <li>Crescita: Giorno ${res.growthDay || 'N/D'} (${res.growthPerc}%)</li>
+        <li>Temperatura: ${res.tempScore}%</li>
+        <li>Fattore Correttivo: 0.98</li>
+        <li>Filtro Quota (${station.quota}m): <strong>${res.quotaValid ? 'Superato (1)' : 'Escluso (0)'}</strong></li>
+        <li>Filtro Stagione: <strong>${res.seasonValid ? 'Superato (1)' : 'Escluso (0)'}</strong></li>
+      </ul>
+      <p style="margin:8px 0 0; text-align:right; font-weight:bold; font-size:1rem;">Totale: ${res.finalProb}%</p>
+    </div>
+  `;
+  document.getElementById('calc-popup-close').addEventListener('click', () => {
+    overlay.classList.add('hidden');
+    document.body.classList.remove('popup-open');
+  });
+
+  overlay.classList.remove('hidden');
+  document.body.classList.add('popup-open');
+}
+
+function getProbabilityClass(value) {
+  const val = Number(value) || 0;
+  if (val === 0) return 'p-0';
+  if (val <= 30) return 'p-low';
+  if (val <= 60) return 'p-mid';
+  if (val < 100) return 'p-high';
+  return 'p-peak';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initSidebarToggle();
+  loadDatasets();
+});
