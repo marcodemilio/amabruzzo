@@ -16,7 +16,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 15,Palena Stazione,https://www.chietimeteo.it/stazionedipalena.htm,41.927,14.101,1258,Palena,AQ999,260
 16,Pescocostanzo Loc. Vallefura,https://www.chietimeteo.it/hotel_vallefura.htm,41.888,14.058,1470,Pescocostanzo,AQ998,270
 17,Roccaraso Loc. Aremogna,https://www.meteoaquilano.it/index.php?option=com_content&view=article&layout=edit&id=359&Itemid=532,41.797,14.060,1405,Roccaraso,AQ-79,275
-18,Castel di Sangro,https://www.chietimeteo.it/casteldisangro.htm,41.784,14.108,800,Castel di Sangro,CH997,280
+18,Castel di Sangro,https://www.caputfrigoris.it/station.php?id=AQ084,41.784,14.108,800,Castel di Sangro,CH997,280
 19,San Pietro di Avellana,https://www.meteonetwork.eu/it/weather-station/mls036-stazione-meteorologica-di-san-pietro-avellana/graphs,41.771,14.200,934,San Pietro di Avellana,mls036,295
 20,Monteferrante,https://www.caputfrigoris.it/tabgraph.php?id=CH156,41.956,14.388,835,Rosello,CH156,315
 21,Passolanciano,https://www.chietimeteo.it/passolanciano.htm?CH146,42.189,14.104,1310,Passolanciano,CH146,300
