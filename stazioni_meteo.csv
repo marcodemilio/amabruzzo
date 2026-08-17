@@ -24,7 +24,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 23,Tagliacozzo Loc. Roccacerro,https://www.meteonetwork.eu/it/weather-station/abr127-stazione-meteorologica-di-roccacerro/graphs,42.067,13.211,1040,Tagliacozzo,AQ-84,215
 24,Montereale - Aringo,https://www.caputfrigoris.it/descrizione.php?id=AQ083,42.556,13.265,984,Montereale,AQ-51,110
 25,Oricola Loc. Pezzetaglie,https://www.meteonetwork.eu/it/weather-station/abr133-stazione-meteorologica-di-pezzetaglie,42.070,13.053,600,Oricola,abr133,205
-26,Rocca di Mezzo Loc. Terranera,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=338&Itemid=521,42.228,13.531,1258,Rocca di Mezzo,AQ-57,190
+26,Rocca di Mezzo Loc. Terranera,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=338&Itemid=521,42.228,13.531,1258,Rocca di Mezzo,AQ-57,187
 27,Lago di Campotosto,https://www.caputfrigoris.it/tabgraph.php?id=AQ011,42.520,13.328,1410,Lago di Campotosto,AQ11,120
 28,Castel di Sangro - Loc. Speno,https://www.meteoregioneabruzzo.it/rete-meteo/casteldisangro/casteldisangro.php,41.759,14.090,823,Castel di Sangro,AQ-83,285
 29,Cagnano Amiterno,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=276&Itemid=253,42.465,13.240,855,Cagnano Amiterno,AQ-37,130
@@ -47,12 +47,12 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 46,Roio del Sangro,https://www.meteoregioneabruzzo.it/rete-meteo/roio-del-sangro/roio-del-sangro.php,41.912,14.373,840,Roio del Sangro,CH-04,316
 47,Castel del Monte,https://www.caputfrigoris.it/tabgraph.php?id=AQ031,42.366,13.730,1325,Castel del Monte,AQ031,156
 48,Forme,https://www.caputfrigoris.it/tabgraph.php?id=AQ150,42.112,13.451,1000,Forme,AQ150,192
-49,Monte Genzana,https://www.caputfrigoris.it/tabgraph.php?id=AQ030,41.948,13.887,1980,Monte Genzana,1980,AQ030,233
+49,Monte Genzana,https://www.caputfrigoris.it/tabgraph.php?id=AQ030,41.948,13.887,1980,Monte Genzana,AQ030,233
 50,Ofena,https://www.caputfrigoris.it/tabgraph.php?id=AQ060,42.302,13.729,559,Ofena,AQ060,197
-51,Piani di Pezza,https://www.caputfrigoris.it/station.php?id=AQ021,42.180,13.468,1450,Piani Pezza,AQ021,1259
+51,Piani di Pezza,https://www.caputfrigoris.it/station.php?id=AQ021,42.180,13.468,1450,Piani Pezza,AQ021,189
 52,Rifugio Montecristo,https://www.caputfrigoris.it/tabgraph.php?id=AQ015,42.414,13.558,1475,Rifugio Montecristo,AQ015,152
-53,Rocca Calascio,https://www.caputfrigoris.it/tabgraph.php?id=AQ028,42.328,13.690.1450,Rocca Calascio,AQ028,198
+53,Rocca Calascio,https://www.caputfrigoris.it/tabgraph.php?id=AQ028,42.328,13.690,1450,Rocca Calascio,AQ028,198
 54,Farindola,https://www.caputfrigoris.it/tabgraph.php?id=PE111,42.431,13.808,672,Farindola,PE111,162
-55,Monte Piselli,https://www.caputfrigoris.it/tabgraph.php?id=TE109,42.788,13.580.1426,Monte Piselli,TE109,107
-56,Valle Castellana,https://www.caputfrigoris.it/tabgraph.php?id=TE080,42.735,13.497,630,Valle Castellana,TE080,109
+55,Monte Piselli,https://www.caputfrigoris.it/tabgraph.php?id=TE109,42.788,13.580,1426,Monte Piselli,TE109,109
+56,Valle Castellana,https://www.caputfrigoris.it/tabgraph.php?id=TE080,42.735,13.497,630,Valle Castellana,TE080,107
 57,Civitaluparella,https://www.caputfrigoris.it/tabgraph.php?id=CH119,41.944,14.304,807,Civitaluparella,CH119,318
