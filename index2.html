@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,6 +32,7 @@
 
 *{
 box-sizing:border-box;
+-webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -41,6 +42,7 @@ height:100%;
 background:var(--bg);
 color:var(--text);
 font-family:var(--font);
+overflow: hidden;
 }
 
 #map{
@@ -48,48 +50,53 @@ width:100%;
 height:100vh;
 }
 
-/* Riquadro Zoom in basso a sinistra */
+/* Riquadro Zoom in alto a sinistra (sotto i controlli di zoom della mappa) */
 #zoomDisplay {
 position: absolute;
-bottom: 20px;
-left: 20px;
-z-index: 1000;
+top: 10px;
+left: 55px;
+z-index: 999;
 background: rgba(255, 255, 255, 0.95);
-padding: 8px 12px;
-border: 2px solid var(--primary);
-border-radius: 8px;
+padding: 6px 10px;
+border: 1.5px solid var(--primary);
+border-radius: 6px;
 font-family: var(--font);
 font-weight: 800;
-font-size: 13px;
+font-size: 11px;
 color: var(--primary);
 pointer-events: none;
-box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* Riquadro Ultimo Aggiornamento in basso a destra */
+/* Riquadro Ultimo Aggiornamento in alto a destra */
 #lastUpdateDisplay {
 position: absolute;
-bottom: 20px;
-right: 20px;
-z-index: 1000;
+top: 10px;
+right: 120px;
+z-index: 999;
 background: rgba(255, 255, 255, 0.95);
-padding: 8px 12px;
-border: 2px solid var(--primary);
-border-radius: 8px;
+padding: 6px 10px;
+border: 1.5px solid var(--primary);
+border-radius: 6px;
 font-family: var(--font);
 font-weight: 700;
-font-size: 13px;
+font-size: 11px;
 color: var(--text);
 pointer-events: none;
-box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-line-height: 1.3;
+box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+line-height: 1.2;
+max-width: 50%;
+text-align: right;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 #lastUpdateDisplay .sub-release {
-font-size: 11px;
+font-size: 9px;
 font-weight: 600;
 color: var(--muted);
-margin-top: 2px;
+margin-top: 1px;
 }
 
 /* Pulsante Report Piogge in alto a destra */
@@ -99,14 +106,14 @@ color: #ffffff !important;
 width: auto !important;
 height: auto !important;
 line-height: normal !important;
-padding: 8px 14px !important;
-font-size: 0.95rem !important;
+padding: 6px 10px !important;
+font-size: 0.85rem !important;
 font-weight: 700 !important;
 text-decoration: none !important;
 display: flex !important;
 align-items: center !important;
 justify-content: center !important;
-gap: 6px !important;
+gap: 4px !important;
 border-radius: 6px !important;
 box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
 }
@@ -114,22 +121,22 @@ box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
 background-color: #e66d00 !important;
 }
 
-/* Contenitore Menu a tendina e pulsante in alto a sinistra */
+/* Contenitore Menu a tendina e pulsante (spostato in basso per non coprire i controlli in alto) */
 .station-select-control {
 background: #ffffff !important;
 padding: 8px !important;
 border-radius: 8px !important;
-box-shadow: 0 2px 6px rgba(0,0,0,0.25) !important;
+box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
 display: flex;
 flex-direction: column;
 gap: 6px;
 border: 1px solid var(--border);
+min-width: 240px;
 }
 
 .station-select-control select {
 width: 100%;
-min-width: 220px;
-padding: 6px 10px;
+padding: 8px 10px;
 border: 1px solid #9bb9d6;
 border-radius: 6px;
 background: linear-gradient(180deg,#f5fbff,#dfeeff);
@@ -140,13 +147,10 @@ font-size: 0.90rem;
 cursor: pointer;
 outline: none;
 }
-.station-select-control select:hover {
-background: linear-gradient(180deg,#e8f4ff,#d0e5ff);
-}
 
 .all-stations-btn {
 width: 100%;
-padding: 6px 10px;
+padding: 8px 10px;
 background-color: var(--primary);
 color: #ffffff;
 border: none;
@@ -158,51 +162,69 @@ cursor: pointer;
 text-align: center;
 box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
-.all-stations-btn:hover {
+.all-stations-btn:active {
 background-color: #015257;
 }
 
-/* Stili Popup e Marker */
+/* Stili Popup Ottimizzati per Mobile */
+.leaflet-popup-content-wrapper {
+padding: 0;
+border-radius: 12px;
+overflow: hidden;
+}
+.leaflet-popup-content {
+margin: 12px 14px !important;
+line-height: 1.4;
+max-width: calc(100vw - 60px) !important;
+}
+
 .popup-title{
-margin-bottom:.35rem;
+margin-bottom:.25rem;
 color:var(--primary);
-font-size:1rem;
+font-size:1.05rem;
 font-weight:800;
 }
 .popup-meta{
 color:var(--text);
-font-size:.92rem;
-line-height:1.4;
+font-size:0.85rem;
+line-height:1.3;
 }
 .popup-status{
-margin-top:.15rem;
+margin-top:.1rem;
 font-weight:900;
 letter-spacing:.02em;
+font-size: 0.8rem;
 }
 .popup-status.online{ color:var(--success); }
 .popup-status.offline{ color:var(--danger); }
 .popup-update-line{
-margin-top:.25rem;
+margin-top:.2rem;
+font-size: 0.75rem;
 font-weight:600;
+color: var(--muted);
 }
 .popup-table-wrap{
-max-height:300px;
-margin-top:.45rem;
-overflow:auto;
+max-height: 240px;
+margin-top:.4rem;
+overflow-x: auto;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
+border: 1px solid var(--border);
+border-radius: 6px;
 }
 .popup-weather-table{
 width:100%;
 border-collapse:collapse;
-table-layout:fixed;
 font-family:inherit;
-font-size:.88rem;
+font-size:0.8rem;
+white-space: nowrap;
 }
 .popup-weather-table th{
 background:#f1efeb;
 color:var(--muted);
-font-size:.75rem;
+font-size:0.7rem;
 font-weight:700;
-padding:.3rem .25rem;
+padding:6px 8px;
 border-bottom:1px solid var(--border);
 position:sticky;
 top:0;
@@ -213,10 +235,9 @@ z-index:2;
 .popup-weather-table th:nth-child(n+3){ text-align:right; }
 
 .popup-weather-table td{
-padding:.13rem .25rem;
+padding:5px 8px;
 vertical-align:middle;
-line-height:1.35;
-white-space:nowrap;
+line-height:1.2;
 }
 .popup-weather-table td:nth-child(1){ text-align:left; }
 .popup-weather-table td:nth-child(2){ text-align:center; }
@@ -238,15 +259,15 @@ background:#f0ffe5;
 position:relative;
 display:grid;
 place-items:center;
-min-width:34px;
-height:34px;
-padding:0 .25rem;
+min-width:32px;
+height:32px;
+padding:0 .2rem;
 transform:translate(-50%,-50%);
-border:3px solid #fff;
+border:2.5px solid #fff;
 border-radius:999px;
-box-shadow:0 3px 10px rgba(0,0,0,.25);
+box-shadow:0 3px 8px rgba(0,0,0,.3);
 color:#fff;
-font-size:12px;
+font-size:11px;
 font-weight:800;
 line-height:1;
 }
@@ -254,14 +275,14 @@ line-height:1;
 .station-marker.offline{ background:var(--danger); }
 .station-marker::after{
 position:absolute;
-bottom:-7px;
+bottom:-6px;
 left:50%;
 width:0;
 height:0;
 transform:translateX(-50%);
-border-top:8px solid currentColor;
-border-right:6px solid transparent;
-border-left:6px solid transparent;
+border-top:7px solid currentColor;
+border-right:5px solid transparent;
+border-left:5px solid transparent;
 content:'';
 }
 .station-marker.online::after{ color:var(--success); }
@@ -272,10 +293,10 @@ content:'';
 <body>
 
 <div id="map"></div>
-<div id="zoomDisplay">Livello Zoom: --</div>
+<div id="zoomDisplay">Zoom: --</div>
 <div id="lastUpdateDisplay">
-    Dati aggiornati al: --
-    <div class="sub-release">Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</div>
+    Dati agg. al: --
+    <div class="sub-release">TRIS - Rel. 01-GH-001</div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -292,6 +313,9 @@ zoomDelta: 0.25,
 zoomSnap: 0.25
 }).setView([42.35, 13.95], 9.50);
 
+// Spostiamo i controlli di zoom in basso a destra per liberare l'area superiore
+map.zoomControl.setPosition('bottomright');
+
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 maxZoom:18,
 attribution:'&copy; OpenStreetMap'
@@ -299,7 +323,7 @@ attribution:'&copy; OpenStreetMap'
 
 const adminLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
 maxZoom:19,
-attribution:'&copy; OpenStreetMap contributors &copy; CARTO'
+attribution:'&copy; CARTO'
 });
 
 const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -310,19 +334,19 @@ attribution:'Tiles &copy; Esri'
 const reliefLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 maxZoom:17,
 subdomains: 'abc',
-attribution:'Map data: &copy; OpenStreetMap contributors, SRTM'
+attribution:'Map data: &copy; OpenStreetMap contributors'
 });
 
 osmLayer.addTo(map);
 
 const baseLayers = {
 "Standard (OSM)": osmLayer,
-"Carta Amministrativa": adminLayer,
+"Carta Amm.": adminLayer,
 "Satellite": satelliteLayer,
-"Rilievo (Topo)": reliefLayer
+"Rilievo": reliefLayer
 };
 
-L.control.layers(baseLayers, null, { position: 'topright' }).addTo(map);
+L.control.layers(baseLayers, null, { position: 'bottomright' }).addTo(map);
 
 map.setMaxBounds(
 L.latLngBounds([[41.30, 12.30], [43.25, 15.30]])
@@ -331,7 +355,7 @@ L.latLngBounds([[41.30, 12.30], [43.25, 15.30]])
 const zoomDisplay = document.getElementById('zoomDisplay');
 function updateZoomDisplay() {
 if(zoomDisplay) {
-zoomDisplay.textContent = 'Livello Zoom: ' + map.getZoom().toFixed(2);
+zoomDisplay.textContent = 'Zoom: ' + map.getZoom().toFixed(2);
 }
 }
 map.on('zoomend', updateZoomDisplay);
@@ -340,7 +364,7 @@ updateZoomDisplay();
 
 let stationSelectElement = null;
 
-// 1. Controllo in alto a sinistra con menu a tendina e pulsante "Tutte le Stazioni"
+// 1. Controllo in basso a sinistra con menu a tendina e pulsante "Tutte le Stazioni"
 L.Control.StationSelect = L.Control.extend({
 onAdd: function(map) {
 const div = L.DomUtil.create('div', 'station-select-control');
@@ -369,7 +393,7 @@ L.DomEvent.disableScrollPropagation(div);
 return div;
 }
 });
-map.addControl(new L.Control.StationSelect({ position: 'topleft' }));
+map.addControl(new L.Control.StationSelect({ position: 'bottomleft' }));
 
 // 2. Pulsante Report Piogge in alto a destra
 L.Control.ReportButton = L.Control.extend({
@@ -377,7 +401,7 @@ onAdd: function(map) {
 const div = L.DomUtil.create('div', 'leaflet-bar');
 const link = L.DomUtil.create('a', 'report-btn', div);
 link.href = 'report_piogge2.html';
-link.innerHTML = '<span>📊</span> Report Piogge';
+link.innerHTML = '<span>📊</span> Report';
 link.title = 'Report Piogge';
 return div;
 }
@@ -428,7 +452,7 @@ function pad(value) { return String(value).padStart(2,'0'); }
 
 function formatDate(date) {
 if (!date) return 'n/d';
-return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 function formatUpdateTimestamp(date) {
@@ -538,18 +562,18 @@ const item = daily.get(dayKey(date));
 
 const isOnline = item ? item.online : false;
 const dotColor = isOnline ? 'var(--success)' : 'var(--danger)';
-const statusDot = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${dotColor}; vertical-align:middle;"></span>`;
+const statusDot = `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${dotColor}; vertical-align:middle;"></span>`;
 
 const rain = item && Number.isFinite(item.rain) ? item.rain : 0;
 cumulative += rain;
 
 const temperature = item && Number.isFinite(item.tmin) && Number.isFinite(item.tmax)
-? `<span class="popup-temp-min">${item.tmin.toFixed(0)}°</span> - <span class="popup-temp-max">${item.tmax.toFixed(0)}°</span>`
+? `<span class="popup-temp-min">${item.tmin.toFixed(0)}°</span>/<span class="popup-temp-max">${item.tmax.toFixed(0)}°</span>`
 : `<span class="popup-temp-muted">[n/d]</span>`;
 
 const windText = item && Number.isFinite(item.ventomax) && item.ventomax !== 0 ? `<span class="popup-wind">${item.ventomax.toFixed(0)}</span>` : '';
-const humText = item && Number.isFinite(item.umiditamin) && Number.isFinite(item.umiditamax) ? `<span class="popup-hum">${item.umiditamin.toFixed(0)}% - ${item.umiditamax.toFixed(0)}%</span>` : '';
-const dewText = item && Number.isFinite(item.rugiadamin) && Number.isFinite(item.rugiadamax) ? `<span class="popup-dew">${item.rugiadamin.toFixed(0)}° - ${item.rugiadamax.toFixed(0)}°</span>` : '';
+const humText = item && Number.isFinite(item.umiditamin) && Number.isFinite(item.umiditamax) ? `<span class="popup-hum">${item.umiditamin.toFixed(0)}%-${item.umiditamax.toFixed(0)}%</span>` : '';
+const dewText = item && Number.isFinite(item.rugiadamin) && Number.isFinite(item.rugiadamax) ? `<span class="popup-dew">${item.rugiadamin.toFixed(0)}°-${item.rugiadamax.toFixed(0)}°</span>` : '';
 const dayText = i === 0 ? 'Oggi' : `-${i} ${dayLabel(date)}`;
 
 tableRows.push(`
@@ -570,11 +594,11 @@ return `
 <div class="popup-title">${station.name}</div>
 <div class="popup-meta">
 <div class="popup-status ${statusClass}">${status}</div>
-<div class="popup-update-line">Ril. ${detectedText} · Aggiornamento Staz. · ${stationUpdateText}</div>
+<div class="popup-update-line">Ril. ${detectedText}</div>
 <div class="popup-table-wrap">
 <table class="popup-weather-table">
 <thead>
-<tr><th>Giorno</th><th></th><th>Pioggia</th><th>Pioggia Cum</th><th>Temperature</th><th>Vento Max Km/h</th><th>Umidità %</th><th>Punto di Rugiada</th></tr>
+<tr><th>Giorno</th><th></th><th>Pioggia</th><th>Cum</th><th>Temp</th><th>Vento</th><th>Umidità</th><th>Rugiada</th></tr>
 </thead>
 <tbody>${tableRows.join('')}</tbody>
 </table>
@@ -590,9 +614,9 @@ let value = station.summary.rainValue;
 return L.divIcon({
 className: '',
 html: `<div class="station-marker ${statusClass}">${Number.isFinite(value) ? Math.round(value) : '–'}</div>`,
-iconSize: [34,34],
-iconAnchor: [17,17],
-popupAnchor: [0,-70]
+iconSize: [32,32],
+iconAnchor: [16,16],
+popupAnchor: [0,-60]
 });
 }
 
@@ -607,8 +631,7 @@ icon: markerIcon(station)
 .bindPopup(popupHtml(station), {
 autoPan: true,
 keepInView: true,
-maxHeight: 450,
-maxWidth: 1200
+maxWidth: 400
 });
 
 markerRefs.set(station.id, marker);
@@ -640,7 +663,6 @@ if (station) {
 map.setView([station.lat, station.lon], 13);
 map.closePopup();
 
-// Mostra SOLO l'icona della stazione selezionata
 markersLayer.clearLayers();
 const marker = markerRefs.get(station.id);
 if (marker) {
@@ -683,7 +705,7 @@ if (allDetectedDates.length > 0) {
 const maxDate = new Date(Math.max(...allDetectedDates));
 const lastUpdateEl = document.getElementById('lastUpdateDisplay');
 if (lastUpdateEl) {
-lastUpdateEl.innerHTML = `Dati aggiornati al: ${formatUpdateTimestamp(maxDate)}<div class="sub-release">Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</div>`;
+lastUpdateEl.innerHTML = `Agg. ${formatUpdateTimestamp(maxDate)}<div class="sub-release">TRIS - Rel. 01-GH-001</div>`;
 }
 }
 
