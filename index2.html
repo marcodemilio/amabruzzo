@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin>
+
+<style>
+:root{
+--bg:#f7f6f2;
+--surface:#ffffff;
+--border:#d4d1ca;
+--text:#28251d;
+--muted:#6f6d68;
+--primary:#01696f;
+--success:#437a22;
+--danger:#a13544;
+--blue-dark:#003f88;
+--blue:#1f78b4;
+--red:#a13544;
+--fuchsia:#ff00ff;
+--green-dark:#0b5d1e;
+--tris:#7b2cbf;
+--radius:1rem;
+--font:'Inter',system-ui,sans-serif;
+}
+
+*{
+box-sizing:border-box;
+}
+
+html,
+body{
+margin:0;
+height:100%;
+background:var(--bg);
+color:var(--text);
+font-family:var(--font);
+}
+
+#map{
+width:100%;
+height:100vh;
+}
+
+/* Riquadro Zoom in basso a sinistra */
+#zoomDisplay {
+position: absolute;
+bottom: 20px;
+left: 20px;
+z-index: 1000;
+background: rgba(255, 255, 255, 0.95);
+padding: 8px 12px;
+border: 2px solid var(--primary);
+border-radius: 8px;
+font-family: var(--font);
+font-weight: 800;
+font-size: 13px;
+color: var(--primary);
+pointer-events: none;
+box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* Riquadro Ultimo Aggiornamento in basso a destra */
+#lastUpdateDisplay {
+position: absolute;
+bottom: 20px;
+right: 20px;
+z-index: 1000;
+background: rgba(255, 255, 255, 0.95);
+padding: 8px 12px;
+border: 2px solid var(--primary);
+border-radius: 8px;
+font-family: var(--font);
+font-weight: 700;
+font-size: 13px;
+color: var(--text);
+pointer-events: none;
+box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+line-height: 1.3;
+}
+
+#lastUpdateDisplay .sub-release {
+font-size: 11px;
+font-weight: 600;
+color: var(--muted);
+margin-top: 2px;
+}
+
+/* Pulsante Report Piogge in alto a destra */
+.leaflet-bar a.report-btn {
+background-color: #ff7b00 !important;
+color: #ffffff !important;
+width: auto !important;
+height: auto !important;
+line-height: normal !important;
+padding: 8px 14px !important;
+font-size: 0.95rem !important;
+font-weight: 700 !important;
+text-decoration: none !important;
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 6px !important;
+border-radius: 6px !important;
+box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+}
+.leaflet-bar a.report-btn:hover {
+background-color: #e66d00 !important;
+}
+
+/* Contenitore Menu a tendina e pulsante in alto a sinistra */
+.station-select-control {
+background: #ffffff !important;
+padding: 8px !important;
+border-radius: 8px !important;
+box-shadow: 0 2px 6px rgba(0,0,0,0.25) !important;
+display: flex;
+flex-direction: column;
+gap: 6px;
+border: 1px solid var(--border);
+}
+
+.station-select-control select {
+width: 100%;
+min-width: 220px;
+padding: 6px 10px;
+border: 1px solid #9bb9d6;
+border-radius: 6px;
+background: linear-gradient(180deg,#f5fbff,#dfeeff);
+color: #173b5d;
+font-weight: 700;
+font-family: var(--font);
+font-size: 0.90rem;
+cursor: pointer;
+outline: none;
+}
+.station-select-control select:hover {
+background: linear-gradient(180deg,#e8f4ff,#d0e5ff);
+}
+
+.all-stations-btn {
+width: 100%;
+padding: 6px 10px;
+background-color: var(--primary);
+color: #ffffff;
+border: none;
+border-radius: 6px;
+font-family: var(--font);
+font-weight: 700;
+font-size: 0.88rem;
+cursor: pointer;
+text-align: center;
+box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.all-stations-btn:hover {
+background-color: #015257;
+}
+
+/* Stili Popup e Marker */
+.popup-title{
+margin-bottom:.35rem;
+color:var(--primary);
+font-size:1rem;
+font-weight:800;
+}
+.popup-meta{
+color:var(--text);
+font-size:.92rem;
+line-height:1.4;
+}
+.popup-status{
+margin-top:.15rem;
+font-weight:900;
+letter-spacing:.02em;
+}
+.popup-status.online{ color:var(--success); }
+.popup-status.offline{ color:var(--danger); }
+.popup-update-line{
+margin-top:.25rem;
+font-weight:600;
+}
+.popup-table-wrap{
+max-height:300px;
+margin-top:.45rem;
+overflow:auto;
+}
+.popup-weather-table{
+width:100%;
+border-collapse:collapse;
+table-layout:fixed;
+font-family:inherit;
+font-size:.88rem;
+}
+.popup-weather-table th{
+background:#f1efeb;
+color:var(--muted);
+font-size:.75rem;
+font-weight:700;
+padding:.3rem .25rem;
+border-bottom:1px solid var(--border);
+position:sticky;
+top:0;
+z-index:2;
+}
+.popup-weather-table th:nth-child(1),
+.popup-weather-table th:nth-child(2){ text-align:left; }
+.popup-weather-table th:nth-child(n+3){ text-align:right; }
+
+.popup-weather-table td{
+padding:.13rem .25rem;
+vertical-align:middle;
+line-height:1.35;
+white-space:nowrap;
+}
+.popup-weather-table td:nth-child(1){ text-align:left; }
+.popup-weather-table td:nth-child(2){ text-align:center; }
+.popup-weather-table td:nth-child(n+3){ text-align:right; }
+.popup-weather-table tr.today-row{
+font-weight:800;
+background:#f0ffe5;
+}
+.popup-rain-day{ color:var(--green-dark); font-weight:700; }
+.popup-rain-cum{ color:var(--fuchsia); font-weight:700; }
+.popup-temp-min{ color:var(--blue-dark); font-weight:800; }
+.popup-temp-max{ color:var(--red); font-weight:800; }
+.popup-wind{ color:var(--blue); font-weight:700; }
+.popup-hum{ color:var(--success); font-weight:700; }
+.popup-dew{ color:var(--tris); font-weight:700; }
+.popup-temp-muted{ color:var(--muted); }
+
+.station-marker{
+position:relative;
+display:grid;
+place-items:center;
+min-width:34px;
+height:34px;
+padding:0 .25rem;
+transform:translate(-50%,-50%);
+border:3px solid #fff;
+border-radius:999px;
+box-shadow:0 3px 10px rgba(0,0,0,.25);
+color:#fff;
+font-size:12px;
+font-weight:800;
+line-height:1;
+}
+.station-marker.online{ background:var(--success); }
+.station-marker.offline{ background:var(--danger); }
+.station-marker::after{
+position:absolute;
+bottom:-7px;
+left:50%;
+width:0;
+height:0;
+transform:translateX(-50%);
+border-top:8px solid currentColor;
+border-right:6px solid transparent;
+border-left:6px solid transparent;
+content:'';
+}
+.station-marker.online::after{ color:var(--success); }
+.station-marker.offline::after{ color:var(--danger); }
+</style>
+</head>
+
+<body>
+
+<div id="map"></div>
+<div id="zoomDisplay">Livello Zoom: --</div>
+<div id="lastUpdateDisplay">
+    Dati aggiornati al: --
+    <div class="sub-release">Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script>
+(() => {
+const STATIONS_CSV = './stazioni_meteo.csv';
+const WEATHER_CSV = './dati_meteo_30g.csv';
+
+const map = L.map('map', {
+zoomControl: true,
+zoomDelta: 0.25,
+zoomSnap: 0.25
+}).setView([42.35, 13.95], 9.50);
+
+const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom:18,
+attribution:'&copy; OpenStreetMap'
+});
+
+const adminLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+maxZoom:19,
+attribution:'&copy; OpenStreetMap contributors &copy; CARTO'
+});
+
+const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+maxZoom:18,
+attribution:'Tiles &copy; Esri'
+});
+
+const reliefLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+maxZoom:17,
+subdomains: 'abc',
+attribution:'Map data: &copy; OpenStreetMap contributors, SRTM'
+});
+
+osmLayer.addTo(map);
+
+const baseLayers = {
+"Standard (OSM)": osmLayer,
+"Carta Amministrativa": adminLayer,
+"Satellite": satelliteLayer,
+"Rilievo (Topo)": reliefLayer
+};
+
+L.control.layers(baseLayers, null, { position: 'topright' }).addTo(map);
+
+map.setMaxBounds(
+L.latLngBounds([[41.30, 12.30], [43.25, 15.30]])
+);
+
+const zoomDisplay = document.getElementById('zoomDisplay');
+function updateZoomDisplay() {
+if(zoomDisplay) {
+zoomDisplay.textContent = 'Livello Zoom: ' + map.getZoom().toFixed(2);
+}
+}
+map.on('zoomend', updateZoomDisplay);
+map.on('moveend', updateZoomDisplay);
+updateZoomDisplay();
+
+let stationSelectElement = null;
+
+// 1. Controllo in alto a sinistra con menu a tendina e pulsante "Tutte le Stazioni"
+L.Control.StationSelect = L.Control.extend({
+onAdd: function(map) {
+const div = L.DomUtil.create('div', 'station-select-control');
+
+stationSelectElement = document.createElement('select');
+stationSelectElement.id = 'stationDropdown';
+stationSelectElement.innerHTML = '<option value="">🔍 Seleziona Stazione...</option>';
+div.appendChild(stationSelectElement);
+
+const resetBtn = document.createElement('button');
+resetBtn.type = 'button';
+resetBtn.textContent = '🏠 Tutte le Stazioni';
+resetBtn.className = 'all-stations-btn';
+div.appendChild(resetBtn);
+
+resetBtn.onclick = (e) => {
+e.preventDefault();
+if (stationSelectElement) stationSelectElement.value = "";
+map.setView([42.35, 13.95], 9.50);
+map.closePopup();
+refreshMarkers(stationData);
+};
+
+L.DomEvent.disableClickPropagation(div);
+L.DomEvent.disableScrollPropagation(div);
+return div;
+}
+});
+map.addControl(new L.Control.StationSelect({ position: 'topleft' }));
+
+// 2. Pulsante Report Piogge in alto a destra
+L.Control.ReportButton = L.Control.extend({
+onAdd: function(map) {
+const div = L.DomUtil.create('div', 'leaflet-bar');
+const link = L.DomUtil.create('a', 'report-btn', div);
+link.href = 'report_piogge2.html';
+link.innerHTML = '<span>📊</span> Report Piogge';
+link.title = 'Report Piogge';
+return div;
+}
+});
+map.addControl(new L.Control.ReportButton({ position: 'topright' }));
+
+let stationData = [];
+let markerRefs = new Map();
+let markersLayer = L.layerGroup().addTo(map);
+
+const num = value => {
+const result = parseFloat(String(value ?? '').replace(',','.').trim());
+return Number.isFinite(result) ? result : null;
+};
+
+const get = (row,...keys) => {
+for (const key of keys) {
+const value = row[key];
+if (value !== undefined && value !== null && String(value).trim() !== '') {
+return String(value).trim();
+}
+}
+return '';
+};
+
+function parseDate(value) {
+if (value === null || value === undefined) return null;
+const text = String(value).trim();
+if (!text) return null;
+
+let match = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})(?:[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+if (match) {
+const day = Number(match[1]), month = Number(match[2]), year = Number(match[3]);
+const hour = Number(match[4] || 0), minute = Number(match[5] || 0), second = Number(match[6] || 0);
+const date = new Date(year, month - 1, day, hour, minute, second);
+if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) return date;
+return null;
+}
+
+match = text.match(/^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})(?:[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+if (match) {
+return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4] || 0), Number(match[5] || 0), Number(match[6] || 0));
+}
+return null;
+}
+
+function pad(value) { return String(value).padStart(2,'0'); }
+
+function formatDate(date) {
+if (!date) return 'n/d';
+return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+function formatUpdateTimestamp(date) {
+if (!date) return 'n/d';
+return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}.${pad(date.getMinutes())}`;
+}
+
+function dayKey(date) {
+return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function dayLabel(date) {
+return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}`;
+}
+
+const fetchText = async path => {
+const response = await fetch(`${path}?v=${Date.now()}`, { cache:'no-store' });
+if (!response.ok) throw new Error(`HTTP ${response.status} per ${path}`);
+return response.text();
+};
+
+const delimiter = text => {
+return [';',',','\t','|'].map(character => ({
+character,
+count:(text.split(/\r?\n/).slice(0,10).join('\n').match(new RegExp('\\' + character, 'g')) || []).length
+})).sort((a,b) => b.count - a.count)[0].character;
+};
+
+function parseWeather(rows) {
+return rows.map(row => ({
+detectedAt: parseDate(get(row, 'DataRilevamento', 'Data rilevamento', 'data_rilevamento', 'Data')),
+updatedAt: parseDate(get(row, 'DataAggiornamento', 'Data aggiornamento', 'data_aggiornamento')),
+stationUpdatedAt: parseDate(get(row, 'AggiornamentoStaz', 'Aggiornamento Staz.', 'AggiornamentoStazione', 'DataAggiornamentoStazione')),
+tmax: num(get(row, 'TemperaturaMax', 'TemperaturaMassima')),
+tmin: num(get(row, 'TemperaturaMin', 'TemperaturaMinima')),
+rain: num(get(row, 'PioggiaGiornaliera', 'Pioggia Giornaliera')),
+ventomax: num(get(row, 'VentoMax', 'Vento Massimo', 'Raffica')),
+umiditamin: num(get(row, 'UmiditaMin', 'Umidità Minima')),
+umiditamax: num(get(row, 'UmiditaMax', 'Umidità Massima')),
+rugiadamin: num(get(row, 'RugiadaMin', 'PuntoRugiadaMin')),
+rugiadamax: num(get(row, 'RugiadaMax', 'RugiadaMax')),
+stato: get(row,'Stato','stato').toLowerCase(),
+fonte: get(row,'FonteDati','fontedati').toLowerCase()
+}))
+.filter(row => row.detectedAt || row.updatedAt || row.stationUpdatedAt)
+.sort((a,b) => {
+const dateA = a.detectedAt || a.stationUpdatedAt || a.updatedAt || new Date(0);
+const dateB = b.detectedAt || b.stationUpdatedAt || b.updatedAt || new Date(0);
+return dateA - dateB;
+});
+}
+
+function summarizeWeather(rows) {
+const series = parseWeather(rows);
+const latest = series.at(-1) || null;
+const online = latest?.fonte === 'online' || latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true';
+return {
+count: series.length,
+latest,
+series,
+online,
+rainValue: latest ? latest.rain : null
+};
+}
+
+function popupHtml(station) {
+const summary = station.summary;
+const latest = summary.latest || {};
+const status = summary.online ? 'ONLINE' : 'OFFLINE';
+const statusClass = summary.online ? 'online' : 'offline';
+const detectedText = formatDate(latest.detectedAt);
+const stationUpdateText = formatDate(latest.stationUpdatedAt || latest.updatedAt);
+
+const daily = new Map();
+summary.series.forEach(row => {
+const date = row.detectedAt || row.updatedAt || row.stationUpdatedAt;
+if (!date) return;
+const key = dayKey(date);
+const isRowOnline = row.fonte === 'online' || row.stato === 'online' || row.stato === '1' || row.stato === 'true';
+
+const previous = daily.get(key) || {
+rain: 0, tmin: null, tmax: null, ventomax: null, umiditamin: null, umiditamax: null, rugiadamin: null, rugiadamax: null, online: false
+};
+
+if (isRowOnline) previous.online = true;
+if (Number.isFinite(row.rain)) previous.rain += row.rain;
+if (Number.isFinite(row.tmin)) previous.tmin = previous.tmin === null ? row.tmin : Math.min(previous.tmin, row.tmin);
+if (Number.isFinite(row.tmax)) previous.tmax = previous.tmax === null ? row.tmax : Math.max(previous.tmax, row.tmax);
+if (Number.isFinite(row.ventomax)) previous.ventomax = previous.ventomax === null ? row.ventomax : Math.max(previous.ventomax, row.ventomax);
+if (Number.isFinite(row.umiditamin)) previous.umiditamin = previous.umiditamin === null ? row.umiditamin : Math.min(previous.umiditamin, row.umiditamin);
+if (Number.isFinite(row.umiditamax)) previous.umiditamax = previous.umiditamax === null ? row.umiditamax : Math.max(previous.umiditamax, row.umiditamax);
+if (Number.isFinite(row.rugiadamin)) previous.rugiadamin = previous.rugiadamin === null ? row.rugiadamin : Math.min(previous.rugiadamin, row.rugiadamin);
+if (Number.isFinite(row.rugiadamax)) previous.rugiadamax = previous.rugiadamax === null ? row.rugiadamax : Math.max(previous.rugiadamax, row.rugiadamax);
+
+daily.set(key, previous);
+});
+
+const today = new Date();
+today.setHours(0,0,0,0);
+let cumulative = 0;
+const tableRows = [];
+
+for (let i = 0; i <= 30; i++) {
+const date = new Date(today);
+date.setDate(date.getDate() - i);
+const item = daily.get(dayKey(date));
+
+const isOnline = item ? item.online : false;
+const dotColor = isOnline ? 'var(--success)' : 'var(--danger)';
+const statusDot = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${dotColor}; vertical-align:middle;"></span>`;
+
+const rain = item && Number.isFinite(item.rain) ? item.rain : 0;
+cumulative += rain;
+
+const temperature = item && Number.isFinite(item.tmin) && Number.isFinite(item.tmax)
+? `<span class="popup-temp-min">${item.tmin.toFixed(0)}°</span> - <span class="popup-temp-max">${item.tmax.toFixed(0)}°</span>`
+: `<span class="popup-temp-muted">[n/d]</span>`;
+
+const windText = item && Number.isFinite(item.ventomax) && item.ventomax !== 0 ? `<span class="popup-wind">${item.ventomax.toFixed(0)}</span>` : '';
+const humText = item && Number.isFinite(item.umiditamin) && Number.isFinite(item.umiditamax) ? `<span class="popup-hum">${item.umiditamin.toFixed(0)}% - ${item.umiditamax.toFixed(0)}%</span>` : '';
+const dewText = item && Number.isFinite(item.rugiadamin) && Number.isFinite(item.rugiadamax) ? `<span class="popup-dew">${item.rugiadamin.toFixed(0)}° - ${item.rugiadamax.toFixed(0)}°</span>` : '';
+const dayText = i === 0 ? 'Oggi' : `-${i} ${dayLabel(date)}`;
+
+tableRows.push(`
+<tr class="${i === 0 ? 'today-row' : ''}">
+<td>${dayText}</td>
+<td>${statusDot}</td>
+<td><span class="popup-rain-day">${rain.toFixed(1)}</span></td>
+<td><span class="popup-rain-cum">(${cumulative.toFixed(1)})</span></td>
+<td>${temperature}</td>
+<td>${windText}</td>
+<td>${humText}</td>
+<td>${dewText}</td>
+</tr>
+`);
+}
+
+return `
+<div class="popup-title">${station.name}</div>
+<div class="popup-meta">
+<div class="popup-status ${statusClass}">${status}</div>
+<div class="popup-update-line">Ril. ${detectedText} · Aggiornamento Staz. · ${stationUpdateText}</div>
+<div class="popup-table-wrap">
+<table class="popup-weather-table">
+<thead>
+<tr><th>Giorno</th><th></th><th>Pioggia</th><th>Pioggia Cum</th><th>Temperature</th><th>Vento Max Km/h</th><th>Umidità %</th><th>Punto di Rugiada</th></tr>
+</thead>
+<tbody>${tableRows.join('')}</tbody>
+</table>
+</div>
+</div>
+`;
+}
+
+function markerIcon(station) {
+const statusClass = station.summary.online ? 'online' : 'offline';
+let value = station.summary.rainValue;
+
+return L.divIcon({
+className: '',
+html: `<div class="station-marker ${statusClass}">${Number.isFinite(value) ? Math.round(value) : '–'}</div>`,
+iconSize: [34,34],
+iconAnchor: [17,17],
+popupAnchor: [0,-70]
+});
+}
+
+function refreshMarkers(data) {
+markersLayer.clearLayers();
+markerRefs.clear();
+
+data.forEach(station => {
+const marker = L.marker([station.lat, station.lon], {
+icon: markerIcon(station)
+})
+.bindPopup(popupHtml(station), {
+autoPan: true,
+keepInView: true,
+maxHeight: 450,
+maxWidth: 1200
+});
+
+markerRefs.set(station.id, marker);
+markersLayer.addLayer(marker);
+});
+}
+
+function populateDropdown(data) {
+if (!stationSelectElement) return;
+stationSelectElement.innerHTML = '<option value="">🔍 Seleziona Stazione...</option>';
+const sortedStations = [...data].sort((a, b) => a.name.localeCompare(b.name));
+sortedStations.forEach(station => {
+const opt = document.createElement('option');
+opt.value = station.id;
+opt.textContent = station.name;
+stationSelectElement.appendChild(opt);
+});
+
+stationSelectElement.onchange = (e) => {
+const stationId = e.target.value;
+if (!stationId) {
+refreshMarkers(stationData);
+map.setView([42.35, 13.95], 9.50);
+map.closePopup();
+return;
+}
+const station = data.find(s => s.id === stationId);
+if (station) {
+map.setView([station.lat, station.lon], 13);
+map.closePopup();
+
+// Mostra SOLO l'icona della stazione selezionata
+markersLayer.clearLayers();
+const marker = markerRefs.get(station.id);
+if (marker) {
+markersLayer.addLayer(marker);
+}
+}
+};
+}
+
+async function init() {
+try {
+const [stationText, weatherText] = await Promise.all([
+fetchText(STATIONS_CSV),
+fetchText(WEATHER_CSV)
+]);
+
+const stationParsed = Papa.parse(stationText, {
+header: true, skipEmptyLines: true, delimiter: delimiter(stationText), transformHeader: h => h.trim(), transform: v => String(v).trim()
+});
+
+const weatherParsed = Papa.parse(weatherText, {
+header: true, skipEmptyLines: true, delimiter: delimiter(weatherText), transformHeader: h => h.trim(), transform: v => String(v).trim()
+});
+
+const weatherRows = weatherParsed.data || [];
+const weatherById = new Map();
+
+let allDetectedDates = [];
+weatherRows.forEach(row => {
+const id = get(row, 'Id', 'id');
+if (!id) return;
+if (!weatherById.has(id)) weatherById.set(id, []);
+weatherById.get(id).push(row);
+
+const d = parseDate(get(row, 'DataRilevamento', 'Data rilevamento', 'data_rilevamento', 'Data'));
+if (d) allDetectedDates.push(d);
+});
+
+if (allDetectedDates.length > 0) {
+const maxDate = new Date(Math.max(...allDetectedDates));
+const lastUpdateEl = document.getElementById('lastUpdateDisplay');
+if (lastUpdateEl) {
+lastUpdateEl.innerHTML = `Dati aggiornati al: ${formatUpdateTimestamp(maxDate)}<div class="sub-release">Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</div>`;
+}
+}
+
+stationData = (stationParsed.data || []).map(row => {
+const id = get(row, 'Id', 'id');
+const name = get(row, 'Stazione Meteo', 'StazioneMeteo', 'stazione');
+const lat = num(get(row, 'Lat', 'lat'));
+const lon = num(get(row, 'Long', 'long', 'Lon', 'lon'));
+
+return {
+id, name, lat, lon,
+altitude: num(get(row, 'Altitudine', 'altitudine')),
+reference: get(row, 'Riferimento', 'riferimento'),
+summary: summarizeWeather(weatherById.get(id) || [])
+};
+}).filter(station => station.id && station.name && Number.isFinite(station.lat) && Number.isFinite(station.lon));
+
+refreshMarkers(stationData);
+populateDropdown(stationData);
+} catch (error) {
+console.error(error);
+}
+}
+
+init();
+})();
+</script>
+</body>
+</html>

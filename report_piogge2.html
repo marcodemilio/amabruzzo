@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Piogge Giornaliere/Cumulate -
+    Alcolisti Micologici Analcolici TRIS -
+    Rel. 01-GH-001
+  </title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#f7f6f2;
+      --surface:#ffffff;
+      --border:#d4d1ca;
+      --text:#28251d;
+      --muted:#6f6d68;
+      --primary:#01696f;
+      --tris:#7b2cbf;
+      --active-green:#a8df6f;
+      --radius:1rem;
+      --font:'Inter',system-ui,sans-serif;
+      --yellow:#ffe66a;
+      --yellow2:#fff3a8;
+      --yellow-border:#c7a900;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html,
+    body{
+      margin:0;
+      min-height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:var(--font);
+    }
+
+    .report-main{
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      overflow: auto;
+    }
+
+    .report-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:1rem;
+      margin-bottom:1rem;
+      padding:1rem 1.5rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg,#ffffff,#f4fbfc);
+      box-shadow:0 1px 2px rgba(0,0,0,.08);
+    }
+
+    .report-title{
+      margin:0;
+      font-size:1.25rem;
+      line-height:1.15;
+    }
+
+    .report-subtitle{
+      margin:.35rem 0 0;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .cartina-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #ff7b00;
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: background 0.15s ease;
+    }
+
+    .cartina-btn:hover {
+      background: #e66d00;
+      color: #ffffff;
+    }
+
+    .panel{
+      padding:1rem;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--surface);
+      box-shadow:0 1px 2px rgba(0,0,0,.08);
+    }
+
+    .controls{
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:250px;
+    }
+
+    .field label{
+      display:block;
+      color:var(--muted);
+      font-size:.88rem;
+      font-weight:700;
+    }
+
+    select,
+    button{
+      min-height:42px;
+      padding:0 .75rem;
+      border:1px solid var(--border);
+      border-radius:.65rem;
+      background:var(--surface);
+      color:var(--text);
+      font:inherit;
+    }
+
+    select{
+      min-width:280px;
+      border-color:#9bb9d6;
+      background:linear-gradient(180deg,#f5fbff,#dfeeff);
+      color:#173b5d;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 3px 8px rgba(0,0,0,.08);
+    }
+
+    select.placeholder{
+      border-color:#d9b900;
+      background:linear-gradient(
+        180deg,
+        var(--yellow2),
+        var(--yellow)
+      );
+      color:#5a4800;
+    }
+
+    button{
+      cursor:pointer;
+      font-weight:700;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+      transition:
+        transform .08s ease,
+        box-shadow .15s ease,
+        background .15s ease;
+    }
+
+    button:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-execute{
+      border-color:#9bd5da;
+      background:linear-gradient(180deg,#f2fbfc,#d6f0f2);
+      color:#0f4f54;
+    }
+
+    .btn-save{
+      border-color:#d6b15f;
+      background:linear-gradient(180deg,#fff4dc,#f3cd7b);
+      color:#5a4310;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    .summary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .summary .left,
+    .summary .right{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.4rem .7rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:#fafafa;
+      color:var(--muted);
+      font-size:.88rem;
+    }
+
+    .pill strong{
+      color:var(--text);
+    }
+
+    .status{
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .error{
+      padding:10px;
+      border:1px solid #efc9cf;
+      border-radius:12px;
+      background:#fff6f8;
+      color:#a13544;
+      font-weight:700;
+      white-space:pre-wrap;
+    }
+
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .legend .item{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.35rem .6rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:#fbfbfb;
+      font-size:.84rem;
+    }
+
+    .legend .dot{
+      display:inline-block;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+    }
+
+    .dot-rain{
+      background:#2f7a2f;
+    }
+
+    .dot-cum{
+      background:#7b2cbf;
+    }
+
+    .legend .selected-column{
+      width:10px;
+      height:10px;
+      border:1px solid var(--yellow-border);
+      background:var(--yellow);
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fff;
+    }
+
+    table{
+      width:100%;
+      min-width:1560px;
+      border-collapse:collapse;
+      table-layout:fixed;
+      font-size:.84rem;
+    }
+
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      padding:6px 5px;
+      border-bottom:1px solid var(--border);
+      background:#eaf7fb;
+      color:#16484e;
+      font-weight:800;
+    }
+
+    th,
+    td{
+      width:43px;
+      max-width:43px;
+      padding:6px 5px;
+      border-right:1px solid #e6e2da;
+      border-bottom:1px solid #e6e2da;
+      text-align:center;
+      vertical-align:middle;
+      overflow:hidden;
+      word-wrap:break-word;
+      overflow-wrap:anywhere;
+    }
+
+    th:first-child,
+    td:first-child{
+      position:sticky;
+      left:0;
+      z-index:1;
+      width:280px;
+      max-width:280px;
+      background:#fff;
+    }
+
+    thead th:first-child{
+      z-index:3;
+      background:#dff3f6;
+    }
+
+    .name-cell{
+      min-width:280px;
+      color:#163338;
+      font-weight:700;
+      text-align:left;
+    }
+
+    .station-name{
+      display:inline;
+      color:#163338;
+      font-weight:700;
+    }
+
+    .selected-cumulative{
+      display:inline;
+      margin-left:.35rem;
+      color:#6a1d86;
+      font-size:.76rem;
+      font-weight:700;
+    }
+
+    .rain-row td{
+      color:#124f1e;
+      font-weight:700;
+    }
+
+    .cum-row td{
+      color:#6a1d86;
+      font-weight:700;
+    }
+
+    .selected-column{
+      background:var(--yellow) !important;
+      color:#3b3000 !important;
+      border-left:1px solid var(--yellow-border) !important;
+      border-right:1px solid var(--yellow-border) !important;
+    }
+
+    thead .selected-column{
+      background:#f2d733 !important;
+      color:#3b3000 !important;
+    }
+
+    @media (max-width:980px){
+      .report-main{
+        padding:.75rem;
+      }
+
+      .report-header{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      table{
+        min-width:1380px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="report-main">
+    <header class="report-header">
+      <div>
+        <h2 class="report-title" id="reportTitle">
+          Piogge Giornaliere/Cumulate
+        </h2>
+        <p class="report-subtitle" style="margin-top: 6px; font-size: 0.86rem; color: var(--muted); font-weight: 600;">
+          Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001 - Dati aggiornati al: <span id="updateDateValue">—</span> - Caricati <span id="headerRecordsCount">0</span> record per <span id="headerStationsCount">0</span> stazioni
+        </p>
+      </div>
+      <div>
+        <a href="index2.html" class="cartina-btn">🗺️ Mappa Stazioni Meteo</a>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="controls">
+        <div class="field">
+          <label for="daySelect">
+            Seleziona Giorno (0:-30)
+          </label>
+          <select
+            id="daySelect"
+            class="placeholder"
+            aria-label="Seleziona giorno">
+            <option value="">
+              Seleziona un giorno
+            </option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>&nbsp;</label>
+          <button
+            id="executeBtn"
+            class="btn-execute"
+            type="button">
+            Esegui
+          </button>
+        </div>
+
+        <div
+          class="field hidden"
+          id="savePdfField">
+          <label>&nbsp;</label>
+          <button
+            id="savePdfBtn"
+            class="btn-save"
+            type="button">
+            Salva PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span class="item">
+          <span class="dot dot-rain"></span>
+          Riga superiore: pioggia giornaliera
+        </span>
+        <span class="item">
+          <span class="dot dot-cum"></span>
+          Riga inferiore: cumulativo retrogrado
+        </span>
+        <span class="item">
+          Colonne: -30, -29, ... -1, 0
+        </span>
+        <span class="item">
+          <span class="selected-column"></span>
+          Giorno selezionato
+        </span>
+      </div>
+    </section>
+
+    <section
+      class="panel"
+      style="margin-top:1rem">
+      <div class="summary">
+        <div class="left">
+          <span class="pill">
+            Stazioni:
+            <strong id="stationsCount">0</strong>
+          </span>
+          <span class="pill">
+            Righe meteo:
+            <strong id="recordsCount">0</strong>
+          </span>
+          <span class="pill">
+            Ordine su:
+            <strong id="selectedDayLabel">—</strong>
+          </span>
+        </div>
+
+        <div
+          class="right status"
+          id="statusText">
+          Seleziona un giorno e premi Esegui.
+        </div>
+      </div>
+
+      <div
+        id="errorBox"
+        class="error"
+        style="display:none">
+      </div>
+
+      <div class="table-wrap">
+        <table id="reportTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="report_piogge.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Blocca inserimenti indesiderati nella barra di stato centrale
+      const statusEl = document.getElementById('statusText');
+      if (statusEl) {
+        const observer = new MutationObserver(() => {
+          if (statusEl.textContent.includes("Pronto") || statusEl.textContent.includes("record")) {
+            statusEl.textContent = "Seleziona un giorno e premi Esegui.";
+          }
+        });
+        observer.observe(statusEl, { childList: true, characterData: true, subtree: true });
+      }
+
+      function parseCustomDate(str) {
+        if (!str) return null;
+        str = str.trim();
+        let isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+        if (isoMatch) {
+          return new Date(isoMatch[1], isoMatch[2]-1, isoMatch[3], isoMatch[4]||0, isoMatch[5]||0, isoMatch[6]||0);
+        }
+        let itMatch = str.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/);
+        if (itMatch) {
+          return new Date(itMatch[3], itMatch[2]-1, itMatch[1], itMatch[4]||0, itMatch[5]||0, itMatch[6]||0);
+        }
+        let d = new Date(str);
+        return isNaN(d.getTime()) ? null : d;
+      }
+
+      // 1. Estrazione del valore massimo di DataRilevamento e conteggio record da dati_meteo_30g.csv
+      Papa.parse("dati_meteo_30g.csv", {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results.data && results.data.length > 0) {
+            let maxDateObj = null;
+            let maxDateOriginalStr = "";
+
+            results.data.forEach(row => {
+              let dataRil = "";
+              for (let key in row) {
+                const lKey = key.trim().toLowerCase();
+                if (lKey === 'datarilevamento' || lKey === 'data_rilevamento') {
+                  if (row[key]) {
+                    dataRil = String(row[key]).trim();
+                    break;
+                  }
+                }
+              }
+              if (!dataRil) {
+                dataRil = String(row.DataRilevamento || row.data_rilevamento || row.Data || row.data || "").trim();
+              }
+
+              if (dataRil) {
+                let parsed = parseCustomDate(dataRil);
+                if (parsed && (!maxDateObj || parsed > maxDateObj)) {
+                  maxDateObj = parsed;
+                  maxDateOriginalStr = dataRil;
+                }
+              }
+            });
+
+            if (maxDateObj) {
+              const pad = (n) => String(n).padStart(2, '0');
+              const dd = pad(maxDateObj.getDate());
+              const mm = pad(maxDateObj.getMonth() + 1);
+              const yyyy = maxDateObj.getFullYear();
+              const hh = pad(maxDateObj.getHours());
+              const min = pad(maxDateObj.getMinutes());
+              
+              document.getElementById("updateDateValue").textContent = `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+            } else if (maxDateOriginalStr) {
+              document.getElementById("updateDateValue").textContent = maxDateOriginalStr;
+            }
+
+            document.getElementById("headerRecordsCount").textContent = results.data.length;
+            document.getElementById("recordsCount").textContent = results.data.length;
+          }
+        }
+      });
+
+      // 2. Conteggio dinamico delle stazioni da stazioni_meteo.csv
+      Papa.parse("stazioni_meteo.csv", {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results.data && results.data.length > 0) {
+            const stations = new Set();
+            results.data.forEach(row => {
+              let stn = "";
+              for (let key in row) {
+                const lKey = key.trim().toLowerCase();
+                if (lKey.includes('stazione') || lKey.includes('station') || lKey.includes('nome') || lKey.includes('id') || lKey.includes('codice')) {
+                  if (row[key]) {
+                    stn = row[key];
+                    break;
+                  }
+                }
+              }
+              if (!stn && Object.keys(row).length > 0) {
+                stn = row[Object.keys(row)[0]];
+              }
+              if (stn) {
+                stations.add(String(stn).trim());
+              }
+            });
+            const stnTotal = stations.size > 0 ? stations.size : results.data.length;
+            document.getElementById("headerStationsCount").textContent = stnTotal;
+            document.getElementById("stationsCount").textContent = stnTotal;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
