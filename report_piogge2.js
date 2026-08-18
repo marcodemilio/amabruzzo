@@ -1,7 +1,7 @@
 (() => {
   const WEATHER_CSV = './dati_meteo_30g.csv';
   const STATIONS_CSV = './stazioni_meteo.csv';
-  const RELEASE = 'Rel. 03-A-018';
+  const RELEASE = 'Rel. 01-GH-002';
 
   const els = {
     app: document.getElementById('app'),
@@ -28,27 +28,32 @@
   let stationMap = new Map();
   let selectedDateIndex = 0;
 
-  // Stili CSS adattati e ottimizzati per popup mobile-friendly e tabelle scrollabili con touch
+  // Stili CSS aggiornati con bordi più marcati e testo del cumulativo in blu scuro e più grande
   if (!document.getElementById('offlineStyle')) {
     const style = document.createElement('style');
     style.id = 'offlineStyle';
     style.textContent = `
       .offline-cell {
-        background-color: #fca5a5 !important;
-        color: #7f1d1d !important;
-        font-weight: 600;
-        font-style: italic;
+        background-color: transparent !important;
+        color: #dc2626 !important;
+        font-weight: 700 !important;
+        font-style: normal !important;
       }
       .selected-column {
-        background-color: #fef08a !important;
+        background-color: #7dd3fc !important;
         color: #000000 !important;
+      }
+      thead th.selected-column {
+        background-color: #7dd3fc !important;
+        color: #00008B !important;
+        font-weight: bold !important;
       }
       td.offline-cell.selected-column, td.selected-column.offline-cell {
-        background-color: #fef08a !important;
-        color: #000000 !important;
+        background-color: #7dd3fc !important;
+        color: #dc2626 !important;
       }
       .top-scroll-container {
-        display: none; /* Nascosto su mobile per risparmiare spazio verticale */
+        display: none;
       }
       .table-scroll-container {
         max-height: 68vh !important;
@@ -56,15 +61,25 @@
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
         position: relative !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 2px solid #64748b !important; /* Bordo contenitore più marcato */
         border-radius: 6px;
         background-color: #ffffff;
       }
       table {
         border-collapse: separate !important;
         border-spacing: 0 !important;
-        width: max-content !important;
-        min-width: 100% !important;
+        width: 100% !important;
+        table-layout: auto !important;
+      }
+      th, td {
+        white-space: nowrap !important;
+        padding: 6px 10px !important;
+        text-align: center;
+        border-right: 1px solid #94a3b8 !important; /* Bordo verticale più marcato */
+        border-bottom: 1px solid #94a3b8 !important; /* Bordo orizzontale più marcato */
+      }
+      th:not(.name-cell), td:not(.name-cell) {
+        min-width: 68px !important;
       }
       thead th {
         position: sticky !important;
@@ -72,37 +87,58 @@
         z-index: 20 !important;
         background-color: #00FFFF !important;
         color: #00008B !important;
-        box-shadow: inset 0 -1px 0 #cbd5e1;
+        box-shadow: none !important;
+        border-bottom: 2px solid #64748b !important;
       }
       .name-cell {
         position: sticky !important;
         left: 0 !important;
         z-index: 10 !important;
         background-color: #ffffff !important;
-        box-shadow: inset -1px 0 0 #cbd5e1;
+        box-shadow: none !important;
         cursor: pointer;
+        width: 220px !important;
+        min-width: 220px !important;
+        max-width: 220px !important;
+        text-align: left !important;
+        padding-left: 12px !important;
+        border-right: 2px solid #64748b !important;
       }
       .name-cell:hover {
-        background-color: #e0f2fe !important;
+        background-color: #7dd3fc !important;
       }
       thead th.name-cell {
         z-index: 30 !important;
         background-color: #00FFFF !important;
         color: #00008B !important;
         cursor: default;
+        width: 220px !important;
+        min-width: 220px !important;
+        max-width: 220px !important;
+        text-align: left !important;
+        box-shadow: none !important;
+        border-right: 2px solid #64748b !important;
       }
       .rain-row td.name-cell { background-color: #ffffff !important; }
-      .cum-row td.name-cell { background-color: #7fffd4 !important; }
+      .cum-row td.name-cell { 
+        background-color: #cbd5e1 !important; /* Sfondo cumulativo leggermente più scuro */
+        font-weight: bold !important;
+        font-size: 1rem !important; /* Carattere più grande */
+        color: #00008B !important; /* Testo blu scuro */
+        border-top: 2px solid #64748b !important;
+        border-bottom: 2px solid #64748b !important;
+      }
       .cum-row td {
-        background-color: #7fffd4 !important;
-        font-weight: 600 !important;
-        color: #ff0000 !important;
-        border-top: 1px solid #cbd5e1 !important;
-        border-bottom: 1px solid #cbd5e1 !important;
+        background-color: #cbd5e1 !important; /* Sfondo cumulativo leggermente più scuro */
+        font-weight: 700 !important; /* Grassetto accentuato */
+        font-size: 0.9rem !important; /* Dati cumulativi leggermente più grandi */
+        color: #00008B !important; /* Testo dei dati in blu scuro */
+        border-top: 2px solid #64748b !important;
+        border-bottom: 2px solid #64748b !important;
       }
       .cum-row td.selected-column {
-        background-color: #fef08a !important;
-        color: #ff0000 !important;
+        background-color: #7dd3fc !important;
+        color: #00008B !important;
       }
       /* Popup Modal Ottimizzato per Smartphone */
       .station-modal-overlay {
@@ -145,7 +181,7 @@
         margin-top: 6px;
       }
       .station-modal-table th, .station-modal-table td {
-        border: 1px solid #cbd5e1;
+        border: 1px solid #94a3b8;
         padding: 6px 4px;
         text-align: center;
       }
@@ -180,9 +216,7 @@
     }
   }
 
-  function updateTopScrollWidth() {
-    // Funzione mantenuta per compatibilità senza errori se richiamata
-  }
+  function updateTopScrollWidth() {}
 
   function showStationPopup(stName) {
     const meta = getStationMetaByName(stName) || { name: stName, id: 'N/D', ref: 'N/D', code: 'N/D', lat: 'N/D', long: 'N/D', zona: 'N/D' };
@@ -546,7 +580,7 @@
         <th rowspan="2" style="vertical-align:middle; background-color:#00FFFF !important; color:#00008B !important;" title="Giorni Offline">G.O.</th>
       </tr>
       <tr>
-        ${headersData.map(h => `<th class="${h.isSel ? 'selected-column' : ''}" style="font-weight:normal; font-size:0.7rem;">${h.display.slice(0, 5)}</th>`).join('')}
+        ${headersData.map(h => `<th class="${h.isSel ? 'selected-column' : ''}" style="font-weight:bold; font-size:0.75rem;">${h.display.slice(0, 5)}</th>`).join('')}
       </tr>
     `;
 
@@ -574,18 +608,18 @@
 
       bodyHtml += `
         <tr class="rain-row">
-          <td class="name-cell" data-station="${stName}">
+          <td class="name-cell" data-station="${stName}" title="${displayName}">
             <span class="station-name">${displayName}</span>
           </td>
           ${dailyRains.map((d, i) => {
             const h = headersData[i];
             return `
-              <td class="${h.isSel ? 'selected-column' : ''} ${d.isOff && !h.isSel ? 'offline-cell' : ''}">
+              <td class="${h.isSel ? 'selected-column' : ''} ${d.isOff ? 'offline-cell' : ''}">
                 ${d.isOff ? 'OFF' : (d.rain > 0 ? d.rain.toFixed(1) : '-')}
               </td>
             `;
           }).join('')}
-          <td rowspan="2" style="font-weight:800; background:#f9fafb; text-align:center; vertical-align:middle;">
+          <td rowspan="2" style="font-weight:800; background:#f9fafb; text-align:center; vertical-align:middle; border-left:1px solid #94a3b8; border-bottom:2px solid #64748b;">
             ${offlineDaysCount}
           </td>
         </tr>
@@ -596,7 +630,7 @@
           ${cumRains.map((c, i) => {
             const h = headersData[i];
             return `
-              <td class="${h.isSel ? 'selected-column' : ''}" style="color:#ff0000;">
+              <td class="${h.isSel ? 'selected-column' : ''}">
                 ${c.rain > 0 ? c.rain.toFixed(1) : '-'}
               </td>
             `;
@@ -671,10 +705,10 @@
         ...dailyRains.map((d, i) => {
           const h = headersData[i];
           if (h.isSel) {
-            return { content: d.isOff ? 'OFF' : (d.rain > 0 ? d.rain.toFixed(1) : '-'), styles: { fillColor: [254, 240, 138], fontSize: 6 } };
+            return { content: d.isOff ? 'OFF' : (d.rain > 0 ? d.rain.toFixed(1) : '-'), styles: { fillColor: [125, 211, 252], fontSize: 6, textColor: d.isOff ? [220, 38, 38] : [0, 0, 0], fontStyle: d.isOff ? 'bold' : 'normal' } };
           }
           if (d.isOff) {
-            return { content: 'OFF', styles: { fillColor: [252, 165, 165], textColor: [127, 29, 29], fontSize: 6 } };
+            return { content: 'OFF', styles: { textColor: [220, 38, 38], fontStyle: 'bold', fontSize: 6 } };
           }
           return { content: d.rain > 0 ? d.rain.toFixed(1) : '-' };
         }),
@@ -682,10 +716,10 @@
       ]);
 
       body.push([
-        { content: 'Cumulativo', styles: { fontStyle: 'bold', textColor: [255, 0, 0], fillColor: [127, 255, 212] } },
+        { content: 'Cumulativo', styles: { fontStyle: 'bold', textColor: [0, 0, 139], fillColor: [203, 213, 225], fontSize: 7 } },
         ...cumRains.map((c, i) => ({
           content: c.rain > 0 ? c.rain.toFixed(1) : '-',
-          styles: { fillColor: headersData[i].isSel ? [254, 240, 138] : [127, 255, 212], fontStyle: 'bold', textColor: [255, 0, 0] }
+          styles: { fillColor: headersData[i].isSel ? [125, 211, 252] : [203, 213, 225], fontStyle: 'bold', textColor: [0, 0, 139] }
         }))
       ]);
     });
@@ -695,8 +729,8 @@
       head: head,
       body: body,
       theme: 'grid',
-      styles: { fontSize: 6, cellPadding: 1, halign: 'center', valign: 'middle' },
-      headStyles: { fillColor: [0, 255, 255], textColor: [0, 0, 139], fontStyle: 'bold', fontSize: 6 },
+      styles: { fontSize: 6, cellPadding: 1, halign: 'center', valign: 'middle', lineColor: [148, 163, 184], lineWidth: 0.2 },
+      headStyles: { fillColor: [0, 255, 255], textColor: [0, 0, 139], fontStyle: 'bold', fontSize: 6, lineColor: [100, 116, 139], lineWidth: 0.3 },
       columnStyles: { 0: { halign: 'left', fontStyle: 'bold', cellWidth: 50 } }
     });
 
