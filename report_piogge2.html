@@ -2,11 +2,11 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>
     Piogge Giornaliere/Cumulate -
     Alcolisti Micologici Analcolici TRIS -
-    Rel. 01-GH-001
+    Rel. 01-GH-002
   </title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,13 +45,13 @@
       background:var(--bg);
       color:var(--text);
       font-family:var(--font);
+      -webkit-text-size-adjust: 100%;
     }
 
     .report-main{
       max-width: 1600px;
       margin: 0 auto;
-      padding: 1.5rem;
-      overflow: auto;
+      padding: 1rem;
     }
 
     .report-header{
@@ -61,7 +61,7 @@
       flex-wrap:wrap;
       gap:1rem;
       margin-bottom:1rem;
-      padding:1rem 1.5rem;
+      padding:1rem;
       border:1px solid var(--border);
       border-radius:var(--radius);
       background:linear-gradient(180deg,#ffffff,#f4fbfc);
@@ -70,14 +70,14 @@
 
     .report-title{
       margin:0;
-      font-size:1.25rem;
-      line-height:1.15;
+      font-size:1.15rem;
+      line-height:1.2;
     }
 
     .report-subtitle{
       margin:.35rem 0 0;
       color:var(--muted);
-      font-size:.9rem;
+      font-size:.85rem;
     }
 
     .cartina-btn {
@@ -85,21 +85,16 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 8px 14px;
+      width: 100%;
+      padding: 10px 14px;
       background: #ff7b00;
       color: #ffffff;
       font-size: 0.95rem;
       font-weight: 700;
       text-decoration: none;
-      border-radius: 6px;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.4);
-      transition: background 0.15s ease;
-    }
-
-    .cartina-btn:hover {
-      background: #e66d00;
-      color: #ffffff;
     }
 
     .panel{
@@ -112,17 +107,16 @@
 
     .controls{
       display:flex;
-      align-items:flex-end;
-      justify-content:flex-start;
-      flex-wrap:wrap;
-      gap:10px;
+      align-items:stretch;
+      flex-direction:column;
+      gap:12px;
     }
 
     .field{
       display:flex;
       flex-direction:column;
       gap:6px;
-      min-width:250px;
+      width: 100%;
     }
 
     .field label{
@@ -134,17 +128,18 @@
 
     select,
     button{
-      min-height:42px;
+      min-height:46px;
       padding:0 .75rem;
       border:1px solid var(--border);
       border-radius:.65rem;
       background:var(--surface);
       color:var(--text);
       font:inherit;
+      font-size: 1rem;
+      width: 100%;
     }
 
     select{
-      min-width:280px;
       border-color:#9bb9d6;
       background:linear-gradient(180deg,#f5fbff,#dfeeff);
       color:#173b5d;
@@ -155,11 +150,7 @@
 
     select.placeholder{
       border-color:#d9b900;
-      background:linear-gradient(
-        180deg,
-        var(--yellow2),
-        var(--yellow)
-      );
+      background:linear-gradient(180deg, var(--yellow2), var(--yellow));
       color:#5a4800;
     }
 
@@ -167,14 +158,6 @@
       cursor:pointer;
       font-weight:700;
       box-shadow:0 2px 8px rgba(0,0,0,.06);
-      transition:
-        transform .08s ease,
-        box-shadow .15s ease,
-        background .15s ease;
-    }
-
-    button:hover{
-      transform:translateY(-1px);
     }
 
     .btn-execute{
@@ -195,9 +178,8 @@
 
     .summary{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
+      align-items:flex-start;
+      flex-direction:column;
       gap:10px;
       margin-bottom:12px;
     }
@@ -207,19 +189,20 @@
       display:flex;
       align-items:center;
       flex-wrap:wrap;
-      gap:10px;
+      gap:8px;
+      width: 100%;
     }
 
     .pill{
       display:inline-flex;
       align-items:center;
-      gap:.45rem;
-      padding:.4rem .7rem;
+      gap:.4rem;
+      padding:.4rem .6rem;
       border:1px solid var(--border);
       border-radius:999px;
       background:#fafafa;
       color:var(--muted);
-      font-size:.88rem;
+      font-size:.82rem;
     }
 
     .pill strong{
@@ -228,7 +211,7 @@
 
     .status{
       color:var(--muted);
-      font-size:.9rem;
+      font-size:.85rem;
     }
 
     .error{
@@ -244,128 +227,124 @@
     .legend{
       display:flex;
       flex-wrap:wrap;
-      gap:8px;
-      margin-top:10px;
+      gap:6px;
+      margin-top:12px;
     }
 
     .legend .item{
       display:inline-flex;
       align-items:center;
       gap:.35rem;
-      padding:.35rem .6rem;
+      padding:.3rem .5rem;
       border:1px solid var(--border);
       border-radius:999px;
       background:#fbfbfb;
-      font-size:.84rem;
+      font-size:.78rem;
     }
 
     .legend .dot{
       display:inline-block;
-      width:10px;
-      height:10px;
+      width:8px;
+      height:8px;
       border-radius:50%;
     }
 
-    .dot-rain{
-      background:#2f7a2f;
-    }
-
-    .dot-cum{
-      background:#7b2cbf;
-    }
+    .dot-rain{ background:#2f7a2f; }
+    .dot-cum{ background:#7b2cbf; }
 
     .legend .selected-column{
-      width:10px;
-      height:10px;
+      width:8px;
+      height:8px;
       border:1px solid var(--yellow-border);
       background:var(--yellow);
     }
 
     .table-wrap{
-      overflow:auto;
+      overflow-x: auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       border:1px solid var(--border);
-      border-radius:14px;
+      border-radius:12px;
       background:#fff;
+      max-height: 70vh;
     }
 
     table{
-      width:100%;
-      min-width:1560px;
+      width:max-content;
+      min-width:100%;
       border-collapse:collapse;
-      table-layout:fixed;
-      font-size:.84rem;
+      table-layout:auto;
+      font-size:.8rem;
     }
 
     thead th{
       position:sticky;
       top:0;
       z-index:2;
-      padding:6px 5px;
+      padding:8px 4px;
       border-bottom:1px solid var(--border);
       background:#eaf7fb;
       color:#16484e;
       font-weight:800;
+      white-space: nowrap;
     }
 
     th,
     td{
-      width:43px;
-      max-width:43px;
-      padding:6px 5px;
+      width:38px;
+      max-width:38px;
+      min-width:38px;
+      padding:6px 2px;
       border-right:1px solid #e6e2da;
       border-bottom:1px solid #e6e2da;
       text-align:center;
       vertical-align:middle;
       overflow:hidden;
-      word-wrap:break-word;
-      overflow-wrap:anywhere;
     }
 
     th:first-child,
     td:first-child{
       position:sticky;
       left:0;
-      z-index:1;
-      width:280px;
-      max-width:280px;
+      z-index:3;
+      width:170px;
+      max-width:170px;
+      min-width:170px;
       background:#fff;
+      text-align:left;
+      padding-left: 6px;
     }
 
     thead th:first-child{
-      z-index:3;
+      z-index:4;
       background:#dff3f6;
     }
 
     .name-cell{
-      min-width:280px;
       color:#163338;
       font-weight:700;
       text-align:left;
+      cursor: pointer;
     }
 
     .station-name{
-      display:inline;
+      display:block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color:#163338;
       font-weight:700;
     }
 
     .selected-cumulative{
       display:inline;
-      margin-left:.35rem;
       color:#6a1d86;
-      font-size:.76rem;
+      font-size:.7rem;
       font-weight:700;
     }
 
-    .rain-row td{
-      color:#124f1e;
-      font-weight:700;
-    }
-
-    .cum-row td{
-      color:#6a1d86;
-      font-weight:700;
-    }
+    .rain-row td{ color:#124f1e; font-weight:700; }
+    .cum-row td{ color:#6a1d86; font-weight:700; }
 
     .selected-column{
       background:var(--yellow) !important;
@@ -379,19 +358,17 @@
       color:#3b3000 !important;
     }
 
-    @media (max-width:980px){
-      .report-main{
-        padding:.75rem;
-      }
-
-      .report-header{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      table{
-        min-width:1380px;
-      }
+    /* Desktop View Enhancements */
+    @media (min-width: 768px) {
+      .report-main{ padding: 1.5rem; }
+      .controls{ flex-direction: row; align-items: flex-end; flex-wrap: wrap; }
+      .field{ width: auto; min-width: 240px; }
+      select, button { width: auto; }
+      .summary{ flex-direction: row; justify-content: space-between; align-items: center; }
+      .summary .left, .summary .right{ width: auto; }
+      th:first-child, td:first-child{ width: 250px; max-width: 250px; min-width: 250px; }
+      th, td{ width: 42px; max-width: 42px; min-width: 42px; }
+      .station-name{ white-space: normal; }
     }
   </style>
 </head>
@@ -404,10 +381,10 @@
           Piogge Giornaliere/Cumulate
         </h2>
         <p class="report-subtitle" style="margin-top: 6px; font-size: 0.86rem; color: var(--muted); font-weight: 600;">
-          Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001 - Dati aggiornati al: <span id="updateDateValue">—</span> - Caricati <span id="headerRecordsCount">0</span> record per <span id="headerStationsCount">0</span> stazioni
+          Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-002 - Dati aggiornati al: <span id="updateDateValue">—</span> - Caricati <span id="headerRecordsCount">0</span> record per <span id="headerStationsCount">0</span> stazioni[cite: 2]
         </p>
       </div>
-      <div>
+      <div style="width: 100%; max-width: 200px;">
         <a href="index2.html" class="cartina-btn">🗺️ Mappa Stazioni Meteo</a>
       </div>
     </header>
@@ -429,7 +406,6 @@
         </div>
 
         <div class="field">
-          <label>&nbsp;</label>
           <button
             id="executeBtn"
             class="btn-execute"
@@ -441,7 +417,6 @@
         <div
           class="field hidden"
           id="savePdfField">
-          <label>&nbsp;</label>
           <button
             id="savePdfBtn"
             class="btn-save"
@@ -511,10 +486,10 @@
     </section>
   </main>
 
-  <script src="report_piogge.js" defer></script>
+  <!-- Riferimento aggiornato allo script report_piogge2.js -->
+  <script src="report_piogge2.js" defer></script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // Blocca inserimenti indesiderati nella barra di stato centrale
       const statusEl = document.getElementById('statusText');
       if (statusEl) {
         const observer = new MutationObserver(() => {
@@ -540,7 +515,6 @@
         return isNaN(d.getTime()) ? null : d;
       }
 
-      // 1. Estrazione del valore massimo di DataRilevamento e conteggio record da dati_meteo_30g.csv
       Papa.parse("dati_meteo_30g.csv", {
         download: true,
         header: true,
@@ -593,7 +567,6 @@
         }
       });
 
-      // 2. Conteggio dinamico delle stazioni da stazioni_meteo.csv
       Papa.parse("stazioni_meteo.csv", {
         download: true,
         header: true,
