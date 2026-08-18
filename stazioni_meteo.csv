@@ -60,3 +60,9 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 59,Pescopennattaro,https://www.wunderground.com/dashboard/pws/IPESCO10,41.880,14.290,1189,Pescopennattaro,IPESCO10,910
 60,Ovindoli,https://www.wunderground.com/dashboard/pws/IOVIND5,42.140,13.520,1370,Ovindoli,IOVIND5,920
 61,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
+<<<<<<< Updated upstream
+=======
+62,Capracotta,https://www.wunderground.com/dashboard/pws/ICAPRA10,41.840,14.270,1421,Capracotta,ICAPRA10,935
+63,Fossacesia Marina,https://www.wunderground.com/dashboard/pws/IFOSSACE4,42.240,14.530,0,Fossacesia Marina,IFOSSACE4,945
+
+>>>>>>> Stashed changes
