@@ -22,7 +22,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 21,Passolanciano,https://www.chietimeteo.it/passolanciano.htm?CH146,42.189,14.104,1310,Passolanciano,CH146,300
 22,Mammarosa,https://www.chietimeteo.it/lochalet.htm?CH143,42.171,14.116,1652,Mammarosa,CH143,305
 23,Tagliacozzo Loc. Roccacerro,https://www.meteonetwork.eu/it/weather-station/abr127-stazione-meteorologica-di-roccacerro/graphs,42.067,13.211,1040,Tagliacozzo,AQ-84,215
-24,Montereale - Aringo,https://www.caputfrigoris.it/descrizione.php?id=AQ083,42.556,13.265,984,Montereale,AQ-51,110
+24,Montereale - Aringo,https://www.caputfrigoris.it/tabgraph.php?id=AQ083,42.556,13.265,984,Montereale,AQ083,110
 25,Oricola Loc. Pezzetaglie,https://www.meteonetwork.eu/it/weather-station/abr133-stazione-meteorologica-di-pezzetaglie,42.070,13.053,600,Oricola,abr133,205
 26,Rocca di Mezzo Loc. Terranera,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=338&Itemid=521,42.228,13.531,1258,Rocca di Mezzo,AQ-57,187
 27,Lago di Campotosto,https://www.caputfrigoris.it/tabgraph.php?id=AQ011,42.520,13.328,1410,Lago di Campotosto,AQ11,120
@@ -56,3 +56,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 55,Monte Piselli,https://www.caputfrigoris.it/tabgraph.php?id=TE109,42.788,13.580,1426,Monte Piselli,TE109,109
 56,Valle Castellana,https://www.caputfrigoris.it/tabgraph.php?id=TE080,42.735,13.497,630,Valle Castellana,TE080,107
 57,Civitaluparella,https://www.caputfrigoris.it/tabgraph.php?id=CH119,41.944,14.304,807,Civitaluparella,CH119,318
+58,Alfedena,https://www.wunderground.com/dashboard/pws/IALFED12,41.730,14.030,880,Alfedena,IALFED12,800
+59,Pescopennattaro,https://www.wunderground.com/dashboard/pws/IPESCO10,41.880,14.290,1189,Pescopennattaro,IPESCO10,910
+60,Ovindoli,https://www.wunderground.com/dashboard/pws/IOVIND5,42.140,13.520,1370,Ovindoli,IOVIND5,920
+61,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
