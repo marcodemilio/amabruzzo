@@ -1,5 +1,4 @@
 (() => {
-  const SPECIES_CSV = './speciecrescita.csv';
   const WEATHER_CSV = './dati_meteo_30g.csv';
   const STATIONS_CSV = './stazioni_meteo.csv';
   const RELEASE = 'Rel. 03-A-018';
@@ -24,7 +23,6 @@
   };
 
   let weatherRawData = [];
-  let speciesData = [];
   let stationsMetaMap = new Map();
   let uniqueDates = [];
   let stationMap = new Map();
@@ -890,8 +888,7 @@
       ensureSortSelect();
       ensureTableWrapper();
 
-      const [speciesText, weatherText, stationsText] = await Promise.all([
-        fetchCsvFile(SPECIES_CSV),
+      const [weatherText, stationsText] = await Promise.all([
         fetchCsvFile(WEATHER_CSV),
         fetchCsvFile(STATIONS_CSV).catch(() => null)
       ]);
@@ -900,10 +897,6 @@
         const stationsParsed = parseCsv(stationsText);
         stationsMetaMap = processStationsMeta(stationsParsed.data || []);
       }
-
-      const speciesParsed = parseCsv(speciesText);
-      speciesData = (speciesParsed.data || [])
-        .filter(s => s.id && (s.attivo === true || String(s.attivo).toLowerCase() === 'true'));
 
       const weatherParsed = parseCsv(weatherText);
       weatherRawData = weatherParsed.data || [];
@@ -922,19 +915,26 @@
       if (els.recordsCount) els.recordsCount.textContent = String(weatherRawData.length);
 
       if (els.statusText) {
-        els.statusText.textContent = `${RELEASE} · Caricati ${weatherRawData.length} record per ${stationMap.size} stazioni. Pronto.`;
+        els.statusText.textContent = `${RELEASE} · Pronto.`;
       }
-
-    } catch (error) {
-      if (els.statusText) els.statusText.textContent = `${RELEASE} · Errore caricamento dati.`;
-      setError(String(error?.message || error));
+    } catch (err) {
+      setError(err.message);
+      console.error(err);
     }
   }
 
-  if (els.executeBtn) els.executeBtn.addEventListener('click', executeCalculation);
-  if (els.savePdfBtn) els.savePdfBtn.addEventListener('click', generatePdf);
-  if (els.sidebarToggleInside) els.sidebarToggleInside.addEventListener('click', toggleSidebar);
-  if (els.sidebarToggleMini) els.sidebarToggleMini.addEventListener('click', toggleSidebar);
+  if (els.executeBtn) {
+    els.executeBtn.addEventListener('click', executeCalculation);
+  }
+  if (els.savePdfBtn) {
+    els.savePdfBtn.addEventListener('click', generatePdf);
+  }
+  if (els.sidebarToggleInside) {
+    els.sidebarToggleInside.addEventListener('click', toggleSidebar);
+  }
+  if (els.sidebarToggleMini) {
+    els.sidebarToggleMini.addEventListener('click', toggleSidebar);
+  }
 
   init();
 })();
