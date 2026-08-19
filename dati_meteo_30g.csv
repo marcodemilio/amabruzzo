@@ -1,5 +1,4 @@
 Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax,PioggiaGiornaliera,Stato,FonteDati,UmiditaMin,UmiditaMax,VentoMax,RugiadaMin,RugiadaMax
-1,Il Ceppo Rifugio,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,19/07/2026,19/07/2026,19.9,29.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,20/07/2026,20/07/2026,20.0,29.4,0.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,21/07/2026,21/07/2026,19.0,27.8,1.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -13,7 +12,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 1,Il Ceppo Rifugio,29/07/2026,29/07/2026,16.8,25.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,30/07/2026,30/07/2026,18.4,27.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,31/07/2026,31/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
-2,Prati Di Tivo,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,19/07/2026,19/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,20/07/2026,20/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,21/07/2026,21/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -27,7 +25,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 2,Prati Di Tivo,29/07/2026,29/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,30/07/2026,30/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,31/07/2026,31/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
-3,Castel del Monte - Loc. Pietrattina,18/07/2026,18/07/2026,10.5,28.0,0.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
 3,Castel del Monte - Loc. Pietrattina,19/07/2026,19/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 3,Castel del Monte - Loc. Pietrattina,20/07/2026,20/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 3,Castel del Monte - Loc. Pietrattina,21/07/2026,21/07/2026,11.0,28.0,1.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -41,7 +38,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 3,Castel del Monte - Loc. Pietrattina,29/07/2026,29/07/2026,5.6,24.0,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 3,Castel del Monte - Loc. Pietrattina,30/07/2026,30/07/2026,7.1,24.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 3,Castel del Monte - Loc. Pietrattina,31/07/2026,31/07/2026,6.0,26.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-4,Villa Celiera,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 4,Villa Celiera,19/07/2026,19/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 4,Villa Celiera,20/07/2026,20/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 4,Villa Celiera,21/07/2026,21/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -55,7 +51,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 4,Villa Celiera,29/07/2026,29/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 4,Villa Celiera,30/07/2026,30/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 4,Villa Celiera,31/07/2026,31/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
-5,Pratola Peligna,18/07/2026,18/07/2026,19.3,38.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 5,Pratola Peligna,19/07/2026,19/07/2026,17.7,39.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 5,Pratola Peligna,20/07/2026,20/07/2026,19.2,39.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 5,Pratola Peligna,21/07/2026,21/07/2026,18.4,39.1,0.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -69,7 +64,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 5,Pratola Peligna,29/07/2026,29/07/2026,16.2,36.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 5,Pratola Peligna,30/07/2026,30/07/2026,17.1,37.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 5,Pratola Peligna,31/07/2026,31/07/2026,15.6,38.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-6,Rocca di Mezzo Loc. Rovere,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 6,Rocca di Mezzo Loc. Rovere,19/07/2026,19/07/2026,16.9,30.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 6,Rocca di Mezzo Loc. Rovere,20/07/2026,20/07/2026,14.6,30.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 6,Rocca di Mezzo Loc. Rovere,21/07/2026,21/07/2026,15.6,29.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -83,7 +77,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 6,Rocca di Mezzo Loc. Rovere,29/07/2026,29/07/2026,12.2,28.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 6,Rocca di Mezzo Loc. Rovere,30/07/2026,30/07/2026,13.3,29.0,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 6,Rocca di Mezzo Loc. Rovere,31/07/2026,31/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
-7,Rocca di Mezzo,18/07/2026,18/07/2026,13.4,30.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 7,Rocca di Mezzo,19/07/2026,19/07/2026,11.7,31.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 7,Rocca di Mezzo,20/07/2026,20/07/2026,12.9,31.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 7,Rocca di Mezzo,21/07/2026,21/07/2026,11.5,30.3,1.1,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -97,7 +90,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 7,Rocca di Mezzo,29/07/2026,29/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 7,Rocca di Mezzo,30/07/2026,30/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 7,Rocca di Mezzo,31/07/2026,31/07/2026,9.5,28.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-8,Rocca di Mezzo Loc. Fonteavignone,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 8,Rocca di Mezzo Loc. Fonteavignone,19/07/2026,19/07/2026,17.7,32.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 8,Rocca di Mezzo Loc. Fonteavignone,20/07/2026,20/07/2026,17.7,32.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 8,Rocca di Mezzo Loc. Fonteavignone,21/07/2026,21/07/2026,17.2,31.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -111,7 +103,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 8,Rocca di Mezzo Loc. Fonteavignone,29/07/2026,29/07/2026,15.4,28.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 8,Rocca di Mezzo Loc. Fonteavignone,30/07/2026,30/07/2026,16.4,29.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 8,Rocca di Mezzo Loc. Fonteavignone,31/07/2026,31/07/2026,16.2,29.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-9,Civitaretegna,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 9,Civitaretegna,19/07/2026,19/07/2026,13.5,35.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 9,Civitaretegna,20/07/2026,20/07/2026,16.1,35.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 9,Civitaretegna,21/07/2026,21/07/2026,15.1,35.0,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -125,7 +116,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 9,Civitaretegna,29/07/2026,29/07/2026,13.5,32.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 9,Civitaretegna,30/07/2026,30/07/2026,13.8,32.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 9,Civitaretegna,31/07/2026,31/07/2026,13.3,32.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-10,Prata d'Ansidonia,18/07/2026,18/07/2026,16.2,34.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,19/07/2026,19/07/2026,15.2,34.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,20/07/2026,20/07/2026,16.7,34.5,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,21/07/2026,21/07/2026,15.7,34.2,0.3,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -139,7 +129,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 10,Prata d'Ansidonia,29/07/2026,29/07/2026,14.1,31.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,30/07/2026,30/07/2026,15.1,32.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,31/07/2026,31/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
-11,Passo San Leonardo,18/07/2026,18/07/2026,20.9,29.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 11,Passo San Leonardo,19/07/2026,19/07/2026,20.9,30.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 11,Passo San Leonardo,20/07/2026,20/07/2026,19.9,30.0,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 11,Passo San Leonardo,21/07/2026,21/07/2026,17.1,30.2,0.8,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -153,7 +142,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 11,Passo San Leonardo,29/07/2026,29/07/2026,17.3,25.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 11,Passo San Leonardo,30/07/2026,30/07/2026,19.7,25.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 11,Passo San Leonardo,31/07/2026,31/07/2026,18.9,26.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-12,Roccacaramanico,18/07/2026,18/07/2026,23.6,32.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 12,Roccacaramanico,19/07/2026,19/07/2026,23.3,32.5,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 12,Roccacaramanico,20/07/2026,20/07/2026,20.7,30.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 12,Roccacaramanico,21/07/2026,21/07/2026,18.0,31.2,4.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -167,7 +155,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 12,Roccacaramanico,29/07/2026,29/07/2026,18.8,27.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 12,Roccacaramanico,30/07/2026,30/07/2026,21.1,28.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 12,Roccacaramanico,31/07/2026,31/07/2026,21.1,28.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-13,Campo di Giove,18/07/2026,18/07/2026,21.1,33.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 13,Campo di Giove,19/07/2026,19/07/2026,20.3,33.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 13,Campo di Giove,20/07/2026,20/07/2026,20.9,33.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 13,Campo di Giove,21/07/2026,21/07/2026,19.5,32.8,0.8,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -181,7 +168,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 13,Campo di Giove,29/07/2026,29/07/2026,17.6,29.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 13,Campo di Giove,30/07/2026,30/07/2026,19.3,29.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 13,Campo di Giove,31/07/2026,31/07/2026,18.7,26.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-14,Bosco di Sant'Antonio,18/07/2026,18/07/2026,16.9,30.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 14,Bosco di Sant'Antonio,19/07/2026,19/07/2026,16.4,31.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 14,Bosco di Sant'Antonio,20/07/2026,20/07/2026,15.8,31.5,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 14,Bosco di Sant'Antonio,21/07/2026,21/07/2026,15.9,30.4,0.4,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -195,7 +181,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 14,Bosco di Sant'Antonio,29/07/2026,29/07/2026,12.8,28.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 14,Bosco di Sant'Antonio,30/07/2026,30/07/2026,14.5,28.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 14,Bosco di Sant'Antonio,31/07/2026,31/07/2026,13.7,28.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-15,Palena Stazione,18/07/2026,18/07/2026,15.6,31.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 15,Palena Stazione,19/07/2026,19/07/2026,9.9,32.4,3.4,online,Manuale,0.0,0.0,0.0,0.0,0.0
 15,Palena Stazione,20/07/2026,20/07/2026,9.1,32.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 15,Palena Stazione,21/07/2026,21/07/2026,9.7,31.9,0.4,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -209,7 +194,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 15,Palena Stazione,29/07/2026,29/07/2026,6.0,28.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 15,Palena Stazione,30/07/2026,30/07/2026,9.1,29.3,0.6,online,Manuale,0.0,0.0,0.0,0.0,0.0
 15,Palena Stazione,31/07/2026,31/07/2026,7.3,29.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-16,Pescocostanzo Loc. Vallefura,18/07/2026,18/07/2026,19.6,29.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 16,Pescocostanzo Loc. Vallefura,19/07/2026,19/07/2026,18.9,29.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 16,Pescocostanzo Loc. Vallefura,20/07/2026,20/07/2026,18.4,29.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 16,Pescocostanzo Loc. Vallefura,21/07/2026,21/07/2026,18.8,29.1,0.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -223,7 +207,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,29/07/2026,29/07/2026,14.1,26.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 16,Pescocostanzo Loc. Vallefura,30/07/2026,30/07/2026,16.1,26.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 16,Pescocostanzo Loc. Vallefura,31/07/2026,31/07/2026,17.6,26.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-17,Roccaraso Loc. Aremogna,18/07/2026,18/07/2026,9.7,29.0,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,19/07/2026,19/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,20/07/2026,20/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,21/07/2026,21/07/2026,6.0,28.0,0.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -237,7 +220,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 17,Roccaraso Loc. Aremogna,29/07/2026,29/07/2026,2.5,26.0,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,30/07/2026,30/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,31/07/2026,31/07/2026,4.2,26.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-18,Castel di Sangro,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 18,Castel di Sangro,19/07/2026,19/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 18,Castel di Sangro,20/07/2026,20/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 18,Castel di Sangro,21/07/2026,21/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -251,7 +233,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,29/07/2026,29/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 18,Castel di Sangro,30/07/2026,30/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 18,Castel di Sangro,31/07/2026,31/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
-19,San Pietro di Avellana,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,19/07/2026,19/07/2026,13.8,31.4,0.2,online,Manuale,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,20/07/2026,20/07/2026,14.2,31.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,21/07/2026,21/07/2026,14.2,32.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -265,7 +246,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 19,San Pietro di Avellana,29/07/2026,29/07/2026,10.6,32.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,30/07/2026,30/07/2026,13.2,33.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,31/07/2026,31/07/2026,11.9,33.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-20,Monteferrante,18/07/2026,18/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 20,Monteferrante,19/07/2026,19/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 20,Monteferrante,20/07/2026,20/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 20,Monteferrante,21/07/2026,21/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -279,7 +259,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 20,Monteferrante,29/07/2026,29/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 20,Monteferrante,30/07/2026,30/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
 20,Monteferrante,31/07/2026,31/07/2026,24.2,33.2,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-21,Passolanciano,18/07/2026,18/07/2026,19.8,28.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,19/07/2026,19/07/2026,19.5,29.6,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,20/07/2026,20/07/2026,18.3,27.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,21/07/2026,21/07/2026,16.1,28.9,11.8,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -293,7 +272,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 21,Passolanciano,29/07/2026,29/07/2026,15.2,24.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,30/07/2026,30/07/2026,17.4,25.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,31/07/2026,31/07/2026,17.0,26.5,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-22,Mammarosa,18/07/2026,18/07/2026,18.8,25.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,19/07/2026,19/07/2026,18.7,26.7,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,20/07/2026,20/07/2026,18.6,24.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,21/07/2026,21/07/2026,14.2,25.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -307,7 +285,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 22,Mammarosa,29/07/2026,29/07/2026,16.3,22.3,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,30/07/2026,30/07/2026,18.2,22.1,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,31/07/2026,31/07/2026,16.8,22.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
-23,Tagliacozzo Loc. Roccacerro,18/07/2026,18/07/2026,20.8,33.4,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 23,Tagliacozzo Loc. Roccacerro,19/07/2026,19/07/2026,20.3,33.9,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 23,Tagliacozzo Loc. Roccacerro,20/07/2026,20/07/2026,20.0,33.8,0.0,online,Manuale,0.0,0.0,0.0,0.0,0.0
 23,Tagliacozzo Loc. Roccacerro,21/07/2026,21/07/2026,0.0,0.0,0.0,offline,Manuale,0.0,0.0,0.0,0.0,0.0
@@ -1006,7 +983,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 26,Rocca di Mezzo Loc. Terranera,16/08/2026 23:58:02,16/08/2026 23:50:00,4.5,28.6,0.0,online,MeteoAquilano,0.0,0.0,40.2,9.1,0.0
 27,Lago di Campotosto,16/08/2026 23:58:02,16/08/2026 23:45:00,15.7,29.1,3.4,online,MeteoAquilano,0.0,0.0,43.5,10.1,0.0
 29,Cagnano Amiterno,16/08/2026 23:58:02,16/08/2026 21:49,12.1,33.6,0.0,online,MeteoAquilano,0.0,0.0,12.9,13.2,0.0
-30,Campo Felice Loc. Lentrata,16/08/2026 23:58:02,16/08/2026 17:35:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+30,Campo Felice Loc. Lentrata,16/08/2026 23:58:02,16/08/2026 17:35:00,13.9,23.7,5.8,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,16/08/2026 23:58:02,16/08/2026 23:52,17.9,28.7,3.3,online,MeteoAquilano,0.0,0.0,20.9,14.3,0.0
 37,Sella di Corno,16/08/2026 23:58:02,16/08/2026 23:45:00,15.8,29.5,9.7,online,MeteoAquilano,0.0,0.0,38.6,14.8,0.0
 42,Campo Felice Loc. Camardosa,16/08/2026 23:58:02,16/08/2026 23:40:00,2.0,25.7,17.2,online,MeteoAquilano,0.0,0.0,53.1,6.4,0.0
@@ -1026,7 +1003,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 35,Collebrincioni,17/08/2026 23:45:20,17/08/2026 23:42,16.5,27.5,3.3,online,MeteoAquilano,0.0,0.0,29.0,13.6,0.0
 37,Sella di Corno,17/08/2026 23:45:20,17/08/2026 23:35:00,14.7,27.7,30.0,online,MeteoAquilano,0.0,0.0,30.6,13.7,0.0
 42,Campo Felice Loc. Camardosa,17/08/2026 23:45:20,17/08/2026 23:30:00,3.9,22.3,2.7,online,MeteoAquilano,0.0,0.0,37.0,10.1,0.0
-43,Capitignano,17/08/2026 23:45:20,17/08/2026 21:30,11.9,31.0,13.2,online,MeteoAquilano,0.0,0.0,35.4,-22.2,0.0
+43,Capitignano,17/08/2026 23:45:20,17/08/2026 21:30,11.9,31.0,13.5,online,MeteoAquilano,0.0,0.0,35.4,-22.2,0.0
 1,Il Ceppo Rifugio,17/08/2026 23:45:52,17/08/2026 23:40,14.3,26.2,9.2,online,CaputFrigoris,45.0,96.0,20.9,9.4,17.9
 2,Prati Di Tivo,17/08/2026 23:45:52,17/08/2026 23:40,16.8,26.2,0.0,online,CaputFrigoris,34.0,79.0,33.8,5.9,17.5
 4,Villa Celiera,17/08/2026 23:45:52,17/08/2026 23:40,21.1,32.0,0.4,online,CaputFrigoris,38.0,87.0,32.0,11.4,20.7
@@ -1080,54 +1057,105 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 61,Roccaraso,18/08/2026 22:34,18/08/2026 22:38:21,12.0,28.0,0.0,online,Wunderground,43.0,89.0,15.0,10.0,19.0
 62,Capracotta,18/08/2026 22:34,18/08/2026 22:38:22,21.0,36.0,0.0,online,Wunderground,34.0,77.0,7.0,12.0,18.0
 63,Fossacesia Marina,18/08/2026 22:34,18/08/2026 22:38:23,20.0,30.0,0.0,online,Wunderground,66.0,88.0,23.0,18.0,24.0
-3,Castel del Monte - Loc. Pietrattina,18/08/2026 22:45:16,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-10,Prata d'Ansidonia,18/08/2026 22:45:16,18/08/2026 22:35,12.8,28.6,0.3,online,MeteoAquilano,0.0,0.0,24.1,15.3,0.0
-17,Roccaraso Loc. Aremogna,18/08/2026 22:45:16,18/08/2026 22:30:00,2.7,21.6,0.0,online,MeteoAquilano,0.0,0.0,23.8,N/D,0.0
-26,Rocca di Mezzo Loc. Terranera,18/08/2026 22:45:16,18/08/2026 22:35:00,6.4,25.7,0.2,online,MeteoAquilano,0.0,0.0,29.0,11.1,0.0
-29,Cagnano Amiterno,18/08/2026 22:45:16,18/08/2026 20:29,11.5,29.6,0.0,online,MeteoAquilano,0.0,0.0,8.0,15.0,0.0
-30,Campo Felice Loc. Lentrata,18/08/2026 22:45:16,18/08/2026 20:40:00,16.8,17.8,0.2,online,MeteoAquilano,0.0,0.0,3.2,13.3,0.0
-35,Collebrincioni,18/08/2026 22:45:16,18/08/2026 22:42,14.8,26.4,0.0,online,MeteoAquilano,0.0,0.0,22.5,15.2,0.0
-37,Sella di Corno,18/08/2026 22:45:16,18/08/2026 22:35:00,13.7,26.4,0.5,online,MeteoAquilano,0.0,0.0,27.4,16.0,0.0
-42,Campo Felice Loc. Camardosa,18/08/2026 22:45:16,18/08/2026 22:30:00,5.1,22.2,0.3,online,MeteoAquilano,0.0,0.0,32.2,11.0,0.0
-43,Capitignano,18/08/2026 22:45:16,18/08/2026 20:30,11.3,28.7,0.3,online,MeteoAquilano,0.0,0.0,11.3,5.2,0.0
-1,Il Ceppo Rifugio,18/08/2026 22:45:48,18/08/2026 22:40,14.3,26.0,0.0,online,CaputFrigoris,53.0,95.0,11.3,12.0,19.4
-2,Prati Di Tivo,18/08/2026 22:45:48,18/08/2026 22:40,13.1,21.1,0.0,online,CaputFrigoris,63.0,91.0,20.9,9.2,17.0
-4,Villa Celiera,18/08/2026 22:45:48,18/08/2026 22:40,19.9,28.2,8.0,online,CaputFrigoris,54.0,89.0,26.0,13.5,20.2
-6,Rocca di Mezzo Loc. Rovere,18/08/2026 22:45:48,18/08/2026 22:40,10.8,23.9,0.0,online,CaputFrigoris,59.0,98.0,25.7,9.9,17.5
-7,Rocca di Mezzo,18/08/2026 22:45:48,18/08/2026 22:40,8.6,24.4,0.3,online,CaputFrigoris,51.0,96.0,25.7,7.6,16.9
-8,Rocca di Mezzo Loc. Fonteavignone,18/08/2026 22:45:48,18/08/2026 22:40,12.7,25.9,0.0,online,CaputFrigoris,47.0,92.0,20.9,11.2,17.5
-9,Civitaretegna,18/08/2026 22:45:48,18/08/2026 22:40,12.8,29.5,0.0,online,CaputFrigoris,47.0,90.0,0.0,10.8,19.1
-13,Campo di Giove,18/08/2026 22:45:48,18/08/2026 22:40,14.0,26.8,0.0,online,CaputFrigoris,40.0,85.0,35.0,11.1,17.8
-18,Castel di Sangro,18/08/2026 22:45:48,18/08/2026 22:40,13.5,27.9,0.0,online,CaputFrigoris,48.0,91.0,25.7,11.8,19.3
-20,Monteferrante,18/08/2026 22:45:48,18/08/2026 22:45,19.5,28.4,0.0,online,CaputFrigoris,49.0,74.0,7.1,13.1,19.2
-24,Montereale - Aringo,18/08/2026 22:45:48,18/08/2026 22:45,11.8,26.8,0.2,online,CaputFrigoris,50.0,99.0,16.1,11.5,19.7
-27,Lago di Campotosto,18/08/2026 22:45:48,18/08/2026 22:40,13.4,24.2,0.0,online,CaputFrigoris,61.0,95.0,24.1,11.7,17.8
-38,Fara San Martino,18/08/2026 22:45:48,18/08/2026 22:40,21.4,30.3,0.4,online,CaputFrigoris,44.0,78.0,27.0,14.4,21.2
-40,Pizzoli,18/08/2026 22:45:48,18/08/2026 22:41,13.9,28.8,0.0,online,CaputFrigoris,32.0,96.0,21.0,10.0,16.7
-44,Piano delle 5 Miglia,18/08/2026 22:45:48,18/08/2026 22:40,8.3,24.2,0.3,online,CaputFrigoris,57.0,97.0,20.9,7.2,18.1
-47,Castel del Monte,18/08/2026 22:45:48,18/08/2026 22:40,15.3,24.8,1.2,online,CaputFrigoris,59.0,82.0,16.1,9.9,17.4
-48,Forme,18/08/2026 22:45:48,18/08/2026 22:45,13.1,27.4,0.0,online,CaputFrigoris,46.0,94.0,29.0,12.0,17.7
-49,Monte Genzana,18/08/2026 22:45:48,18/08/2026 22:40,11.6,18.9,0.0,online,CaputFrigoris,56.0,93.0,38.6,6.7,12.9
-50,Ofena,18/08/2026 22:45:48,18/08/2026 22:40,16.7,31.7,0.0,online,CaputFrigoris,46.0,84.0,14.0,13.6,19.8
-51,Piani di Pezza,18/08/2026 22:45:48,18/08/2026 22:40,7.3,23.2,0.2,online,CaputFrigoris,53.0,99.0,24.1,6.9,16.3
-52,Rifugio Montecristo,18/08/2026 22:45:48,18/08/2026 22:40,14.4,21.7,0.0,online,CaputFrigoris,56.0,84.0,30.6,9.6,14.8
-53,Rocca Calascio,18/08/2026 22:45:48,18/08/2026 22:40,14.4,23.4,0.0,online,CaputFrigoris,56.0,80.0,22.5,9.0,15.5
-54,Farindola,18/08/2026 22:45:48,18/08/2026 22:44,18.3,28.9,24.4,online,CaputFrigoris,52.0,94.0,17.7,12.4,20.6
-55,Monte Piselli,18/08/2026 22:45:48,18/08/2026 22:45,14.7,21.1,0.0,online,CaputFrigoris,69.0,94.0,19.0,12.2,18.3
-56,Valle Castellana,18/08/2026 22:45:48,18/08/2026 22:40,15.3,29.4,0.0,online,CaputFrigoris,47.0,91.0,16.1,13.7,20.7
-57,Civitaluparella,18/08/2026 22:45:48,18/08/2026 22:45,18.9,29.1,0.0,online,CaputFrigoris,47.0,77.0,32.0,12.8,19.4
-5,Pratola Peligna,18/08/2026 22:46:14,18/08/2026 21:30,15.6,33.3,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
-12,Roccacaramanico,18/08/2026 22:46:14,18/08/2026 21:29,17.5,24.4,9.8,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
-14,Bosco di Sant'Antonio,18/08/2026 22:46:14,18/08/2026 21:30,12.3,24.6,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
-15,Palena Stazione,18/08/2026 22:46:14,18/08/2026 18:54,17.3,24.7,0.0,online,ChietiMeteo,0.0,0.0,21.0,0.0,0.0
-16,Pescocostanzo Loc. Vallefura,18/08/2026 22:46:14,18/08/2026 21:29,14.3,22.6,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
-21,Passolanciano,18/08/2026 22:46:14,18/08/2026 21:29,13.7,20.8,0.0,online,ChietiMeteo,0.0,0.0,16.0,0.0,0.0
-22,Mammarosa,18/08/2026 22:46:14,18/08/2026 21:29,12.9,18.6,0.0,online,ChietiMeteo,0.0,0.0,24.0,0.0,0.0
-31,Castel di Sangro 2,18/08/2026 22:46:14,18/08/2026 21:30,11.8,28.2,0.2,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
-32,Campo di Giove Loc. Guado di Coccia,18/08/2026 22:46:14,18/08/2026 21:30,12.1,19.7,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
-11,Passo San Leonardo,18/08/2026 22:46:26,18/08/2026 20:44,14.7,22.1,1.4,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-19,San Pietro di Avellana,18/08/2026 22:46:26,18/08/2026 20:42,10.7,29.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-23,Tagliacozzo Loc. Roccacerro,18/08/2026 22:46:26,18/08/2026 20:44,13.8,28.9,0.2,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-25,Oricola Loc. Pezzetaglie,18/08/2026 22:46:26,18/08/2026 20:40,12.4,31.6,0.2,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-39,Cappadocia,18/08/2026 22:46:26,18/08/2026 20:44,9.9,24.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-41,Corfinio,18/08/2026 22:46:26,18/08/2026 20:40,17.2,31.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+3,Castel del Monte - Loc. Pietrattina,18/08/2026 23:45:15,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+10,Prata d'Ansidonia,18/08/2026 23:45:15,18/08/2026 23:35,12.8,28.6,0.3,online,MeteoAquilano,0.0,0.0,24.1,14.8,0.0
+17,Roccaraso Loc. Aremogna,18/08/2026 23:45:15,18/08/2026 23:30:00,2.7,21.6,0.0,online,MeteoAquilano,0.0,0.0,23.8,N/D,0.0
+26,Rocca di Mezzo Loc. Terranera,18/08/2026 23:45:15,18/08/2026 23:35:00,6.4,25.7,0.2,online,MeteoAquilano,0.0,0.0,29.0,11.0,0.0
+29,Cagnano Amiterno,18/08/2026 23:45:15,18/08/2026 21:29,11.5,29.6,0.0,online,MeteoAquilano,0.0,0.0,8.0,14.4,0.0
+30,Campo Felice Loc. Lentrata,18/08/2026 23:45:15,18/08/2026 20:40:00,16.8,17.8,0.2,online,MeteoAquilano,0.0,0.0,3.2,13.3,0.0
+35,Collebrincioni,18/08/2026 23:45:15,18/08/2026 23:42,14.8,26.4,0.0,online,MeteoAquilano,0.0,0.0,22.5,15.0,0.0
+37,Sella di Corno,18/08/2026 23:45:15,18/08/2026 23:35:00,13.7,26.4,0.5,online,MeteoAquilano,0.0,0.0,27.4,16.0,0.0
+42,Campo Felice Loc. Camardosa,18/08/2026 23:45:15,18/08/2026 23:30:00,5.1,22.2,0.3,online,MeteoAquilano,0.0,0.0,32.2,8.9,0.0
+43,Capitignano,18/08/2026 23:45:15,18/08/2026 21:30,11.3,28.7,0.3,online,MeteoAquilano,0.0,0.0,11.3,-1.6,0.0
+1,Il Ceppo Rifugio,18/08/2026 23:45:48,18/08/2026 23:40,14.3,26.0,0.0,online,CaputFrigoris,53.0,95.0,11.3,11.8,19.4
+2,Prati Di Tivo,18/08/2026 23:45:48,18/08/2026 23:40,13.1,21.1,0.0,online,CaputFrigoris,63.0,91.0,20.9,9.2,17.0
+4,Villa Celiera,18/08/2026 23:45:48,18/08/2026 23:40,19.9,28.2,8.0,online,CaputFrigoris,54.0,89.0,26.0,13.5,20.2
+6,Rocca di Mezzo Loc. Rovere,18/08/2026 23:45:48,18/08/2026 23:40,10.8,23.9,0.0,online,CaputFrigoris,59.0,98.0,25.7,9.9,17.5
+7,Rocca di Mezzo,18/08/2026 23:45:48,18/08/2026 23:40,8.6,24.4,0.3,online,CaputFrigoris,51.0,96.0,25.7,7.6,16.9
+8,Rocca di Mezzo Loc. Fonteavignone,18/08/2026 23:45:48,18/08/2026 23:40,12.7,25.9,0.0,online,CaputFrigoris,47.0,92.0,20.9,11.2,17.5
+9,Civitaretegna,18/08/2026 23:45:48,18/08/2026 23:40,12.8,29.5,0.0,online,CaputFrigoris,47.0,90.0,0.0,10.8,19.1
+13,Campo di Giove,18/08/2026 23:45:48,18/08/2026 23:40,14.0,26.8,0.0,online,CaputFrigoris,40.0,85.0,35.0,11.1,17.8
+18,Castel di Sangro,18/08/2026 23:45:48,18/08/2026 23:40,13.5,27.9,0.0,online,CaputFrigoris,48.0,91.0,25.7,11.8,19.3
+20,Monteferrante,18/08/2026 23:45:48,N/D,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
+24,Montereale - Aringo,18/08/2026 23:45:48,18/08/2026 23:45,11.8,26.8,0.2,online,CaputFrigoris,50.0,99.0,16.1,11.5,19.7
+27,Lago di Campotosto,18/08/2026 23:45:48,18/08/2026 23:40,13.4,24.2,0.0,online,CaputFrigoris,61.0,95.0,24.1,11.7,17.8
+38,Fara San Martino,18/08/2026 23:45:48,18/08/2026 23:41,21.4,30.3,0.4,online,CaputFrigoris,44.0,78.0,27.0,14.4,21.2
+40,Pizzoli,18/08/2026 23:45:48,18/08/2026 23:41,13.9,28.8,0.0,online,CaputFrigoris,32.0,96.0,21.0,10.0,16.7
+44,Piano delle 5 Miglia,18/08/2026 23:45:48,18/08/2026 23:40,8.3,24.2,0.3,online,CaputFrigoris,57.0,97.0,20.9,7.2,18.1
+47,Castel del Monte,18/08/2026 23:45:48,18/08/2026 23:40,15.3,24.8,1.2,online,CaputFrigoris,59.0,82.0,16.1,9.9,17.4
+48,Forme,18/08/2026 23:45:48,18/08/2026 23:45,13.1,27.4,0.0,online,CaputFrigoris,46.0,94.0,29.0,12.0,17.7
+49,Monte Genzana,18/08/2026 23:45:48,18/08/2026 23:40,11.6,18.9,0.0,online,CaputFrigoris,56.0,97.0,38.6,6.7,13.0
+50,Ofena,18/08/2026 23:45:48,18/08/2026 23:45,16.7,31.7,0.0,online,CaputFrigoris,46.0,84.0,14.0,13.6,19.8
+51,Piani di Pezza,18/08/2026 23:45:48,18/08/2026 23:40,7.3,23.2,0.2,online,CaputFrigoris,53.0,99.0,24.1,6.9,16.3
+52,Rifugio Montecristo,18/08/2026 23:45:48,18/08/2026 23:40,14.4,21.7,0.0,online,CaputFrigoris,56.0,85.0,30.6,9.6,14.8
+53,Rocca Calascio,18/08/2026 23:45:48,18/08/2026 23:40,14.4,23.4,0.0,online,CaputFrigoris,56.0,80.0,22.5,9.0,15.5
+54,Farindola,18/08/2026 23:45:48,18/08/2026 23:45,18.3,28.9,24.4,online,CaputFrigoris,52.0,94.0,17.7,12.4,20.6
+55,Monte Piselli,18/08/2026 23:45:48,18/08/2026 23:45,14.7,21.1,0.0,online,CaputFrigoris,69.0,94.0,19.0,12.2,18.3
+56,Valle Castellana,18/08/2026 23:45:48,18/08/2026 23:40,15.3,29.4,0.0,online,CaputFrigoris,47.0,91.0,16.1,13.7,20.7
+57,Civitaluparella,18/08/2026 23:45:48,18/08/2026 23:45,18.9,29.1,0.0,online,CaputFrigoris,47.0,77.0,32.0,12.8,19.4
+5,Pratola Peligna,18/08/2026 23:46:15,18/08/2026 23:45,15.6,33.3,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
+12,Roccacaramanico,18/08/2026 23:46:15,18/08/2026 23:44,17.5,24.4,9.8,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+14,Bosco di Sant'Antonio,18/08/2026 23:46:15,18/08/2026 23:45,12.3,24.6,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
+15,Palena Stazione,18/08/2026 23:46:15,18/08/2026 18:54,17.3,24.7,0.0,online,ChietiMeteo,0.0,0.0,21.0,0.0,0.0
+16,Pescocostanzo Loc. Vallefura,18/08/2026 23:46:15,18/08/2026 23:44,14.3,22.6,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+21,Passolanciano,18/08/2026 23:46:15,18/08/2026 23:44,13.7,20.8,0.0,online,ChietiMeteo,0.0,0.0,16.0,0.0,0.0
+22,Mammarosa,18/08/2026 23:46:15,18/08/2026 23:44,12.9,18.6,0.0,online,ChietiMeteo,0.0,0.0,24.0,0.0,0.0
+31,Castel di Sangro 2,18/08/2026 23:46:15,18/08/2026 23:45,11.8,28.2,0.2,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
+32,Campo di Giove Loc. Guado di Coccia,18/08/2026 23:46:15,18/08/2026 23:45,12.1,19.7,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
+11,Passo San Leonardo,18/08/2026 23:46:26,18/08/2026 21:44,14.7,22.1,1.4,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+19,San Pietro di Avellana,18/08/2026 23:46:26,18/08/2026 21:41,10.7,29.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+23,Tagliacozzo Loc. Roccacerro,18/08/2026 23:46:26,18/08/2026 21:39,13.8,28.9,0.2,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+25,Oricola Loc. Pezzetaglie,18/08/2026 23:46:26,18/08/2026 21:39,12.4,31.6,0.2,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+39,Cappadocia,18/08/2026 23:46:26,18/08/2026 21:39,9.9,24.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+41,Corfinio,18/08/2026 23:46:26,18/08/2026 21:40,17.2,31.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+3,Castel del Monte - Loc. Pietrattina,19/08/2026 08:45:16,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+10,Prata d'Ansidonia,19/08/2026 08:45:16,19/08/2026 08:35,14.3,20.3,0.0,online,MeteoAquilano,0.0,0.0,6.4,18.0,0.0
+17,Roccaraso Loc. Aremogna,19/08/2026 08:45:16,19/08/2026 08:30:00,3.2,10.1,0.3,online,MeteoAquilano,0.0,0.0,3.6,N/D,0.0
+26,Rocca di Mezzo Loc. Terranera,19/08/2026 08:45:16,19/08/2026 08:35:00,6.1,15.7,0.0,online,MeteoAquilano,0.0,0.0,11.3,15.1,0.0
+29,Cagnano Amiterno,19/08/2026 08:45:16,19/08/2026 06:29,12.5,14.9,0.0,online,MeteoAquilano,0.0,0.0,0.0,9.0,0.0
+30,Campo Felice Loc. Lentrata,19/08/2026 08:45:16,18/08/2026 20:40:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+35,Collebrincioni,19/08/2026 08:45:16,19/08/2026 08:42,17.7,21.4,0.0,online,MeteoAquilano,0.0,0.0,8.0,15.8,0.0
+37,Sella di Corno,19/08/2026 08:45:16,19/08/2026 08:35:00,15.3,19.5,0.0,online,MeteoAquilano,0.0,0.0,4.8,16.7,0.0
+42,Campo Felice Loc. Camardosa,19/08/2026 08:45:16,19/08/2026 08:30:00,4.0,12.2,0.3,online,MeteoAquilano,0.0,0.0,6.4,11.4,0.0
+43,Capitignano,19/08/2026 08:45:16,19/08/2026 06:30,12.0,16.0,0.3,online,MeteoAquilano,0.0,0.0,0.0,-40.3,0.0
+1,Il Ceppo Rifugio,19/08/2026 08:45:47,19/08/2026 08:35,17.0,21.2,0.0,online,CaputFrigoris,61.0,76.0,9.7,10.5,14.1
+2,Prati Di Tivo,19/08/2026 08:45:47,19/08/2026 08:40,16.1,18.2,0.0,online,CaputFrigoris,62.0,69.0,16.1,9.5,12.1
+4,Villa Celiera,19/08/2026 08:45:47,19/08/2026 08:40,22.7,31.2,0.0,online,CaputFrigoris,38.0,63.0,19.0,12.8,16.3
+6,Rocca di Mezzo Loc. Rovere,19/08/2026 08:45:47,19/08/2026 08:40,11.2,18.2,0.0,online,CaputFrigoris,78.0,95.0,3.2,9.5,14.9
+7,Rocca di Mezzo,19/08/2026 08:45:47,19/08/2026 08:40,9.7,19.7,0.3,online,CaputFrigoris,71.0,95.0,9.7,8.5,14.8
+8,Rocca di Mezzo Loc. Fonteavignone,19/08/2026 08:45:47,19/08/2026 08:40,14.1,22.7,0.0,online,CaputFrigoris,64.0,87.0,8.0,11.5,16.6
+9,Civitaretegna,19/08/2026 08:45:47,19/08/2026 08:40,12.7,20.9,0.0,online,CaputFrigoris,77.0,89.0,0.0,10.6,16.7
+13,Campo di Giove,19/08/2026 08:45:47,19/08/2026 08:40,15.1,21.4,0.0,online,CaputFrigoris,65.0,85.0,8.0,12.4,14.8
+18,Castel di Sangro,19/08/2026 08:45:47,19/08/2026 08:40,14.3,20.6,0.0,online,CaputFrigoris,76.0,92.0,6.4,12.7,16.2
+20,Monteferrante,19/08/2026 08:45:47,N/D,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
+24,Montereale - Aringo,19/08/2026 08:45:47,19/08/2026 08:45,13.3,19.5,0.2,online,CaputFrigoris,88.0,98.0,8.0,12.8,17.7
+27,Lago di Campotosto,19/08/2026 08:45:47,19/08/2026 08:40,15.5,21.2,0.0,online,CaputFrigoris,66.0,89.0,6.4,12.3,16.9
+38,Fara San Martino,19/08/2026 08:45:47,19/08/2026 08:41,24.4,31.2,0.0,online,CaputFrigoris,39.0,57.0,23.0,12.2,16.1
+40,Pizzoli,19/08/2026 08:45:47,19/08/2026 08:41,15.4,19.3,0.0,online,CaputFrigoris,78.0,91.0,6.0,13.8,16.0
+44,Piano delle 5 Miglia,19/08/2026 08:45:47,19/08/2026 08:40,8.4,15.8,0.3,online,CaputFrigoris,94.0,99.0,0.0,7.9,15.4
+47,Castel del Monte,19/08/2026 08:45:47,19/08/2026 08:40,16.7,23.3,0.0,online,CaputFrigoris,56.0,79.0,9.7,10.8,15.5
+48,Forme,19/08/2026 08:45:47,19/08/2026 08:45,15.8,22.1,0.0,online,CaputFrigoris,76.0,90.0,4.8,13.3,17.8
+49,Monte Genzana,19/08/2026 08:45:47,19/08/2026 08:40,13.5,15.8,0.0,online,CaputFrigoris,68.0,81.0,25.7,8.7,10.7
+50,Ofena,19/08/2026 08:45:47,19/08/2026 08:40,18.2,25.2,0.0,online,CaputFrigoris,60.0,80.0,3.0,14.4,17.3
+51,Piani di Pezza,19/08/2026 08:45:47,19/08/2026 08:40,5.9,13.5,0.0,online,CaputFrigoris,94.0,99.0,6.4,5.5,12.8
+52,Rifugio Montecristo,19/08/2026 08:45:47,19/08/2026 08:40,16.3,20.8,0.0,online,CaputFrigoris,56.0,83.0,14.5,9.6,13.8
+53,Rocca Calascio,19/08/2026 08:45:47,19/08/2026 08:40,16.9,24.2,0.0,online,CaputFrigoris,49.0,80.0,9.7,10.2,14.0
+54,Farindola,19/08/2026 08:45:47,19/08/2026 08:44,19.4,27.1,0.0,online,CaputFrigoris,48.0,84.0,20.9,13.0,16.7
+55,Monte Piselli,19/08/2026 08:45:47,19/08/2026 08:45,17.9,20.6,0.0,online,CaputFrigoris,57.0,69.0,13.0,10.6,12.8
+56,Valle Castellana,19/08/2026 08:45:47,19/08/2026 08:40,16.4,23.1,0.0,online,CaputFrigoris,62.0,84.0,11.3,12.9,15.5
+57,Civitaluparella,19/08/2026 08:45:47,19/08/2026 08:45,21.1,25.8,0.0,online,CaputFrigoris,51.0,77.0,18.0,13.3,17.2
+5,Pratola Peligna,19/08/2026 08:46:14,19/08/2026 8:45,15.8,23.1,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+12,Roccacaramanico,19/08/2026 08:46:14,19/08/2026 8:44,19.4,22.9,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+14,Bosco di Sant'Antonio,19/08/2026 08:46:14,19/08/2026 8:45,12.6,14.7,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+15,Palena Stazione,19/08/2026 08:46:14,19/08/2026 8:44,7.7,13.5,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+16,Pescocostanzo Loc. Vallefura,19/08/2026 08:46:14,19/08/2026 8:44,14.4,20.1,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+21,Passolanciano,19/08/2026 08:46:14,19/08/2026 8:44,15.6,22.8,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+22,Mammarosa,19/08/2026 08:46:14,19/08/2026 8:44,16.2,19.7,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+31,Castel di Sangro 2,19/08/2026 08:46:14,19/08/2026 8:45,11.7,20.5,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+32,Campo di Giove Loc. Guado di Coccia,19/08/2026 08:46:14,19/08/2026 8:45,14.3,17.6,0.0,online,ChietiMeteo,0.0,0.0,N/D,0.0,0.0
+11,Passo San Leonardo,19/08/2026 08:46:25,19/08/2026 06:44,16.9,20.2,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+19,San Pietro di Avellana,19/08/2026 08:46:25,19/08/2026 06:42,10.9,18.8,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+23,Tagliacozzo Loc. Roccacerro,19/08/2026 08:46:25,19/08/2026 06:44,16.8,21.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+25,Oricola Loc. Pezzetaglie,19/08/2026 08:46:25,19/08/2026 06:39,13.9,19.7,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+39,Cappadocia,19/08/2026 08:46:25,19/08/2026 06:44,11.4,13.9,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+41,Corfinio,19/08/2026 08:46:25,19/08/2026 06:40,17.9,22.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
