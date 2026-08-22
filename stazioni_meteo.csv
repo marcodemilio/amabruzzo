@@ -26,10 +26,10 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 25,Oricola Loc. Pezzetaglie,https://www.meteonetwork.eu/it/weather-station/abr133-stazione-meteorologica-di-pezzetaglie,42.070,13.053,600,Oricola,abr133,205
 26,Rocca di Mezzo Loc. Terranera,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=338&Itemid=521,42.228,13.531,1258,Rocca di Mezzo,AQ-57,187
 27,Lago di Campotosto,https://www.caputfrigoris.it/tabgraph.php?id=AQ011,42.520,13.328,1410,Lago di Campotosto,AQ11,120
-28,Castel di Sangro - Loc. Speno,https://www.meteoregioneabruzzo.it/rete-meteo/casteldisangro/casteldisangro.php,41.759,14.090,823,Castel di Sangro,AQ-83,285
+28,Fossacesia Marina,https://www.wunderground.com/dashboard/pws/IFOSSACE4,42.240,14.530,0,Fossacesia Marina,IFOSSACE4,945
 29,Cagnano Amiterno,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=276&Itemid=253,42.465,13.240,855,Cagnano Amiterno,AQ-37,130
 30,Campo Felice Loc. Lentrata,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=252&Itemid=254,42.233,13.421,1545,Campo Felice,AQ-42,165
-31,Castel di Sangro 2,https://www.chietimeteo.it/az.agr.cianflocca.htm,41.758,14.099,710,Castel di Sangro,CH999,290
+31,Castel di Sangro Loc. Pantano,https://www.chietimeteo.it/az.agr.cianflocca.htm,41.758,14.099,710,Castel di Sangro,CH999,290
 32,Campo di Giove Loc. Guado di Coccia,https://www.chietimeteo.it/guadodicoccia.htm,42.003,14.084,1674,Campo di Giove,CH998,255
 33,Marsia,https://www.meteoregioneabruzzo.it/rete-meteo/marsia/marsia.php,42.066,13.193,1410,Tagliacozzo,AQ-04,210
 34,Tagliacozzo Loc. Poggetello,https://www.meteoregioneabruzzo.it/rete-meteo/poggetello/poggetello.php,42.091,13.230,750,Tagliacozzo,AQ-14,220
@@ -60,9 +60,6 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 59,Pescopennattaro,https://www.wunderground.com/dashboard/pws/IPESCO10,41.880,14.290,1189,Pescopennattaro,IPESCO10,910
 60,Ovindoli,https://www.wunderground.com/dashboard/pws/IOVIND5,42.140,13.520,1370,Ovindoli,IOVIND5,920
 61,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
-<<<<<<< Updated upstream
-=======
 62,Capracotta,https://www.wunderground.com/dashboard/pws/ICAPRA10,41.840,14.270,1421,Capracotta,ICAPRA10,935
 63,Fossacesia Marina,https://www.wunderground.com/dashboard/pws/IFOSSACE4,42.240,14.530,0,Fossacesia Marina,IFOSSACE4,945
 
->>>>>>> Stashed changes
