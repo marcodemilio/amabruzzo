@@ -1195,55 +1195,55 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 60,Ovindoli,22/08/2026 18:04,22/08/2026 18:09:05,16.0,23.0,0.0,online,Wunderground,51.0,90.0,37.0,12.0,16.0
 61,Roccaraso,22/08/2026 18:04,22/08/2026 18:09:06,14.0,29.0,0.0,online,Wunderground,38.0,90.0,18.0,12.0,18.0
 62,Capracotta,22/08/2026 18:04,22/08/2026 18:09:06,21.0,39.0,0.0,online,Wunderground,34.0,68.0,7.0,13.0,20.0
-3,Castel del Monte - Loc. Pietrattina,22/08/2026 18:07:37,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-10,Prata d'Ansidonia,22/08/2026 18:07:37,22/08/2026 18:00,17.3,30.3,0.0,online,MeteoAquilano,0.0,0.0,30.6,16.0,0.0
-17,Roccaraso Loc. Aremogna,22/08/2026 18:07:37,22/08/2026 17:50:00,13.7,24.5,0.0,online,MeteoAquilano,0.0,0.0,38.5,0.0,0.0
-26,Rocca di Mezzo Loc. Terranera,22/08/2026 18:07:37,22/08/2026 18:00:00,17.4,26.3,0.0,online,MeteoAquilano,0.0,0.0,53.1,12.9,0.0
-29,Cagnano Amiterno,22/08/2026 18:07:37,22/08/2026 15:49,20.2,29.2,0.0,online,MeteoAquilano,0.0,0.0,8.0,12.6,0.0
-30,Campo Felice Loc. Lentrata,22/08/2026 18:07:37,21/08/2026 18:05:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-35,Collebrincioni,22/08/2026 18:07:37,22/08/2026 18:02,18.1,26.1,0.3,online,MeteoAquilano,0.0,0.0,27.4,14.2,0.0
-37,Sella di Corno,22/08/2026 18:07:37,22/08/2026 17:55:00,18.1,27.3,0.0,online,MeteoAquilano,0.0,0.0,27.4,17.3,0.0
-42,Campo Felice Loc. Camardosa,22/08/2026 18:07:37,22/08/2026 17:50:00,15.9,21.8,0.0,online,MeteoAquilano,0.0,0.0,51.5,13.2,0.0
-43,Capitignano,22/08/2026 18:07:37,22/08/2026 16:00,17.3,29.4,0.0,online,MeteoAquilano,0.0,0.0,19.3,13.2,0.0
-1,Il Ceppo Rifugio,22/08/2026 18:08:10,22/08/2026 18:00,17.6,26.0,0.0,online,CaputFrigoris,44.0,83.0,22.5,12.7,18.6
-2,Prati Di Tivo,22/08/2026 18:08:10,22/08/2026 18:01,17.1,24.9,0.0,online,CaputFrigoris,43.0,79.0,48.3,10.5,17.0
-4,Villa Celiera,22/08/2026 18:08:10,22/08/2026 18:00,22.2,30.1,0.0,online,CaputFrigoris,54.0,76.0,24.0,15.3,20.8
-6,Rocca di Mezzo Loc. Rovere,22/08/2026 18:08:10,22/08/2026 18:00,16.5,23.9,0.0,online,CaputFrigoris,54.0,91.0,38.6,13.1,16.8
-7,Rocca di Mezzo,22/08/2026 18:08:10,22/08/2026 18:00,17.4,25.9,0.0,online,CaputFrigoris,46.0,85.0,45.1,12.6,16.7
-8,Rocca di Mezzo Loc. Fonteavignone,22/08/2026 18:08:10,22/08/2026 18:00,16.8,26.8,0.0,online,CaputFrigoris,40.0,91.0,29.0,11.9,17.4
-9,Civitaretegna,22/08/2026 18:08:10,22/08/2026 18:00,15.7,31.6,0.3,online,CaputFrigoris,33.0,88.0,0.0,12.0,19.3
-13,Campo di Giove,22/08/2026 18:08:10,22/08/2026 18:00,16.9,27.8,0.0,online,CaputFrigoris,39.0,83.0,29.0,11.8,16.4
-18,Castel di Sangro,22/08/2026 18:08:10,22/08/2026 18:00,16.3,30.5,0.0,online,CaputFrigoris,38.0,88.0,38.6,13.8,19.3
-20,Monteferrante,22/08/2026 18:08:10,22/08/2026 18:08:10,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
-24,Montereale - Aringo,22/08/2026 18:08:10,22/08/2026 18:05,15.1,28.2,0.0,online,CaputFrigoris,40.0,98.0,20.9,12.5,18.8
-27,Lago di Campotosto,22/08/2026 18:08:10,22/08/2026 18:00,16.0,25.4,0.0,online,CaputFrigoris,48.0,93.0,27.4,12.1,17.2
-38,Fara San Martino,22/08/2026 18:08:10,22/08/2026 18:01,23.8,32.8,0.0,online,CaputFrigoris,41.0,62.0,21.0,14.8,21.0
-40,Pizzoli,22/08/2026 18:08:10,22/08/2026 18:01,20.3,29.4,0.0,online,CaputFrigoris,30.0,81.0,28.0,9.5,18.3
-44,Piano delle 5 Miglia,22/08/2026 18:08:10,22/08/2026 18:00,13.0,27.3,0.0,online,CaputFrigoris,44.0,95.0,25.7,11.9,18.4
-47,Castel del Monte,22/08/2026 18:08:10,22/08/2026 18:00,16.8,27.6,0.0,online,CaputFrigoris,39.0,86.0,20.9,12.0,16.3
-48,Forme,22/08/2026 18:08:10,22/08/2026 18:05,16.8,27.1,0.0,online,CaputFrigoris,43.0,92.0,24.1,13.1,18.8
-49,Monte Genzana,22/08/2026 18:08:10,22/08/2026 17:55,12.3,19.6,0.0,online,CaputFrigoris,60.0,96.0,41.8,10.3,14.0
-50,Ofena,22/08/2026 18:08:10,22/08/2026 18:00,18.5,34.7,0.0,online,CaputFrigoris,30.0,87.0,19.0,13.7,19.9
-51,Piani di Pezza,22/08/2026 18:08:10,22/08/2026 18:00,16.6,22.9,0.0,online,CaputFrigoris,54.0,84.0,43.4,12.4,15.6
-52,Rifugio Montecristo,22/08/2026 18:08:10,22/08/2026 18:00,15.3,22.6,0.0,online,CaputFrigoris,51.0,95.0,41.8,11.1,14.8
-53,Rocca Calascio,22/08/2026 18:08:10,22/08/2026 18:00,16.2,25.7,0.0,online,CaputFrigoris,36.0,85.0,29.0,8.6,15.9
-54,Farindola,22/08/2026 18:08:10,22/08/2026 18:04,22.3,29.4,0.0,online,CaputFrigoris,52.0,76.0,40.2,14.7,21.5
-55,Monte Piselli,22/08/2026 18:08:10,22/08/2026 18:05,16.2,23.1,0.0,online,CaputFrigoris,53.0,91.0,47.0,12.2,18.3
-56,Valle Castellana,22/08/2026 18:08:10,22/08/2026 18:00,18.2,31.7,0.0,online,CaputFrigoris,33.0,81.0,20.9,13.1,19.9
-57,Civitaluparella,22/08/2026 18:08:10,22/08/2026 18:04,20.7,32.0,0.0,online,CaputFrigoris,42.0,69.0,24.0,13.3,18.9
-5,Pratola Peligna,22/08/2026 18:08:36,22/08/2026 18:05,18.7,35.2,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
-12,Roccacaramanico,22/08/2026 18:08:36,22/08/2026 18:04,20.6,28.1,0.0,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
-14,Bosco di Sant'Antonio,22/08/2026 18:08:36,22/08/2026 18:05,14.5,26.3,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
-15,Palena Stazione,22/08/2026 18:08:36,22/08/2026 18:05,14.7,26.6,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
-16,Pescocostanzo Loc. Vallefura,22/08/2026 18:08:36,22/08/2026 17:59,16.2,24.8,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
-21,Passolanciano,22/08/2026 18:08:36,22/08/2026 18:04,18.9,24.8,0.0,online,ChietiMeteo,0.0,0.0,48.0,0.0,0.0
-22,Mammarosa,22/08/2026 18:08:36,22/08/2026 18:04,15.8,21.9,0.0,online,ChietiMeteo,0.0,0.0,98.0,0.0,0.0
-31,Castel di Sangro Loc. Pantano,22/08/2026 18:08:36,22/08/2026 18:05,15.6,29.6,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
-32,Campo di Giove Loc. Guado di Coccia,22/08/2026 18:08:36,22/08/2026 18:05,13.8,22.1,0.0,online,ChietiMeteo,0.0,0.0,76.0,0.0,0.0
-11,Passo San Leonardo,22/08/2026 18:08:45,22/08/2026 16:05,18.6,26.3,0.0,online,MeteoNetwork,0.0,0.0,27.4,0.0,0.0
-19,San Pietro di Avellana,22/08/2026 18:08:45,22/08/2026 16:02,14.2,29.9,0.0,online,MeteoNetwork,0.0,0.0,3.3,0.0,0.0
-23,Tagliacozzo Loc. Roccacerro,22/08/2026 18:08:45,22/08/2026 16:04,16.4,27.5,0.0,online,MeteoNetwork,0.0,0.0,10.8,0.0,0.0
-25,Oricola Loc. Pezzetaglie,22/08/2026 18:08:45,22/08/2026 16:04,16.2,32.0,0.2,online,MeteoNetwork,0.0,0.0,18.7,0.0,0.0
-39,Cappadocia,22/08/2026 18:08:45,22/08/2026 16:04,14.9,24.6,0.0,online,MeteoNetwork,0.0,0.0,16.9,0.0,0.0
-41,Corfinio,22/08/2026 18:08:45,22/08/2026 16:00,20.5,35.7,0.0,online,MeteoNetwork,0.0,0.0,11.7,0.0,0.0
 63,Fossacesia Marina,22/08/2026 18:04,22/08/2026 18:09:07,21.0,31.0,0.0,online,Wunderground,56.0,77.0,19.0,16.0,25.0
+3,Castel del Monte - Loc. Pietrattina,22/08/2026 19:45:20,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+10,Prata d'Ansidonia,22/08/2026 19:45:20,22/08/2026 19:35,17.3,30.3,0.0,online,MeteoAquilano,0.0,0.0,30.6,18.8,0.0
+17,Roccaraso Loc. Aremogna,22/08/2026 19:45:20,22/08/2026 19:30:00,13.7,24.5,0.0,online,MeteoAquilano,0.0,0.0,38.5,0.0,0.0
+26,Rocca di Mezzo Loc. Terranera,22/08/2026 19:45:20,22/08/2026 19:35:00,17.4,26.3,0.0,online,MeteoAquilano,0.0,0.0,53.1,13.8,0.0
+29,Cagnano Amiterno,22/08/2026 19:45:20,22/08/2026 17:29,20.2,29.2,0.0,online,MeteoAquilano,0.0,0.0,8.0,15.0,0.0
+30,Campo Felice Loc. Lentrata,22/08/2026 19:45:20,21/08/2026 18:05:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+35,Collebrincioni,22/08/2026 19:45:20,22/08/2026 19:42,18.1,26.1,0.3,online,MeteoAquilano,0.0,0.0,27.4,14.5,0.0
+37,Sella di Corno,22/08/2026 19:45:20,22/08/2026 19:35:00,18.1,27.3,0.0,online,MeteoAquilano,0.0,0.0,27.4,17.0,0.0
+42,Campo Felice Loc. Camardosa,22/08/2026 19:45:20,22/08/2026 19:30:00,15.9,21.8,0.0,online,MeteoAquilano,0.0,0.0,51.5,13.2,0.0
+43,Capitignano,22/08/2026 19:45:20,22/08/2026 17:40,17.3,29.4,0.0,online,MeteoAquilano,0.0,0.0,19.3,15.2,0.0
+1,Il Ceppo Rifugio,22/08/2026 19:45:53,22/08/2026 19:40,17.6,26.0,0.0,online,CaputFrigoris,44.0,92.0,22.5,12.7,18.6
+2,Prati Di Tivo,22/08/2026 19:45:53,22/08/2026 19:40,17.1,24.9,0.0,online,CaputFrigoris,43.0,86.0,48.3,10.5,17.0
+4,Villa Celiera,22/08/2026 19:45:53,22/08/2026 19:40,22.2,30.1,0.0,online,CaputFrigoris,54.0,79.0,24.0,15.3,20.8
+6,Rocca di Mezzo Loc. Rovere,22/08/2026 19:45:53,22/08/2026 19:40,16.5,23.9,0.0,online,CaputFrigoris,54.0,91.0,38.6,13.1,16.8
+7,Rocca di Mezzo,22/08/2026 19:45:53,22/08/2026 19:40,17.4,25.9,0.0,online,CaputFrigoris,46.0,85.0,45.1,12.6,16.7
+8,Rocca di Mezzo Loc. Fonteavignone,22/08/2026 19:45:53,22/08/2026 19:40,16.8,26.8,0.0,online,CaputFrigoris,40.0,91.0,29.0,11.9,17.4
+9,Civitaretegna,22/08/2026 19:45:53,22/08/2026 19:40,15.7,31.6,0.3,online,CaputFrigoris,33.0,88.0,0.0,12.0,19.6
+13,Campo di Giove,22/08/2026 19:45:53,22/08/2026 19:40,16.9,27.8,0.0,online,CaputFrigoris,39.0,83.0,29.0,11.8,18.0
+18,Castel di Sangro,22/08/2026 19:45:53,22/08/2026 19:40,16.3,30.5,0.0,online,CaputFrigoris,38.0,88.0,38.6,13.8,19.5
+20,Monteferrante,22/08/2026 19:45:53,22/08/2026 19:45:53,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
+24,Montereale - Aringo,22/08/2026 19:45:53,22/08/2026 19:45,15.1,28.2,0.0,online,CaputFrigoris,40.0,98.0,20.9,12.5,18.8
+27,Lago di Campotosto,22/08/2026 19:45:53,22/08/2026 19:40,16.0,25.4,0.0,online,CaputFrigoris,48.0,93.0,27.4,12.1,17.2
+38,Fara San Martino,22/08/2026 19:45:53,22/08/2026 19:41,23.8,32.8,0.0,online,CaputFrigoris,41.0,71.0,21.0,14.8,21.0
+40,Pizzoli,22/08/2026 19:45:53,22/08/2026 19:40,20.3,29.4,0.0,online,CaputFrigoris,30.0,81.0,28.0,9.5,18.3
+44,Piano delle 5 Miglia,22/08/2026 19:45:53,22/08/2026 19:40,13.0,27.3,0.0,online,CaputFrigoris,44.0,95.0,25.7,11.9,18.4
+47,Castel del Monte,22/08/2026 19:45:53,22/08/2026 19:40,16.8,27.6,0.0,online,CaputFrigoris,39.0,86.0,20.9,12.0,16.4
+48,Forme,22/08/2026 19:45:53,22/08/2026 19:45,16.8,27.1,0.0,online,CaputFrigoris,43.0,92.0,24.1,13.1,18.8
+49,Monte Genzana,22/08/2026 19:45:53,22/08/2026 19:40,12.3,19.6,0.0,online,CaputFrigoris,60.0,96.0,41.8,9.7,14.0
+50,Ofena,22/08/2026 19:45:53,22/08/2026 19:45,18.5,34.7,0.0,online,CaputFrigoris,30.0,87.0,19.0,13.7,19.9
+51,Piani di Pezza,22/08/2026 19:45:53,22/08/2026 19:40,16.6,22.9,0.0,online,CaputFrigoris,54.0,84.0,43.4,12.4,15.6
+52,Rifugio Montecristo,22/08/2026 19:45:53,22/08/2026 19:40,15.3,22.6,0.0,online,CaputFrigoris,51.0,95.0,41.8,11.1,14.8
+53,Rocca Calascio,22/08/2026 19:45:53,22/08/2026 19:40,16.2,25.7,0.0,online,CaputFrigoris,36.0,85.0,29.0,8.6,16.0
+54,Farindola,22/08/2026 19:45:53,22/08/2026 19:44,22.3,29.4,0.0,online,CaputFrigoris,52.0,77.0,40.2,14.7,21.5
+55,Monte Piselli,22/08/2026 19:45:53,22/08/2026 19:45,16.2,23.1,0.0,online,CaputFrigoris,53.0,91.0,47.0,12.2,18.3
+56,Valle Castellana,22/08/2026 19:45:53,22/08/2026 19:40,18.2,31.7,0.0,online,CaputFrigoris,33.0,81.0,20.9,13.1,19.9
+57,Civitaluparella,22/08/2026 19:45:53,22/08/2026 19:45,20.7,32.0,0.0,online,CaputFrigoris,42.0,79.0,24.0,13.3,19.4
+5,Pratola Peligna,22/08/2026 19:46:20,22/08/2026 19:45,18.7,35.2,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
+12,Roccacaramanico,22/08/2026 19:46:20,22/08/2026 19:44,20.6,28.1,0.0,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
+14,Bosco di Sant'Antonio,22/08/2026 19:46:20,22/08/2026 19:44,14.5,26.3,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
+15,Palena Stazione,22/08/2026 19:46:20,22/08/2026 19:45,14.7,26.6,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
+16,Pescocostanzo Loc. Vallefura,22/08/2026 19:46:20,22/08/2026 19:44,16.2,24.8,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
+21,Passolanciano,22/08/2026 19:46:20,22/08/2026 19:44,18.9,24.8,0.0,online,ChietiMeteo,0.0,0.0,48.0,0.0,0.0
+22,Mammarosa,22/08/2026 19:46:20,22/08/2026 19:44,15.8,21.9,0.0,online,ChietiMeteo,0.0,0.0,98.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,22/08/2026 19:46:20,22/08/2026 19:45,15.6,29.6,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
+32,Campo di Giove Loc. Guado di Coccia,22/08/2026 19:46:20,22/08/2026 19:45,13.8,22.1,0.0,online,ChietiMeteo,0.0,0.0,76.0,0.0,0.0
+11,Passo San Leonardo,22/08/2026 19:46:28,22/08/2026 17:44,18.6,26.3,0.0,online,MeteoNetwork,0.0,0.0,27.4,0.0,0.0
+19,San Pietro di Avellana,22/08/2026 19:46:28,22/08/2026 17:41,14.2,29.9,0.0,online,MeteoNetwork,0.0,0.0,3.3,0.0,0.0
+23,Tagliacozzo Loc. Roccacerro,22/08/2026 19:46:28,22/08/2026 17:44,16.4,27.5,0.0,online,MeteoNetwork,0.0,0.0,10.8,0.0,0.0
+25,Oricola Loc. Pezzetaglie,22/08/2026 19:46:28,22/08/2026 17:39,16.2,32.0,0.2,online,MeteoNetwork,0.0,0.0,18.7,0.0,0.0
+39,Cappadocia,22/08/2026 19:46:28,22/08/2026 17:44,14.9,24.6,0.0,online,MeteoNetwork,0.0,0.0,16.9,0.0,0.0
+41,Corfinio,22/08/2026 19:46:28,22/08/2026 17:40,20.5,35.7,0.0,online,MeteoNetwork,0.0,0.0,11.7,0.0,0.0
