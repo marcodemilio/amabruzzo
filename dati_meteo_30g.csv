@@ -250,7 +250,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 24,Montereale - Aringo,01/08/2026 23:50:02,01/08/2026 23:49,13.4,34.3,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 26,Rocca di Mezzo Loc. Terranera,01/08/2026 23:50:02,01/08/2026 23:45,3.6,31.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 27,Lago di Campotosto,01/08/2026 23:50:02,01/08/2026 23:40,16.2,31.3,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,01/08/2026 23:50:02,01/08/2026 23:49,10.7,34.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 29,Cagnano Amiterno,01/08/2026 23:50:02,01/08/2026 23:25,13.9,20.1,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 30,Campo Felice Loc. Lentrata,01/08/2026 23:50:02,01/08/2026 23:45,5.8,29.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,01/08/2026 23:50:02,01/08/2026 23:45,3.3,29.0,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -268,7 +267,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,01/08/2026 23:52:02,01/08/2026 23:50,11.9,34.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,01/08/2026 23:52:02,01/08/2026 23:49,17.6,28.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,01/08/2026 23:52:02,01/08/2026 23:49,19.4,25.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,01/08/2026 23:52:02,01/08/2026 23:50,9.5,34.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,01/08/2026 23:52:02,01/08/2026 23:50,9.5,34.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,01/08/2026 23:52:02,01/08/2026 23:50,17.6,25.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,01/08/2026 23:54:02,01/08/2026 23:50,19.6,30.9,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,01/08/2026 23:54:02,02/07/2026 05:20,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -282,17 +281,16 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 19,San Pietro di Avellana,01/08/2026 23:56:02,01/08/2026 21:49,9.1,35.1,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 25,Oricola Loc. Pezzetaglie,01/08/2026 23:56:02,01/08/2026 21:49,13.8,38.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,02/08/2026 23:50:02,02/08/2026 21:55,15.3,34.6,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
-24,Montereale - Aringo,02/08/2026 23:50:02,02/08/2026 23:49,14.2,33.6,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
+24,Montereale - Aringo,02/08/2026 23:50:02,02/08/2026 23:49,14.2,33.6,0.4,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 26,Rocca di Mezzo Loc. Terranera,02/08/2026 23:50:02,02/08/2026 23:45,6.8,31.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 27,Lago di Campotosto,02/08/2026 23:50:02,02/08/2026 23:40,17.4,30.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,02/08/2026 23:50:02,02/08/2026 23:49,13.9,34.6,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 29,Cagnano Amiterno,02/08/2026 23:50:02,02/08/2026 23:39,14.0,35.4,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 30,Campo Felice Loc. Lentrata,02/08/2026 23:50:02,02/08/2026 16:40,8.3,28.5,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,02/08/2026 23:50:02,02/08/2026 14:30,6.3,28.4,4.8,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,02/08/2026 23:50:02,02/08/2026 23:45,13.6,35.7,6.1,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,02/08/2026 23:50:02,02/08/2026 23:47,21.3,34.0,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,02/08/2026 23:50:02,02/08/2026 23:49,2.3,27.3,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
-37,Sella di Corno,02/08/2026 23:50:02,02/08/2026 23:40,15.4,32.9,3.8,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
+37,Sella di Corno,02/08/2026 23:50:02,02/08/2026 23:40,15.4,32.9,14.7,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 5,Pratola Peligna,02/08/2026 23:52:02,02/08/2026 23:50,15.8,39.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 12,Roccacaramanico,02/08/2026 23:52:02,02/08/2026 23:49,22.9,30.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 13,Campo di Giove,02/08/2026 23:52:02,02/08/2026 23:49,20.6,31.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
@@ -302,7 +300,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,02/08/2026 23:52:02,02/08/2026 23:50,14.8,34.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,02/08/2026 23:52:02,02/08/2026 23:50,18.6,27.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,02/08/2026 23:52:02,02/08/2026 23:49,19.8,23.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,02/08/2026 23:52:02,02/08/2026 23:50,13.2,35.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,02/08/2026 23:52:02,02/08/2026 23:50,13.2,35.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,02/08/2026 23:52:02,02/08/2026 23:50,17.7,25.6,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,02/08/2026 23:54:02,02/08/2026 23:50,19.6,30.9,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,02/08/2026 23:54:02,02/08/2026 23:45,18.8,27.6,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -314,11 +312,10 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 7,Rocca di Mezzo,02/08/2026 23:56:02,02/08/2026 21:50,9.8,30.5,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 11,Passo San Leonardo,02/08/2026 23:56:02,02/08/2026 21:52,19.6,28.8,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,02/08/2026 23:56:02,02/08/2026 21:50,11.7,34.5,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-23,Tagliacozzo Loc. Roccacerro,02/08/2026 23:56:02,02/08/2026 21:44,20.2,35.1,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+23,Tagliacozzo Loc. Roccacerro,02/08/2026 23:56:02,02/08/2026 21:44,16.6,34.9,13.8,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 25,Oricola Loc. Pezzetaglie,02/08/2026 23:56:02,02/08/2026 21:49,14.6,37.7,0.2,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 3,Castel del Monte - Loc. Pietrattina,02/08/2026 23:58:02,02/08/2026 23:45,3.7,27.1,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,02/08/2026 23:58:02,02/08/2026 23:40:00,1.3,28.4,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,03/08/2026 23:50:02,03/08/2026 23:49,12.6,34.3,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,03/08/2026 23:50:02,02/08/2026 14:30,0.0,0.0,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,03/08/2026 23:50:02,03/08/2026 23:45,10.9,33.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,03/08/2026 23:50:02,03/08/2026 23:49,2.3,26.9,1.5,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -331,7 +328,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,03/08/2026 23:52:02,03/08/2026 23:50,13.4,34.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,03/08/2026 23:52:02,03/08/2026 23:50,17.7,27.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,03/08/2026 23:52:02,03/08/2026 23:49,18.9,23.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,03/08/2026 23:52:02,03/08/2026 23:50,11.8,35.1,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,03/08/2026 23:52:02,03/08/2026 23:50,11.8,35.1,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,03/08/2026 23:52:02,03/08/2026 23:50,16.9,25.3,43.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,03/08/2026 23:54:02,03/08/2026 23:50,19.6,28.9,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,03/08/2026 23:54:02,03/08/2026 23:45,17.8,27.6,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -359,7 +356,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 30,Campo Felice Loc. Lentrata,03/08/2026 23:58:02,03/08/2026 23:45:00,11.1,25.9,0.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,03/08/2026 23:58:02,03/08/2026 23:52,20.2,32.4,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 37,Sella di Corno,03/08/2026 23:58:02,03/08/2026 23:45:00,15.9,31.0,11.9,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,04/08/2026 23:50:03,04/08/2026 23:49,13.4,33.2,23.4,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,04/08/2026 23:50:03,04/08/2026 23:45,5.7,27.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,04/08/2026 23:50:03,04/08/2026 23:45,13.0,35.5,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,04/08/2026 23:50:03,04/08/2026 23:49,1.2,26.7,1.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -372,7 +368,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,04/08/2026 23:52:02,04/08/2026 23:50,14.5,33.5,41.6,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,04/08/2026 23:52:02,04/08/2026 23:50,18.9,27.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,04/08/2026 23:52:02,04/08/2026 23:49,20.2,24.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,04/08/2026 23:52:02,04/08/2026 23:50,12.5,34.1,23.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,04/08/2026 23:52:02,04/08/2026 23:50,12.5,34.1,23.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,04/08/2026 23:52:02,04/08/2026 23:20,17.2,25.2,23.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,04/08/2026 23:54:02,04/08/2026 23:50,20.1,29.2,0.2,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,04/08/2026 23:54:02,04/08/2026 23:50,19.1,27.6,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -399,8 +395,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 29,Cagnano Amiterno,04/08/2026 23:58:02,04/08/2026 23:45:00,14.0,19.2,0.2,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 30,Campo Felice Loc. Lentrata,04/08/2026 23:58:02,04/08/2026 14:45:00,6.3,27.6,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,04/08/2026 23:58:02,04/08/2026 23:52,20.2,32.4,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-37,Sella di Corno,04/08/2026 23:58:02,04/08/2026 23:45:00,17.5,31.3,4.2,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,05/08/2026 23:50:02,05/08/2026 23:49,13.3,32.3,0.3,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
+37,Sella di Corno,04/08/2026 23:58:02,04/08/2026 23:45:00,17.5,31.3,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 33,Marsia,05/08/2026 23:50:02,05/08/2026 16:05,0.0,0.0,0.0,offline,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,05/08/2026 23:50:02,05/08/2026 23:45,12.2,35.6,13.5,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,05/08/2026 23:50:02,05/08/2026 23:49,1.7,25.3,8.9,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -413,7 +408,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,05/08/2026 23:52:02,05/08/2026 23:50,13.9,32.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,05/08/2026 23:52:02,05/08/2026 23:50,18.8,27.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,05/08/2026 23:52:02,05/08/2026 23:49,19.8,24.1,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,05/08/2026 23:52:02,05/08/2026 23:50,12.8,33.3,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,05/08/2026 23:52:02,05/08/2026 23:50,12.8,33.3,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,05/08/2026 23:52:02,05/08/2026 23:50,17.3,24.7,13.4,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,05/08/2026 23:54:02,05/08/2026 23:45,16.8,29.2,3.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,05/08/2026 23:54:02,05/08/2026 23:45,18.9,26.9,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -441,7 +436,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 30,Campo Felice Loc. Lentrata,05/08/2026 23:58:02,05/08/2026 23:45:00,9.9,16.7,2.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,05/08/2026 23:58:02,05/08/2026 23:52,20.6,31.2,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 37,Sella di Corno,05/08/2026 23:58:02,05/08/2026 23:50:00,17.5,33.1,0.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,06/08/2026 23:50:02,06/08/2026 23:49,12.4,32.8,27.2,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
+42,Campo Felice Loc. Camardosa,05/08/2026 23:58:02,05/08/2026 23:45:00,3.5,26.2,0.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 33,Marsia,06/08/2026 23:50:02,06/08/2026 23:02:10,6.3,27.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,06/08/2026 23:50:02,06/08/2026 23:45,10.6,35.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,06/08/2026 23:50:02,06/08/2026 23:49,1.8,25.6,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -454,7 +449,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,06/08/2026 23:52:02,06/08/2026 23:50,12.8,33.8,44.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,06/08/2026 23:52:02,06/08/2026 23:49,18.0,27.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,06/08/2026 23:52:02,06/08/2026 23:49,18.0,23.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,06/08/2026 23:52:02,06/08/2026 23:50,11.7,34.2,21.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,06/08/2026 23:52:02,06/08/2026 23:50,11.7,34.2,21.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,06/08/2026 23:52:02,06/08/2026 23:50,16.4,24.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,06/08/2026 23:54:02,06/08/2026 23:45,17.5,29.1,1.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,06/08/2026 23:54:02,06/08/2026 23:46,16.9,27.8,3.6,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -482,7 +477,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 30,Campo Felice Loc. Lentrata,06/08/2026 23:58:02,06/08/2026 23:40:00,5.4,27.2,0.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,06/08/2026 23:58:02,06/08/2026 23:52,19.7,31.6,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 37,Sella di Corno,06/08/2026 23:58:02,06/08/2026 23:45:00,17.3,33.2,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,07/08/2026 23:50:02,07/08/2026 23:49,13.1,32.8,1.8,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,07/08/2026 23:50:02,07/08/2026 23:45,7.8,27.0,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,07/08/2026 23:50:02,07/08/2026 23:45,12.6,34.4,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,07/08/2026 23:50:02,07/08/2026 23:49,1.9,25.6,5.6,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -495,7 +489,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,07/08/2026 23:52:02,07/08/2026 23:50,13.3,32.9,2.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,07/08/2026 23:52:02,07/08/2026 23:49,18.7,27.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,07/08/2026 23:52:02,07/08/2026 23:49,19.2,24.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,07/08/2026 23:52:02,07/08/2026 23:50,12.1,33.5,1.4,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,07/08/2026 23:52:02,07/08/2026 23:50,12.1,33.5,1.4,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,07/08/2026 23:52:02,07/08/2026 23:50,14.4,24.6,3.4,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,07/08/2026 23:54:02,07/08/2026 23:45,18.9,27.9,0.8,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,07/08/2026 23:54:02,07/08/2026 23:40,16.0,26.7,23.2,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -524,7 +518,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 30,Campo Felice Loc. Lentrata,07/08/2026 23:58:02,07/08/2026 21:35:00,6.6,25.6,12.4,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,07/08/2026 23:58:02,07/08/2026 23:52,19.9,31.4,1.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 37,Sella di Corno,07/08/2026 23:58:02,07/08/2026 23:45:00,18.3,31.4,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,08/08/2026 23:50:02,08/08/2026 23:49,12.5,31.8,0.5,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
+42,Campo Felice Loc. Camardosa,07/08/2026 23:58:02,07/08/2026 23:45:00,3.5,26.1,0.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 33,Marsia,08/08/2026 23:50:02,08/08/2026 23:45,6.1,26.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,08/08/2026 23:50:02,08/08/2026 23:45,12.2,33.8,0.8,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,08/08/2026 23:50:02,08/08/2026 23:49,3.1,24.1,22.4,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -537,7 +531,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,08/08/2026 23:52:02,08/08/2026 23:50,13.3,32.2,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,08/08/2026 23:52:02,08/08/2026 23:49,17.6,26.2,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,08/08/2026 23:52:02,08/08/2026 23:49,13.9,22.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,08/08/2026 23:52:02,08/08/2026 23:50,11.8,33.4,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,08/08/2026 23:52:02,08/08/2026 23:50,11.8,33.4,0.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,08/08/2026 23:52:02,08/08/2026 23:50,13.9,23.2,14.8,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,08/08/2026 23:54:02,08/08/2026 23:45,16.2,26.8,13.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,08/08/2026 23:54:02,08/08/2026 23:45,16.2,24.7,0.4,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -566,7 +560,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 30,Campo Felice Loc. Lentrata,08/08/2026 23:58:02,07/08/2026 17:35:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 35,Collebrincioni,08/08/2026 23:58:02,08/08/2026 23:52,17.4,31.8,2.8,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 37,Sella di Corno,08/08/2026 23:58:02,08/08/2026 23:45:00,15.7,31.3,3.6,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,09/08/2026 23:50:02,09/08/2026 23:49,12.5,31.0,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
+42,Campo Felice Loc. Camardosa,08/08/2026 23:58:02,08/08/2026 23:45:00,3.7,24.7,4.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 33,Marsia,09/08/2026 23:50:02,09/08/2026 23:45,5.4,26.4,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,09/08/2026 23:50:02,09/08/2026 23:45,10.6,33.2,3.6,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,09/08/2026 23:50:02,09/08/2026 23:49,2.6,23.2,0.3,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -579,7 +573,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,09/08/2026 23:52:02,09/08/2026 23:50,12.9,31.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,09/08/2026 23:52:02,09/08/2026 23:49,16.1,25.1,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,09/08/2026 23:52:02,09/08/2026 23:49,17.2,21.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,09/08/2026 23:52:02,09/08/2026 23:50,11.7,32.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,09/08/2026 23:52:02,09/08/2026 23:50,11.7,32.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,09/08/2026 23:52:02,09/08/2026 23:50,16.1,22.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,09/08/2026 23:54:02,09/08/2026 23:45,16.6,26.0,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,09/08/2026 23:54:02,09/08/2026 05:30,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -610,7 +604,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,09/08/2026 23:58:02,09/08/2026 23:45:00,15.7,30.8,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,09/08/2026 23:58:02,09/08/2026 23:45:00,3.4,26.5,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,09/08/2026 23:58:02,09/08/2026 21:50,12.5,33.1,0.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,10/08/2026 23:50:02,10/08/2026 23:49,13.6,31.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,10/08/2026 23:50:02,10/08/2026 23:45,6.5,26.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,10/08/2026 23:50:02,10/08/2026 23:45,12.9,34.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,10/08/2026 23:50:02,10/08/2026 23:49,3.8,25.5,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -623,7 +616,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,10/08/2026 23:52:02,10/08/2026 23:50,14.7,32.2,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,10/08/2026 23:52:02,10/08/2026 23:49,18.2,26.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,10/08/2026 23:52:02,10/08/2026 23:49,17.9,23.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,10/08/2026 23:52:02,10/08/2026 23:50,12.8,32.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,10/08/2026 23:52:02,10/08/2026 23:50,12.8,32.4,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,10/08/2026 23:52:02,10/08/2026 23:50,15.9,23.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,10/08/2026 23:54:02,10/08/2026 23:50,18.9,27.7,0.4,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,10/08/2026 23:54:02,09/08/2026 05:30,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -654,7 +647,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,10/08/2026 23:58:02,10/08/2026 23:50:00,17.7,30.7,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,10/08/2026 23:58:02,10/08/2026 23:45:00,5.0,26.3,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,10/08/2026 23:58:02,10/08/2026 21:50,14.3,33.9,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,11/08/2026 23:50:02,11/08/2026 23:49,14.0,32.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,11/08/2026 23:50:02,11/08/2026 23:45,6.9,28.2,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,11/08/2026 23:50:02,11/08/2026 23:45,12.9,35.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,11/08/2026 23:50:02,11/08/2026 23:49,3.2,25.5,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -667,7 +659,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,11/08/2026 23:52:02,11/08/2026 23:50:00,16.1,32.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,11/08/2026 23:52:02,11/08/2026 23:49,19.1,27.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,11/08/2026 23:52:02,11/08/2026 23:49,19.2,24.1,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,11/08/2026 23:52:02,11/08/2026 23:50,13.0,35.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,11/08/2026 23:52:02,11/08/2026 23:50,13.0,35.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,11/08/2026 23:52:02,11/08/2026 23:50,17.6,23.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 4,Villa Celiera,11/08/2026 23:54:02,11/08/2026 23:45,24.9,33.7,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 6,Rocca di Mezzo Loc. Rovere,11/08/2026 23:54:02,11/08/2026 23:45,13.7,30.1,5.4,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -695,7 +687,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,11/08/2026 23:58:02,11/08/2026 23:45:00,15.4,32.1,17.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,11/08/2026 23:58:02,11/08/2026 23:40:00,4.7,27.6,7.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,11/08/2026 23:58:02,11/08/2026 21:50,13.7,34.1,2.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,12/08/2026 23:50:02,12/08/2026 23:49,12.4,32.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,12/08/2026 23:50:02,12/08/2026 23:45,6.3,28.2,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,12/08/2026 23:50:02,12/08/2026 23:45,11.7,33.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,12/08/2026 23:50:02,12/08/2026 23:49,5.3,24.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -708,7 +699,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,12/08/2026 23:52:02,12/08/2026 23:49,14.7,31.5,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,12/08/2026 23:52:02,12/08/2026 23:49,17.6,25.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,12/08/2026 23:52:02,12/08/2026 23:49,18.4,22.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,12/08/2026 23:52:02,12/08/2026 23:50,11.7,32.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,12/08/2026 23:52:02,12/08/2026 23:50,11.7,32.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,12/08/2026 23:52:02,12/08/2026 23:50,17.1,23.9,2.8,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,12/08/2026 23:54:02,12/08/2026 23:45,18.7,26.9,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,12/08/2026 23:54:02,12/08/2026 23:45,16.4,25.7,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -739,7 +730,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,12/08/2026 23:58:02,12/08/2026 23:45:00,15.6,31.3,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,12/08/2026 23:58:02,12/08/2026 23:40:00,4.6,26.1,2.1,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,12/08/2026 23:58:02,12/08/2026 21:50,12.3,32.9,0.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,13/08/2026 23:50:02,13/08/2026 23:49,12.9,30.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,13/08/2026 23:50:02,13/08/2026 23:45,6.9,27.3,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,13/08/2026 23:50:02,13/08/2026 23:45,10.9,34.1,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,13/08/2026 23:50:02,13/08/2026 23:49,5.0,23.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -751,7 +741,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,13/08/2026 23:52:02,13/08/2026 23:49,16.5,25.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,13/08/2026 23:52:02,13/08/2026 23:49,16.6,24.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,13/08/2026 23:52:02,13/08/2026 23:49,16.7,21.1,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,13/08/2026 23:52:02,13/08/2026 23:50,12.4,30.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,13/08/2026 23:52:02,13/08/2026 23:50,12.4,30.7,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,13/08/2026 23:52:02,13/08/2026 23:50,15.7,22.0,2.2,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,13/08/2026 23:54:02,13/08/2026 23:45,17.3,29.2,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,13/08/2026 23:54:02,13/08/2026 23:46,15.5,24.8,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -782,7 +772,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,13/08/2026 23:58:02,13/08/2026 23:45:00,16.4,32.1,3.8,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,13/08/2026 23:58:02,13/08/2026 23:40:00,3.5,25.4,0.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,13/08/2026 23:58:02,13/08/2026 21:50,12.4,33.1,1.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,14/08/2026 23:50:02,14/08/2026 23:49,11.7,29.6,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,14/08/2026 23:50:02,14/08/2026 23:45,4.1,26.6,0.3,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,14/08/2026 23:50:02,14/08/2026 23:45,10.9,33.8,0.3,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,14/08/2026 23:50:02,14/08/2026 23:49,1.7,22.8,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -795,7 +784,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,14/08/2026 23:52:02,14/08/2026 23:50,14.2,29.6,0.0,online,,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,14/08/2026 23:52:02,14/08/2026 23:49,14.9,23.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,14/08/2026 23:52:02,14/08/2026 23:49,14.7,20.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,14/08/2026 23:52:02,14/08/2026 23:50,10.9,29.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,14/08/2026 23:52:02,14/08/2026 23:50,10.9,29.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,14/08/2026 23:52:02,14/08/2026 23:50,14.3,21.8,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,14/08/2026 23:54:02,14/08/2026 23:45,16.0,29.2,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,14/08/2026 23:54:02,14/08/2026 23:45,14.5,24.1,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -826,7 +815,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,14/08/2026 23:58:02,14/08/2026 23:45:00,15.1,30.0,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,14/08/2026 23:58:02,14/08/2026 23:40:00,1.8,25.1,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,14/08/2026 23:58:02,14/08/2026 21:50,11.4,31.4,0.3,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,15/08/2026 23:50:02,15/08/2026 23:49,8.9,30.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 33,Marsia,15/08/2026 23:50:02,15/08/2026 23:45,1.6,25.7,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,15/08/2026 23:50:02,15/08/2026 23:45,10.4,33.9,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,15/08/2026 23:50:02,15/08/2026 23:49,-3.8,24.6,0.0,online,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
@@ -838,7 +826,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,15/08/2026 23:52:02,15/08/2026 23:49,12.3,25.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,15/08/2026 23:52:02,15/08/2026 23:49,14.3,24.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 22,Mammarosa,15/08/2026 23:52:02,15/08/2026 23:49,15.7,21.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
-31,Castel di Sangro 2,15/08/2026 23:52:02,15/08/2026 23:50,8.4,31.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,15/08/2026 23:52:02,15/08/2026 23:50,8.4,31.3,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,15/08/2026 23:52:02,15/08/2026 23:50,13.6,21.9,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 1,Il Ceppo Rifugio,15/08/2026 23:54:02,15/08/2026 23:45,15.5,26.4,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 2,Prati Di Tivo,15/08/2026 23:54:02,15/08/2026 23:46,17.4,24.5,0.0,online,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
@@ -870,7 +858,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,15/08/2026 23:58:02,15/08/2026 23:45:00,14.6,30.6,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 42,Campo Felice Loc. Camardosa,15/08/2026 23:58:02,15/08/2026 23:40:00,-1.2,25.3,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 43,Capitignano,15/08/2026 23:58:02,15/08/2026 21:50,9.2,32.8,0.0,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,16/08/2026 23:50:02,16/08/2026 23:49,23.1,23.1,0.0,online,MeteoRegioneAbruzzo,39.0,98.0,25.6,0.0,0.0
 33,Marsia,16/08/2026 23:50:02,16/08/2026 15:35,0.0,0.0,0.0,offline,MeteoRegioneAbruzzo,0.0,0.0,0.0,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,16/08/2026 23:50:02,16/08/2026 23:45,12.8,34.3,49.9,online,MeteoRegioneAbruzzo,36.0,99.0,28.1,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,16/08/2026 23:50:02,16/08/2026 23:49,-0.8,24.7,0.0,online,MeteoRegioneAbruzzo,35.0,96.0,31.4,0.0,0.0
@@ -884,7 +871,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,16/08/2026 23:52:02,16/08/2026 23:49,15.6,26.3,6.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
 21,Passolanciano,16/08/2026 23:52:02,16/08/2026 23:39,16.6,26.6,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
 22,Mammarosa,16/08/2026 23:52:02,16/08/2026 23:49,16.3,22.8,0.0,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
-31,Castel di Sangro 2,16/08/2026 23:52:02,16/08/2026 23:50,10.3,30.7,0.0,online,ChietiMeteo,0.0,0.0,21.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,16/08/2026 23:52:02,16/08/2026 23:50,10.3,30.7,0.0,online,ChietiMeteo,0.0,0.0,21.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,16/08/2026 23:52:02,16/08/2026 23:50,15.6,23.3,0.0,online,ChietiMeteo,0.0,0.0,39.0,0.0,0.0
 1,Il Ceppo Rifugio,16/08/2026 23:54:02,16/08/2026 23:45,15.7,27.9,4.4,online,CaputFrigoris,33.0,95.0,17.7,2.8,19.0
 2,Prati Di Tivo,16/08/2026 23:54:02,16/08/2026 23:46,16.9,25.8,0.0,online,CaputFrigoris,30.0,65.0,25.7,0.2,12.4
@@ -916,7 +903,6 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 37,Sella di Corno,16/08/2026 23:58:02,16/08/2026 23:45:00,15.8,29.5,9.7,online,MeteoAquilano,0.0,0.0,38.6,14.8,0.0
 42,Campo Felice Loc. Camardosa,16/08/2026 23:58:02,16/08/2026 23:40:00,2.0,25.7,17.2,online,MeteoAquilano,0.0,0.0,53.1,6.4,0.0
 43,Capitignano,16/08/2026 23:58:02,16/08/2026 21:50,11.8,33.1,0.0,online,MeteoAquilano,0.0,0.0,22.5,-1.2,0.0
-28,Castel di Sangro - Loc. Speno,17/08/2026 23:45:03,17/08/2026 23:44,23.5,23.5,0.5,online,MeteoRegioneAbruzzo,36.0,97.0,43.9,0.0,0.0
 33,Marsia,17/08/2026 23:45:03,17/08/2026 23:40,4.4,23.5,2.5,online,MeteoRegioneAbruzzo,51.0,100.0,25.7,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,17/08/2026 23:45:03,17/08/2026 23:40,10.2,31.0,3.1,online,MeteoRegioneAbruzzo,41.0,99.0,22.0,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,17/08/2026 23:45:03,17/08/2026 23:44,0.2,23.9,0.0,online,MeteoRegioneAbruzzo,40.0,97.0,40.4,0.0,0.0
@@ -942,8 +928,8 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 13,Campo di Giove,17/08/2026 23:45:52,17/08/2026 23:40,14.5,28.7,0.0,online,CaputFrigoris,31.0,82.0,31.0,9.6,16.7
 18,Castel di Sangro,17/08/2026 23:45:52,17/08/2026 23:40,14.1,29.4,20.4,online,CaputFrigoris,37.0,85.0,54.7,10.9,18.7
 20,Monteferrante,17/08/2026 23:45:52,17/08/2026 23:44,19.6,30.8,7.2,online,CaputFrigoris,39.0,86.0,19.5,11.1,18.1
-24,Montereale - Aringo,17/08/2026 23:45:52,17/08/2026 23:45:52,13.8,29.2,0.4,online,CaputFrigoris,12.9,37.0,98.0,12.7,17.9
-27,Lago di Campotosto,17/08/2026 23:45:52,17/08/2026 23:40,13.8,27.3,9.0,online,CaputFrigoris,36.0,96.0,24.1,10.5,17.3
+24,Montereale - Aringo,17/08/2026 23:45:52,17/08/2026 23:45:52,13.8,29.2,1.2,online,CaputFrigoris,12.9,37.0,98.0,12.7,17.9
+27,Lago di Campotosto,17/08/2026 23:45:52,17/08/2026 23:40,13.8,27.3,7.2,online,CaputFrigoris,36.0,96.0,24.1,10.5,17.3
 38,Fara San Martino,17/08/2026 23:45:52,17/08/2026 23:40,22.9,34.2,0.0,online,CaputFrigoris,34.0,75.0,24.0,10.3,21.5
 40,Pizzoli,17/08/2026 23:45:52,17/08/2026 23:41,14.8,29.5,5.4,online,CaputFrigoris,32.0,89.0,28.0,10.4,17.1
 44,Piano delle 5 Miglia,17/08/2026 23:45:52,17/08/2026 23:40,7.5,26.3,4.1,online,CaputFrigoris,41.0,98.0,24.1,6.9,18.2
@@ -965,7 +951,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,17/08/2026 23:46:19,17/08/2026 23:44,15.5,24.6,4.0,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
 21,Passolanciano,17/08/2026 23:46:19,17/08/2026 23:44,16.3,26.3,2.4,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
 22,Mammarosa,17/08/2026 23:46:19,17/08/2026 23:44,14.4,23.0,1.0,online,ChietiMeteo,0.0,0.0,47.0,0.0,0.0
-31,Castel di Sangro 2,17/08/2026 23:46:19,17/08/2026 23:45,10.6,30.2,0.4,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,17/08/2026 23:46:19,17/08/2026 23:45,10.6,30.2,0.4,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,17/08/2026 23:46:19,17/08/2026 23:45,13.8,22.8,0.0,online,ChietiMeteo,0.0,0.0,61.0,0.0,0.0
 11,Passo San Leonardo,17/08/2026 23:46:30,17/08/2026 21:44,16.8,27.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,17/08/2026 23:46:30,17/08/2026 21:41,10.1,30.1,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
@@ -973,18 +959,17 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 25,Oricola Loc. Pezzetaglie,17/08/2026 23:46:30,17/08/2026 21:39,12.1,32.1,7.1,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 39,Cappadocia,17/08/2026 23:46:30,17/08/2026 21:44,10.4,23.4,8.1,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 41,Corfinio,17/08/2026 23:46:30,17/08/2026 21:40,16.8,36.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,18/08/2026 16:45:03,18/08/2026 16:44,24.4,24.4,0.0,online,MeteoRegioneAbruzzo,44.0,99.0,23.8,0.0,0.0
 33,Marsia,18/08/2026 16:45:03,18/08/2026 16:40,5.4,23.1,0.0,online,MeteoRegioneAbruzzo,55.0,100.0,22.5,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,18/08/2026 16:45:03,18/08/2026 16:40,10.8,30.2,1.0,online,MeteoRegioneAbruzzo,46.0,99.0,18.4,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,18/08/2026 16:45:03,18/08/2026 16:44,6.8,20.9,1.8,online,MeteoRegioneAbruzzo,58.0,95.0,21.9,0.0,0.0
 45,Camporotondo,18/08/2026 16:45:03,18/08/2026 16:44,9.3,22.7,0.7,online,MeteoRegioneAbruzzo,62.0,99.0,20.1,0.0,0.0
 46,Roio del Sangro,18/08/2026 16:45:03,18/08/2026 16:40,18.8,25.4,0.0,online,MeteoRegioneAbruzzo,51.0,73.0,42.1,0.0,0.0
+28,Fossacesia Marina,18/08/2026 22:34,18/08/2026 22:38:23,20.0,30.0,0.0,online,Wunderground,66.0,88.0,23.0,18.0,24.0
 58,Alfedena,18/08/2026 22:34,18/08/2026 22:38:19,14.0,28.0,0.0,online,Wunderground,38.0,94.0,18.0,12.0,18.0
 59,Pescopennattaro,18/08/2026 22:34,18/08/2026 22:38:20,17.0,25.0,0.0,online,Wunderground,51.0,82.0,15.0,11.0,17.0
 60,Ovindoli,18/08/2026 22:34,18/08/2026 22:38:21,12.0,24.0,0.1,online,Wunderground,55.0,91.0,46.0,10.0,16.0
 61,Roccaraso,18/08/2026 22:34,18/08/2026 22:38:21,12.0,28.0,0.0,online,Wunderground,43.0,89.0,15.0,10.0,19.0
 62,Capracotta,18/08/2026 22:34,18/08/2026 22:38:22,21.0,36.0,0.0,online,Wunderground,34.0,77.0,7.0,12.0,18.0
-63,Fossacesia Marina,18/08/2026 22:34,18/08/2026 22:38:23,20.0,30.0,0.0,online,Wunderground,66.0,88.0,23.0,18.0,24.0
 3,Castel del Monte - Loc. Pietrattina,18/08/2026 23:45:15,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,18/08/2026 23:45:15,18/08/2026 23:35,12.8,28.6,0.3,online,MeteoAquilano,0.0,0.0,24.1,14.8,0.0
 17,Roccaraso Loc. Aremogna,18/08/2026 23:45:15,18/08/2026 23:30:00,2.7,21.6,0.0,online,MeteoAquilano,0.0,0.0,23.8,0.0,0.0
@@ -1028,7 +1013,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,18/08/2026 23:46:15,18/08/2026 23:44,14.3,22.6,0.0,online,ChietiMeteo,0.0,0.0,0.0,0.0,0.0
 21,Passolanciano,18/08/2026 23:46:15,18/08/2026 23:44,13.7,20.8,0.0,online,ChietiMeteo,0.0,0.0,16.0,0.0,0.0
 22,Mammarosa,18/08/2026 23:46:15,18/08/2026 23:44,12.9,18.6,0.0,online,ChietiMeteo,0.0,0.0,24.0,0.0,0.0
-31,Castel di Sangro 2,18/08/2026 23:46:15,18/08/2026 23:45,11.8,28.2,0.2,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,18/08/2026 23:46:15,18/08/2026 23:45,11.8,28.2,0.2,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,18/08/2026 23:46:15,18/08/2026 23:45,12.1,19.7,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
 11,Passo San Leonardo,18/08/2026 23:46:26,18/08/2026 21:44,14.7,22.1,1.4,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,18/08/2026 23:46:26,18/08/2026 21:41,10.7,29.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
@@ -1036,12 +1021,12 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 25,Oricola Loc. Pezzetaglie,18/08/2026 23:46:26,18/08/2026 21:39,12.4,31.6,0.2,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 39,Cappadocia,18/08/2026 23:46:26,18/08/2026 21:39,9.9,24.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 41,Corfinio,18/08/2026 23:46:26,18/08/2026 21:40,17.2,31.6,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
+28,Fossacesia Marina,19/08/2026 17:24,19/08/2026 17:27:21,20.0,32.0,0.0,online,Wunderground,57.0,84.0,29.0,17.0,25.0
 58,Alfedena,19/08/2026 17:24,19/08/2026 17:27:17,16.0,31.0,0.0,online,Wunderground,34.0,91.0,23.0,12.0,16.0
 59,Pescopennattaro,19/08/2026 17:24,19/08/2026 17:27:18,18.0,28.0,0.0,online,Wunderground,38.0,70.0,11.0,10.0,15.0
 60,Ovindoli,19/08/2026 17:24,19/08/2026 17:27:19,13.0,26.0,0.0,online,Wunderground,51.0,84.0,44.0,10.0,16.0
 61,Roccaraso,19/08/2026 17:24,19/08/2026 17:27:19,13.0,30.0,0.0,online,Wunderground,39.0,93.0,15.0,11.0,16.0
 62,Capracotta,19/08/2026 17:24,19/08/2026 17:27:20,20.0,34.0,0.0,online,Wunderground,35.0,72.0,5.0,12.0,17.0
-63,Fossacesia Marina,19/08/2026 17:24,19/08/2026 17:27:21,20.0,32.0,0.0,online,Wunderground,57.0,84.0,29.0,17.0,25.0
 3,Castel del Monte - Loc. Pietrattina,19/08/2026 23:45:15,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,19/08/2026 23:45:15,19/08/2026 23:35,14.3,33.2,0.0,online,MeteoAquilano,0.0,0.0,29.0,17.9,0.0
 17,Roccaraso Loc. Aremogna,19/08/2026 23:45:15,19/08/2026 23:30:00,3.2,24.1,0.3,online,MeteoAquilano,0.0,0.0,22.0,0.0,0.0
@@ -1085,7 +1070,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,19/08/2026 23:46:15,19/08/2026 23:44,14.4,25.6,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
 21,Passolanciano,19/08/2026 23:46:15,19/08/2026 23:39,15.6,26.7,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
 22,Mammarosa,19/08/2026 23:46:15,19/08/2026 23:44,16.2,23.9,0.0,online,ChietiMeteo,0.0,0.0,35.0,0.0,0.0
-31,Castel di Sangro 2,19/08/2026 23:46:15,19/08/2026 23:45,11.7,30.7,0.0,online,ChietiMeteo,0.0,0.0,24.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,19/08/2026 23:46:15,19/08/2026 23:45,11.7,30.7,0.0,online,ChietiMeteo,0.0,0.0,24.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,19/08/2026 23:46:15,19/08/2026 23:45,14.3,23.3,0.0,online,ChietiMeteo,0.0,0.0,26.0,0.0,0.0
 11,Passo San Leonardo,19/08/2026 23:46:27,19/08/2026 21:44,16.9,28.4,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,19/08/2026 23:46:27,19/08/2026 21:42,10.9,30.2,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
@@ -1136,7 +1121,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,20/08/2026 18:46:15,20/08/2026 18:44,16.6,26.2,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
 21,Passolanciano,20/08/2026 18:46:15,20/08/2026 18:44,17.2,26.4,0.0,online,ChietiMeteo,0.0,0.0,24.0,0.0,0.0
 22,Mammarosa,20/08/2026 18:46:15,20/08/2026 18:44,18.3,23.4,0.0,online,ChietiMeteo,0.0,0.0,47.0,0.0,0.0
-31,Castel di Sangro 2,20/08/2026 18:46:15,20/08/2026 18:45,12.1,30.5,0.0,online,ChietiMeteo,0.0,0.0,26.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,20/08/2026 18:46:15,20/08/2026 18:45,12.1,30.5,0.0,online,ChietiMeteo,0.0,0.0,26.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,20/08/2026 18:46:15,20/08/2026 18:45,15.2,23.8,0.0,online,ChietiMeteo,0.0,0.0,51.0,0.0,0.0
 11,Passo San Leonardo,20/08/2026 18:46:26,20/08/2026 16:44,16.7,29.0,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 19,San Pietro di Avellana,20/08/2026 18:46:26,20/08/2026 16:41,13.1,29.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
@@ -1144,24 +1129,23 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 25,Oricola Loc. Pezzetaglie,20/08/2026 18:46:26,20/08/2026 16:39,14.3,33.1,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 39,Cappadocia,20/08/2026 18:46:26,20/08/2026 16:44,11.4,25.0,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
 41,Corfinio,20/08/2026 18:46:26,20/08/2026 16:40,21.7,37.3,0.0,online,MeteoNetwork,0.0,0.0,0.0,0.0,0.0
-28,Castel di Sangro - Loc. Speno,21/08/2026 13:18:57,21/08/2026 13:18,24.0,24.0,0.0,online,MeteoRegioneAbruzzo,49.0,99.0,33.2,0.0,0.0
 33,Marsia,21/08/2026 13:18:57,21/08/2026 13:15,11.8,23.8,0.0,online,MeteoRegioneAbruzzo,54.0,98.0,27.4,0.0,0.0
 34,Tagliacozzo Loc. Poggetello,21/08/2026 13:18:57,21/08/2026 13:15,14.8,30.4,0.0,online,MeteoRegioneAbruzzo,52.0,99.0,17.3,0.0,0.0
 36,Campo Imperatore Loc. Prato del Bove,21/08/2026 13:18:57,21/08/2026 13:18,15.5,23.1,0.0,online,MeteoRegioneAbruzzo,50.0,87.0,46.0,0.0,0.0
 45,Camporotondo,21/08/2026 13:18:57,21/08/2026 13:18,12.8,22.7,0.0,online,MeteoRegioneAbruzzo,73.0,99.0,23.8,0.0,0.0
 46,Roio del Sangro,21/08/2026 13:18:57,21/08/2026 13:15,21.5,28.2,0.0,online,MeteoRegioneAbruzzo,38.0,65.0,55.1,0.0,0.0
+28,Fossacesia Marina,21/08/2026 22:09,21/08/2026 22:10:20,22.0,34.0,0.0,online,Wunderground,36.0,79.0,42.0,16.0,27.0
 58,Alfedena,21/08/2026 22:09,21/08/2026 22:10:16,15.0,29.0,33.5,online,Wunderground,40.0,96.0,25.0,14.0,20.0
 60,Ovindoli,21/08/2026 22:09,21/08/2026 22:10:17,16.0,23.0,2.6,online,Wunderground,57.0,89.0,65.0,13.0,17.0
 61,Roccaraso,21/08/2026 22:09,21/08/2026 22:10:18,14.0,27.0,0.0,online,Wunderground,46.0,87.0,29.0,10.0,19.0
 62,Capracotta,21/08/2026 22:09,21/08/2026 22:10:19,20.0,37.0,0.0,online,Wunderground,35.0,71.0,7.0,12.0,19.0
-63,Fossacesia Marina,21/08/2026 22:09,21/08/2026 22:10:20,22.0,34.0,0.0,online,Wunderground,36.0,79.0,42.0,16.0,27.0
 50,Ofena,21/08/2026 22:18:55,21/08/2026 22:10,20.3,35.3,0.8,online,CaputFrigoris,34.0,86.0,29.0,14.2,19.5
 3,Castel del Monte - Loc. Pietrattina,21/08/2026 23:45:16,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 10,Prata d'Ansidonia,21/08/2026 23:45:16,21/08/2026 04:20,17.2,32.1,1.5,online,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
 17,Roccaraso Loc. Aremogna,21/08/2026 23:45:16,21/08/2026 23:30:00,7.0,23.7,3.4,online,MeteoAquilano,0.0,0.0,47.9,0.0,0.0
 26,Rocca di Mezzo Loc. Terranera,21/08/2026 23:45:16,21/08/2026 23:30:00,13.2,26.3,1.4,online,MeteoAquilano,0.0,0.0,56.3,14.9,0.0
 29,Cagnano Amiterno,21/08/2026 23:45:16,21/08/2026 21:29,16.3,29.9,0.0,online,MeteoAquilano,0.0,0.0,11.3,16.8,0.0
-30,Campo Felice Loc. Lentrata,21/08/2026 23:45:16,21/08/2026 18:05:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+30,Campo Felice Loc. Lentrata,21/08/2026 23:45:16,21/08/2026 18:05:00,17.8,17,9,3,3,online,MeteoAquilano,0.0,0.0,0.0
 35,Collebrincioni,21/08/2026 23:45:16,21/08/2026 23:42,18.5,26.5,5.3,online,MeteoAquilano,0.0,0.0,37.0,15.5,0.0
 37,Sella di Corno,21/08/2026 23:45:16,21/08/2026 23:35:00,18.0,26.1,2.5,online,MeteoAquilano,0.0,0.0,45.1,16.6,0.0
 42,Campo Felice Loc. Camardosa,21/08/2026 23:45:16,21/08/2026 23:30:00,13.7,22.4,8.0,online,MeteoAquilano,0.0,0.0,67.6,13.9,0.0
@@ -1177,7 +1161,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 18,Castel di Sangro,21/08/2026 23:45:48,21/08/2026 23:40,16.1,29.2,7.0,online,CaputFrigoris,47.0,89.0,56.3,13.8,20.7
 20,Monteferrante,21/08/2026 23:45:48,21/08/2026 23:45:48,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
 24,Montereale - Aringo,21/08/2026 23:45:48,21/08/2026 23:45,16.1,27.5,6.4,online,CaputFrigoris,52.0,98.0,43.5,15.4,20.7
-27,Lago di Campotosto,21/08/2026 23:45:48,21/08/2026 23:40,15.9,24.9,1.4,online,CaputFrigoris,59.0,94.0,37.0,14.2,18.1
+27,Lago di Campotosto,21/08/2026 23:45:48,21/08/2026 23:40,15.9,24.9,5.6,online,CaputFrigoris,59.0,94.0,37.0,14.2,18.1
 38,Fara San Martino,21/08/2026 23:45:48,21/08/2026 23:40,24.4,35.2,0.0,online,CaputFrigoris,29.0,58.0,34.0,14.3,18.9
 40,Pizzoli,21/08/2026 23:45:48,21/08/2026 23:41,19.6,29.0,2.1,online,CaputFrigoris,44.0,82.0,38.0,14.5,19.9
 44,Piano delle 5 Miglia,21/08/2026 23:45:48,21/08/2026 23:40,9.8,26.9,3.0,online,CaputFrigoris,47.0,93.0,35.4,8.3,18.2
@@ -1198,7 +1182,7 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 16,Pescocostanzo Loc. Vallefura,21/08/2026 23:46:15,21/08/2026 23:44,16.6,24.4,2.2,online,ChietiMeteo,0.0,0.0,51.0,0.0,0.0
 21,Passolanciano,21/08/2026 23:46:15,21/08/2026 23:44,16.4,25.6,3.2,online,ChietiMeteo,0.0,0.0,64.0,0.0,0.0
 22,Mammarosa,21/08/2026 23:46:15,21/08/2026 23:44,14.0,22.0,0.6,online,ChietiMeteo,0.0,0.0,105.0,0.0,0.0
-31,Castel di Sangro 2,21/08/2026 23:46:15,21/08/2026 23:45,13.9,29.1,15.8,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,21/08/2026 23:46:15,21/08/2026 23:45,13.9,29.1,15.8,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
 32,Campo di Giove Loc. Guado di Coccia,21/08/2026 23:46:15,21/08/2026 23:45,14.2,22.1,0.4,online,ChietiMeteo,0.0,0.0,90.0,0.0,0.0
 11,Passo San Leonardo,21/08/2026 23:58:34,21/08/2026 21:53,17.8,25.3,0.4,online,MeteoNetwork,0.0,0.0,48.3,0.0,0.0
 19,San Pietro di Avellana,21/08/2026 23:58:34,21/08/2026 21:50,15.8,26.9,0.0,online,MeteoNetwork,0.0,0.0,4.2,0.0,0.0
@@ -1206,54 +1190,60 @@ Id,StazioneMeteo,DataRilevamento,DataAggiornamento,TemperaturaMin,TemperaturaMax
 25,Oricola Loc. Pezzetaglie,21/08/2026 23:58:34,21/08/2026 21:54,17.2,32.1,5.0,online,MeteoNetwork,0.0,0.0,37.8,0.0,0.0
 39,Cappadocia,21/08/2026 23:58:34,21/08/2026 21:54,13.3,23.4,6.9,online,MeteoNetwork,0.0,0.0,34.4,0.0,0.0
 41,Corfinio,21/08/2026 23:58:34,21/08/2026 21:56,21.4,34.6,0.0,online,MeteoNetwork,0.0,0.0,12.3,0.0,0.0
-3,Castel del Monte - Loc. Pietrattina,22/08/2026 15:45:20,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-10,Prata d'Ansidonia,22/08/2026 15:45:20,22/08/2026 15:35,17.3,29.9,0.0,online,MeteoAquilano,0.0,0.0,30.6,13.6,0.0
-17,Roccaraso Loc. Aremogna,22/08/2026 15:45:20,22/08/2026 15:30:00,13.7,24.4,0.0,online,MeteoAquilano,0.0,0.0,38.5,0.0,0.0
-26,Rocca di Mezzo Loc. Terranera,22/08/2026 15:45:20,22/08/2026 15:35:00,17.4,26.3,0.0,online,MeteoAquilano,0.0,0.0,53.1,13.1,0.0
-29,Cagnano Amiterno,22/08/2026 15:45:20,22/08/2026 13:29,20.2,29.2,0.0,online,MeteoAquilano,0.0,0.0,8.0,13.6,0.0
-30,Campo Felice Loc. Lentrata,22/08/2026 15:45:20,21/08/2026 18:05:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
-35,Collebrincioni,22/08/2026 15:45:20,22/08/2026 15:42,18.1,25.9,0.3,online,MeteoAquilano,0.0,0.0,27.4,13.7,0.0
-37,Sella di Corno,22/08/2026 15:45:20,22/08/2026 15:35:00,18.1,25.6,0.0,online,MeteoAquilano,0.0,0.0,27.4,17.0,0.0
-42,Campo Felice Loc. Camardosa,22/08/2026 15:45:20,22/08/2026 15:30:00,15.9,21.6,0.0,online,MeteoAquilano,0.0,0.0,51.5,12.0,0.0
-43,Capitignano,22/08/2026 15:45:20,22/08/2026 13:40,17.3,29.0,0.0,online,MeteoAquilano,0.0,0.0,19.3,13.3,0.0
-1,Il Ceppo Rifugio,22/08/2026 15:45:55,22/08/2026 15:40,17.6,25.9,0.0,online,CaputFrigoris,44.0,81.0,22.5,12.7,15.8
-2,Prati Di Tivo,22/08/2026 15:45:55,22/08/2026 15:40,17.1,24.9,0.0,online,CaputFrigoris,45.0,79.0,48.3,11.0,15.5
-4,Villa Celiera,22/08/2026 15:45:55,22/08/2026 15:40,22.2,30.1,0.0,online,CaputFrigoris,54.0,76.0,24.0,15.3,20.8
-6,Rocca di Mezzo Loc. Rovere,22/08/2026 15:45:55,22/08/2026 15:40,16.5,23.8,0.0,online,CaputFrigoris,58.0,91.0,38.6,13.1,16.8
-7,Rocca di Mezzo,22/08/2026 15:45:55,22/08/2026 15:40,17.4,25.9,0.0,online,CaputFrigoris,48.0,85.0,45.1,12.6,16.7
-8,Rocca di Mezzo Loc. Fonteavignone,22/08/2026 15:45:55,22/08/2026 15:40,16.8,26.8,0.0,online,CaputFrigoris,46.0,91.0,29.0,13.6,17.4
-9,Civitaretegna,22/08/2026 15:45:55,22/08/2026 15:40,15.7,31.6,0.3,online,CaputFrigoris,34.0,88.0,0.0,13.2,19.0
-13,Campo di Giove,22/08/2026 15:45:55,22/08/2026 15:40,16.9,27.7,0.0,online,CaputFrigoris,39.0,83.0,24.0,12.4,16.4
-18,Castel di Sangro,22/08/2026 15:45:55,22/08/2026 15:40,16.3,30.3,0.0,online,CaputFrigoris,38.0,88.0,38.6,13.8,19.3
-20,Monteferrante,22/08/2026 15:45:55,N/D,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
-24,Montereale - Aringo,22/08/2026 15:45:55,22/08/2026 15:45,15.1,28.1,0.0,online,CaputFrigoris,40.0,98.0,20.9,12.5,18.8
-27,Lago di Campotosto,22/08/2026 15:45:55,22/08/2026 15:40,16.0,25.4,0.0,online,CaputFrigoris,48.0,93.0,27.4,13.2,17.2
-38,Fara San Martino,22/08/2026 15:45:55,22/08/2026 15:41,23.8,32.8,0.0,online,CaputFrigoris,41.0,58.0,21.0,14.8,21.0
-40,Pizzoli,22/08/2026 15:45:55,22/08/2026 15:41,20.3,29.2,0.0,online,CaputFrigoris,36.0,81.0,28.0,12.2,18.3
-44,Piano delle 5 Miglia,22/08/2026 15:45:55,22/08/2026 15:40,13.0,26.8,0.0,online,CaputFrigoris,44.0,95.0,25.7,11.9,18.4
-47,Castel del Monte,22/08/2026 15:45:55,22/08/2026 15:40,16.8,27.6,0.0,online,CaputFrigoris,40.0,86.0,19.3,12.2,16.3
-48,Forme,22/08/2026 15:45:55,22/08/2026 15:45,16.8,26.7,0.0,online,CaputFrigoris,47.0,92.0,19.3,14.2,18.8
-49,Monte Genzana,22/08/2026 15:45:55,22/08/2026 15:40,12.3,19.3,0.0,online,CaputFrigoris,62.0,96.0,41.8,10.3,14.0
-50,Ofena,22/08/2026 15:45:55,N/D,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
-51,Piani di Pezza,22/08/2026 15:45:55,22/08/2026 15:40,16.6,22.6,0.0,online,CaputFrigoris,55.0,84.0,43.4,12.4,15.6
-52,Rifugio Montecristo,22/08/2026 15:45:55,22/08/2026 15:40,15.3,22.4,0.0,online,CaputFrigoris,52.0,95.0,41.8,11.5,14.8
-53,Rocca Calascio,22/08/2026 15:45:55,22/08/2026 15:40,16.2,25.7,0.0,online,CaputFrigoris,36.0,85.0,29.0,8.6,15.9
-54,Farindola,22/08/2026 15:45:55,22/08/2026 15:44,22.3,29.4,0.0,online,CaputFrigoris,52.0,76.0,40.2,14.7,21.5
-55,Monte Piselli,22/08/2026 15:45:55,22/08/2026 15:44,16.2,23.1,0.0,online,CaputFrigoris,53.0,91.0,47.0,12.2,18.3
-56,Valle Castellana,22/08/2026 15:45:55,22/08/2026 15:40,18.2,31.7,0.0,online,CaputFrigoris,33.0,81.0,17.7,13.1,18.2
-57,Civitaluparella,22/08/2026 15:45:55,22/08/2026 15:45,20.7,32.0,0.0,online,CaputFrigoris,42.0,69.0,24.0,13.3,18.9
-5,Pratola Peligna,22/08/2026 15:46:22,22/08/2026 15:45,18.7,35.0,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
-12,Roccacaramanico,22/08/2026 15:46:22,22/08/2026 15:44,20.6,28.1,0.0,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
-14,Bosco di Sant'Antonio,22/08/2026 15:46:22,22/08/2026 15:44,14.5,26.3,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
-15,Palena Stazione,22/08/2026 15:46:22,22/08/2026 15:45,14.7,26.3,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
-16,Pescocostanzo Loc. Vallefura,22/08/2026 15:46:22,22/08/2026 15:44,16.2,24.1,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
-21,Passolanciano,22/08/2026 15:46:22,22/08/2026 15:44,18.9,24.8,0.0,online,ChietiMeteo,0.0,0.0,48.0,0.0,0.0
-22,Mammarosa,22/08/2026 15:46:22,22/08/2026 15:44,15.8,21.9,0.0,online,ChietiMeteo,0.0,0.0,98.0,0.0,0.0
-31,Castel di Sangro 2,22/08/2026 15:46:22,22/08/2026 15:45,15.6,29.6,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
-32,Campo di Giove Loc. Guado di Coccia,22/08/2026 15:46:22,22/08/2026 15:45,13.8,21.8,0.0,online,ChietiMeteo,0.0,0.0,76.0,0.0,0.0
-11,Passo San Leonardo,22/08/2026 15:46:30,22/08/2026 13:44,18.6,26.3,0.0,online,MeteoNetwork,0.0,0.0,24.1,0.0,0.0
-19,San Pietro di Avellana,22/08/2026 15:46:30,22/08/2026 13:41,14.2,29.9,0.0,online,MeteoNetwork,0.0,0.0,3.3,0.0,0.0
-23,Tagliacozzo Loc. Roccacerro,22/08/2026 15:46:30,22/08/2026 13:44,16.4,27.5,0.0,online,MeteoNetwork,0.0,0.0,10.8,0.0,0.0
-25,Oricola Loc. Pezzetaglie,22/08/2026 15:46:30,22/08/2026 13:39,16.2,32.0,0.2,online,MeteoNetwork,0.0,0.0,16.6,0.0,0.0
-39,Cappadocia,22/08/2026 15:46:30,22/08/2026 13:44,14.9,24.0,0.0,online,MeteoNetwork,0.0,0.0,16.9,0.0,0.0
-41,Corfinio,22/08/2026 15:46:30,22/08/2026 13:40,20.5,34.7,0.0,online,MeteoNetwork,0.0,0.0,11.7,0.0,0.0
+28,Fossacesia Marina,22/08/2026 18:04,22/08/2026 18:09:02,21.0,31.0,0.0,online,Wunderground,56.0,77.0,19.0,16.0,25.0
+58,Alfedena,22/08/2026 18:04,22/08/2026 18:09:03,17.0,29.0,0.0,online,Wunderground,32.0,92.0,25.0,10.0,18.0
+60,Ovindoli,22/08/2026 18:04,22/08/2026 18:09:05,16.0,23.0,0.0,online,Wunderground,51.0,90.0,37.0,12.0,16.0
+61,Roccaraso,22/08/2026 18:04,22/08/2026 18:09:06,14.0,29.0,0.0,online,Wunderground,38.0,90.0,18.0,12.0,18.0
+62,Capracotta,22/08/2026 18:04,22/08/2026 18:09:06,21.0,39.0,0.0,online,Wunderground,34.0,68.0,7.0,13.0,20.0
+3,Castel del Monte - Loc. Pietrattina,22/08/2026 18:07:37,17/08/2026 02:55:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+10,Prata d'Ansidonia,22/08/2026 18:07:37,22/08/2026 18:00,17.3,30.3,0.0,online,MeteoAquilano,0.0,0.0,30.6,16.0,0.0
+17,Roccaraso Loc. Aremogna,22/08/2026 18:07:37,22/08/2026 17:50:00,13.7,24.5,0.0,online,MeteoAquilano,0.0,0.0,38.5,0.0,0.0
+26,Rocca di Mezzo Loc. Terranera,22/08/2026 18:07:37,22/08/2026 18:00:00,17.4,26.3,0.0,online,MeteoAquilano,0.0,0.0,53.1,12.9,0.0
+29,Cagnano Amiterno,22/08/2026 18:07:37,22/08/2026 15:49,20.2,29.2,0.0,online,MeteoAquilano,0.0,0.0,8.0,12.6,0.0
+30,Campo Felice Loc. Lentrata,22/08/2026 18:07:37,21/08/2026 18:05:00,0.0,0.0,0.0,offline,MeteoAquilano,0.0,0.0,0.0,0.0,0.0
+35,Collebrincioni,22/08/2026 18:07:37,22/08/2026 18:02,18.1,26.1,0.3,online,MeteoAquilano,0.0,0.0,27.4,14.2,0.0
+37,Sella di Corno,22/08/2026 18:07:37,22/08/2026 17:55:00,18.1,27.3,0.0,online,MeteoAquilano,0.0,0.0,27.4,17.3,0.0
+42,Campo Felice Loc. Camardosa,22/08/2026 18:07:37,22/08/2026 17:50:00,15.9,21.8,0.0,online,MeteoAquilano,0.0,0.0,51.5,13.2,0.0
+43,Capitignano,22/08/2026 18:07:37,22/08/2026 16:00,17.3,29.4,0.0,online,MeteoAquilano,0.0,0.0,19.3,13.2,0.0
+1,Il Ceppo Rifugio,22/08/2026 18:08:10,22/08/2026 18:00,17.6,26.0,0.0,online,CaputFrigoris,44.0,83.0,22.5,12.7,18.6
+2,Prati Di Tivo,22/08/2026 18:08:10,22/08/2026 18:01,17.1,24.9,0.0,online,CaputFrigoris,43.0,79.0,48.3,10.5,17.0
+4,Villa Celiera,22/08/2026 18:08:10,22/08/2026 18:00,22.2,30.1,0.0,online,CaputFrigoris,54.0,76.0,24.0,15.3,20.8
+6,Rocca di Mezzo Loc. Rovere,22/08/2026 18:08:10,22/08/2026 18:00,16.5,23.9,0.0,online,CaputFrigoris,54.0,91.0,38.6,13.1,16.8
+7,Rocca di Mezzo,22/08/2026 18:08:10,22/08/2026 18:00,17.4,25.9,0.0,online,CaputFrigoris,46.0,85.0,45.1,12.6,16.7
+8,Rocca di Mezzo Loc. Fonteavignone,22/08/2026 18:08:10,22/08/2026 18:00,16.8,26.8,0.0,online,CaputFrigoris,40.0,91.0,29.0,11.9,17.4
+9,Civitaretegna,22/08/2026 18:08:10,22/08/2026 18:00,15.7,31.6,0.3,online,CaputFrigoris,33.0,88.0,0.0,12.0,19.3
+13,Campo di Giove,22/08/2026 18:08:10,22/08/2026 18:00,16.9,27.8,0.0,online,CaputFrigoris,39.0,83.0,29.0,11.8,16.4
+18,Castel di Sangro,22/08/2026 18:08:10,22/08/2026 18:00,16.3,30.5,0.0,online,CaputFrigoris,38.0,88.0,38.6,13.8,19.3
+20,Monteferrante,22/08/2026 18:08:10,22/08/2026 18:08:10,0.0,0.0,0.0,offline,CaputFrigoris,0.0,0.0,0.0,0.0,0.0
+24,Montereale - Aringo,22/08/2026 18:08:10,22/08/2026 18:05,15.1,28.2,0.0,online,CaputFrigoris,40.0,98.0,20.9,12.5,18.8
+27,Lago di Campotosto,22/08/2026 18:08:10,22/08/2026 18:00,16.0,25.4,0.0,online,CaputFrigoris,48.0,93.0,27.4,12.1,17.2
+38,Fara San Martino,22/08/2026 18:08:10,22/08/2026 18:01,23.8,32.8,0.0,online,CaputFrigoris,41.0,62.0,21.0,14.8,21.0
+40,Pizzoli,22/08/2026 18:08:10,22/08/2026 18:01,20.3,29.4,0.0,online,CaputFrigoris,30.0,81.0,28.0,9.5,18.3
+44,Piano delle 5 Miglia,22/08/2026 18:08:10,22/08/2026 18:00,13.0,27.3,0.0,online,CaputFrigoris,44.0,95.0,25.7,11.9,18.4
+47,Castel del Monte,22/08/2026 18:08:10,22/08/2026 18:00,16.8,27.6,0.0,online,CaputFrigoris,39.0,86.0,20.9,12.0,16.3
+48,Forme,22/08/2026 18:08:10,22/08/2026 18:05,16.8,27.1,0.0,online,CaputFrigoris,43.0,92.0,24.1,13.1,18.8
+49,Monte Genzana,22/08/2026 18:08:10,22/08/2026 17:55,12.3,19.6,0.0,online,CaputFrigoris,60.0,96.0,41.8,10.3,14.0
+50,Ofena,22/08/2026 18:08:10,22/08/2026 18:00,18.5,34.7,0.0,online,CaputFrigoris,30.0,87.0,19.0,13.7,19.9
+51,Piani di Pezza,22/08/2026 18:08:10,22/08/2026 18:00,16.6,22.9,0.0,online,CaputFrigoris,54.0,84.0,43.4,12.4,15.6
+52,Rifugio Montecristo,22/08/2026 18:08:10,22/08/2026 18:00,15.3,22.6,0.0,online,CaputFrigoris,51.0,95.0,41.8,11.1,14.8
+53,Rocca Calascio,22/08/2026 18:08:10,22/08/2026 18:00,16.2,25.7,0.0,online,CaputFrigoris,36.0,85.0,29.0,8.6,15.9
+54,Farindola,22/08/2026 18:08:10,22/08/2026 18:04,22.3,29.4,0.0,online,CaputFrigoris,52.0,76.0,40.2,14.7,21.5
+55,Monte Piselli,22/08/2026 18:08:10,22/08/2026 18:05,16.2,23.1,0.0,online,CaputFrigoris,53.0,91.0,47.0,12.2,18.3
+56,Valle Castellana,22/08/2026 18:08:10,22/08/2026 18:00,18.2,31.7,0.0,online,CaputFrigoris,33.0,81.0,20.9,13.1,19.9
+57,Civitaluparella,22/08/2026 18:08:10,22/08/2026 18:04,20.7,32.0,0.0,online,CaputFrigoris,42.0,69.0,24.0,13.3,18.9
+5,Pratola Peligna,22/08/2026 18:08:36,22/08/2026 18:05,18.7,35.2,0.0,online,ChietiMeteo,0.0,0.0,18.0,0.0,0.0
+12,Roccacaramanico,22/08/2026 18:08:36,22/08/2026 18:04,20.6,28.1,0.0,online,ChietiMeteo,0.0,0.0,34.0,0.0,0.0
+14,Bosco di Sant'Antonio,22/08/2026 18:08:36,22/08/2026 18:05,14.5,26.3,0.0,online,ChietiMeteo,0.0,0.0,27.0,0.0,0.0
+15,Palena Stazione,22/08/2026 18:08:36,22/08/2026 18:05,14.7,26.6,0.0,online,ChietiMeteo,0.0,0.0,23.0,0.0,0.0
+16,Pescocostanzo Loc. Vallefura,22/08/2026 18:08:36,22/08/2026 17:59,16.2,24.8,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
+21,Passolanciano,22/08/2026 18:08:36,22/08/2026 18:04,18.9,24.8,0.0,online,ChietiMeteo,0.0,0.0,48.0,0.0,0.0
+22,Mammarosa,22/08/2026 18:08:36,22/08/2026 18:04,15.8,21.9,0.0,online,ChietiMeteo,0.0,0.0,98.0,0.0,0.0
+31,Castel di Sangro Loc. Pantano,22/08/2026 18:08:36,22/08/2026 18:05,15.6,29.6,0.0,online,ChietiMeteo,0.0,0.0,31.0,0.0,0.0
+32,Campo di Giove Loc. Guado di Coccia,22/08/2026 18:08:36,22/08/2026 18:05,13.8,22.1,0.0,online,ChietiMeteo,0.0,0.0,76.0,0.0,0.0
+11,Passo San Leonardo,22/08/2026 18:08:45,22/08/2026 16:05,18.6,26.3,0.0,online,MeteoNetwork,0.0,0.0,27.4,0.0,0.0
+19,San Pietro di Avellana,22/08/2026 18:08:45,22/08/2026 16:02,14.2,29.9,0.0,online,MeteoNetwork,0.0,0.0,3.3,0.0,0.0
+23,Tagliacozzo Loc. Roccacerro,22/08/2026 18:08:45,22/08/2026 16:04,16.4,27.5,0.0,online,MeteoNetwork,0.0,0.0,10.8,0.0,0.0
+25,Oricola Loc. Pezzetaglie,22/08/2026 18:08:45,22/08/2026 16:04,16.2,32.0,0.2,online,MeteoNetwork,0.0,0.0,18.7,0.0,0.0
+39,Cappadocia,22/08/2026 18:08:45,22/08/2026 16:04,14.9,24.6,0.0,online,MeteoNetwork,0.0,0.0,16.9,0.0,0.0
+41,Corfinio,22/08/2026 18:08:45,22/08/2026 16:00,20.5,35.7,0.0,online,MeteoNetwork,0.0,0.0,11.7,0.0,0.0
+63,Fossacesia Marina,22/08/2026 18:04,22/08/2026 18:09:07,21.0,31.0,0.0,online,Wunderground,56.0,77.0,19.0,16.0,25.0
