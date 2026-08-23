@@ -31,10 +31,10 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 30,Campo Felice Loc. Lentrata,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=252&Itemid=254,42.233,13.421,1545,Campo Felice,AQ-42,165
 31,Castel di Sangro Loc. Pantano,https://www.chietimeteo.it/az.agr.cianflocca.htm,41.758,14.099,710,Castel di Sangro,CH999,290
 32,Campo di Giove Loc. Guado di Coccia,https://www.chietimeteo.it/guadodicoccia.htm,42.003,14.084,1674,Campo di Giove,CH998,255
-33,Marsia,https://www.meteoregioneabruzzo.it/rete-meteo/marsia/marsia.php,42.066,13.193,1410,Tagliacozzo,AQ-04,210
-34,Tagliacozzo Loc. Poggetello,https://www.meteoregioneabruzzo.it/rete-meteo/poggetello/poggetello.php,42.091,13.230,750,Tagliacozzo,AQ-14,220
+33,Santo Stefano di Sessanio,https://www.caputfrigoris.it/tabgraph.php?id=AQ041,42.435,13.646,1220,Santo Stefano di Sessanio,AQ-41,210
+34,Capracotta,https://www.wunderground.com/dashboard/pws/ICAPRA10,41.840,14.270,1421,Capracotta,ICAPRA10,935
 35,Collebrincioni,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=259&Itemid=257,42.368,13.416,1090,Collebruncioni,AQ-25,145
-36,Campo Imperatore Loc. Prato del Bove,https://www.meteoregioneabruzzo.it/rete-meteo/pratodelbove/pratodelbove.php,42.390,13.641,1551,Campo Imperatore,AQ-82,150
+36,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
 37,Sella di Corno,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=325&Itemid=486,42.363,13.184,987,Sella di Corno,AQ-49,135
 38,Fara San Martino,https://www.caputfrigoris.it/tabgraph.php?id=CH045,42.089,14.205,456,Fara San Martino,CH045,310
 39,Cappadocia,https://www.meteonetwork.eu/it/weather-station/abr132-stazione-meteorologica-di-camporotondo/graphs,41.983,13.277,1425,Cappadocia,AQ995,225
@@ -43,8 +43,8 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 42,Campo Felice Loc. Camardosa,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=332&Itemid=519,42.230,13.396,1530,Campo Felice,LUC-003,170
 43,Capitignano,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=297&Itemid=364,42.520,13.300,863,Capitignano,CAP-001,115
 44,Piano delle 5 Miglia,https://www.caputfrigoris.it/station.php?id=AQ020,41.866,14.031,1250,Roccaraso,AQ020,268
-45,Camporotondo,https://www.meteoregioneabruzzo.it/rete-meteo/camporotondo/camporotondo.php,41.981,13.276,1420,Camporotondo,AQ-75,226
-46,Roio del Sangro,https://www.meteoregioneabruzzo.it/rete-meteo/roio-del-sangro/roio-del-sangro.php,41.912,14.373,840,Roio del Sangro,CH-04,316
+45,Ovindoli,https://www.wunderground.com/dashboard/pws/IOVIND5,42.140,13.520,1370,Ovindoli,IOVIND5,920
+46,Pescopennattaro,https://www.wunderground.com/dashboard/pws/IPESCO10,41.880,14.290,1189,Pescopennattaro,IPESCO10,910
 47,Castel del Monte,https://www.caputfrigoris.it/tabgraph.php?id=AQ031,42.366,13.730,1325,Castel del Monte,AQ031,156
 48,Forme,https://www.caputfrigoris.it/tabgraph.php?id=AQ150,42.112,13.451,1000,Forme,AQ150,192
 49,Monte Genzana,https://www.caputfrigoris.it/tabgraph.php?id=AQ030,41.948,13.887,1980,Monte Genzana,AQ030,233
@@ -57,9 +57,3 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 56,Valle Castellana,https://www.caputfrigoris.it/tabgraph.php?id=TE080,42.735,13.497,630,Valle Castellana,TE080,107
 57,Civitaluparella,https://www.caputfrigoris.it/tabgraph.php?id=CH119,41.944,14.304,807,Civitaluparella,CH119,318
 58,Alfedena,https://www.wunderground.com/dashboard/pws/IALFED12,41.730,14.030,880,Alfedena,IALFED12,800
-59,Pescopennattaro,https://www.wunderground.com/dashboard/pws/IPESCO10,41.880,14.290,1189,Pescopennattaro,IPESCO10,910
-60,Ovindoli,https://www.wunderground.com/dashboard/pws/IOVIND5,42.140,13.520,1370,Ovindoli,IOVIND5,920
-61,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
-62,Capracotta,https://www.wunderground.com/dashboard/pws/ICAPRA10,41.840,14.270,1421,Capracotta,ICAPRA10,935
-63,Fossacesia Marina,https://www.wunderground.com/dashboard/pws/IFOSSACE4,42.240,14.530,0,Fossacesia Marina,IFOSSACE4,945
-
