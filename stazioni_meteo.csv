@@ -31,7 +31,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 30,Campo Felice Loc. Lentrata,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=252&Itemid=254,42.233,13.421,1545,Campo Felice,AQ-42,165
 31,Castel di Sangro Loc. Pantano,https://www.chietimeteo.it/az.agr.cianflocca.htm,41.758,14.099,710,Castel di Sangro,CH999,290
 32,Campo di Giove Loc. Guado di Coccia,https://www.chietimeteo.it/guadodicoccia.htm,42.003,14.084,1674,Campo di Giove,CH998,255
-33,Santo Stefano di Sessanio,https://www.caputfrigoris.it/tabgraph.php?id=AQ041,42.435,13.646,1220,Santo Stefano di Sessanio,AQ-41,210
+33
 34,Capracotta,https://www.wunderground.com/dashboard/pws/ICAPRA10,41.840,14.270,1421,Capracotta,ICAPRA10,935
 35,Collebrincioni,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=259&Itemid=257,42.368,13.416,1090,Collebruncioni,AQ-25,145
 36,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
@@ -57,3 +57,13 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 56,Valle Castellana,https://www.caputfrigoris.it/tabgraph.php?id=TE080,42.735,13.497,630,Valle Castellana,TE080,107
 57,Civitaluparella,https://www.caputfrigoris.it/tabgraph.php?id=CH119,41.944,14.304,807,Civitaluparella,CH119,318
 58,Alfedena,https://www.wunderground.com/dashboard/pws/IALFED12,41.730,14.030,880,Alfedena,IALFED12,800
+59,Campo di Giove - Impianti,https://www.chietimeteo.it/campodigiove.html,41.996,14.072,1160,Campo di Giove,AQ911,252
+60,Caramanico - Decontra,https://www.chietimeteo.it/pietrantica.html,42.168,14.018,830,Caramanico,PE211,238 
+61,Collepietro,https://www.chietimeteo.it/collepietro.htm?AQ168,42.228,13.759,850,Collepietro,AQ168,1111 
+62,Pescocostanzo - Primo Campo,https://www.chietimeteo.it/agriturismoprimocampo.htm?AQ167,41.930,14.343,1300,AQ167,272 
+63,Pescocostanzo - Santa Chiara,https://www.chietimeteo.it/masseria_cerasella.htm?AQ113,41.950,14.028,1250,Pescocostanzo,AQ113,274
+64,Marsia,https://www.meteoregioneabruzzo.it/rete-meteo/marsia/marsia.php,42.066,13.193,1410,Tagliacozzo,AQ-04,210
+65,Tagliacozzo Loc. Poggetello,https://www.meteoregioneabruzzo.it/rete-meteo/poggetello/poggetello.php,42.091,13.230,750,Tagliacozzo,AQ-14,220
+66,Roio del Sangro,https://www.meteoregioneabruzzo.it/rete-meteo/roio-del-sangro/roio-del-sangro.php,41.912,14.373,840,Roio del Sangro,CH-04,316
+67,Campo Imperatore Loc. Prato del Bove,https://www.meteoregioneabruzzo.it/rete-meteo/pratodelbove/pratodelbove.php,42.390,13.641,1551,Campo Imperatore,AQ-82,150
+
