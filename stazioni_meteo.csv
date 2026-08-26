@@ -37,8 +37,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 36,Roccaraso,https://www.wunderground.com/dashboard/pws/IROCCA60,41.850,14.080,1235,Roccaraso,IROCCA60,930
 37,Sella di Corno,https://www.meteoregioneabruzzo.it/rete-meteo/selladicorno/selladicorno.php,42.363,13.184,987,Sella di Corno,AQ-49,135
 38,Fara San Martino,https://www.caputfrigoris.it/tabgraph.php?id=CH045,42.089,14.205,456,Fara San Martino,CH045,310
-39,Camporotondo,https://www.meteoregioneabruzzo.it/rete-meteo/camporotondo/camporotondo.php
-,41.981,13.276,1425,Camporotondo,AQ995,225
+39,Camporotondo,https://www.meteoregioneabruzzo.it/rete-meteo/camporotondo/camporotondo.php,41.981,13.276,1425,Camporotondo,AQ995,225
 40,Pizzoli,https://www.caputfrigoris.it/tabgraph.php?id=AQ090,42.434,13.306,740,Pizzoli,AQ090,140
 41,Corfinio,https://www.meteonetwork.eu/it/weather-station/abr121-stazione-meteorologica-di/graphs,42.126,13.841,348,Corfinio,abr121,230
 42,Campo Felice Loc. Camardosa,https://www.meteoregioneabruzzo.it/rete-meteo/camardosa/camardosa.php,42.230,13.396,1530,Campo Felice,LUC-003,170
@@ -71,4 +70,5 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 69,Altopiano di Cascina,https://www.meteoregioneabruzzo.it/rete-meteo/altopiano_di_cascina/altopiano_di_cascina.php,42.436,13.176,1015,Altopiano di Cascina,AQ-45,938
 70,Passo Godi,https://www.meteoregioneabruzzo.it/rete-meteo/passo_godi/passo_godi.php,41.838,13.931,1562,Passo Godi,AQ-05,939
 71,Cappadocia,https://www.meteoregioneabruzzo.it/rete-meteo/cappadocia/cappadocia.php,42.001,13.281,1108,Cappadocia,AQ-66,227
+72,Bominaco,https://www.caputfrigoris.it/tabgraph.php?id=AQ128,42.244,13.646,1220,Bominaco,Aq041,203
 
