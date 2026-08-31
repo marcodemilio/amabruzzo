@@ -59,8 +59,8 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 58,Alfedena,https://www.wunderground.com/dashboard/pws/IALFED12,41.730,14.030,880,Alfedena,IALFED12,800
 59,Campo di Giove - Impianti,https://www.chietimeteo.it/campodigiove.htm,41.996,14.072,1160,Campo di Giove,AQ911,252
 60,Caramanico - Decontra,https://www.chietimeteo.it/pietrantica.htm,42.168,14.018,830,Caramanico,PE211,238 
-61,Collepietro,https://www.chietimeteo.it/collepietro.htm?AQ168,42.228,13.759,850,Collepietro,AQ168,1111 
-62,Pescocostanzo - Primo Campo,https://www.chietimeteo.it/agriturismoprimocampo.htm?AQ167,41.930,14.343,1300,AQ167,272 
+61,Collepietro,https://www.chietimeteo.it/collepietro.htm?AQ168,42.228,13.759,850,Collepietro,AQ168,201 
+62,Pescocostanzo - Primo Campo,https://www.chietimeteo.it/agriturismoprimocampo.htm?AQ167,41.930,14.343,1300,Pescocostanzo,AQ167,272 
 63,Pescocostanzo - Santa Chiara,https://www.chietimeteo.it/masseria_cerasella.htm?AQ113,41.950,14.028,1250,Pescocostanzo,AQ113,274
 64,Marsia,https://www.meteoregioneabruzzo.it/rete-meteo/marsia/marsia.php,42.066,13.193,1410,Tagliacozzo,AQ-04,210
 65,Tagliacozzo Loc. Poggetello,https://www.meteoregioneabruzzo.it/rete-meteo/poggetello/poggetello.php,42.091,13.230,750,Tagliacozzo,AQ-14,220
@@ -71,10 +71,11 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 70,Passo Godi,https://www.meteoregioneabruzzo.it/rete-meteo/passo_godi/passo_godi.php,41.838,13.931,1562,Passo Godi,AQ-05,939
 71,Cappadocia,https://www.meteoregioneabruzzo.it/rete-meteo/cappadocia/cappadocia.php,42.001,13.281,1108,Cappadocia,AQ-66,227
 72,Bominaco,https://www.caputfrigoris.it/tabgraph.php?id=AQ128,42.244,13.646,1220,Bominaco,AQ128,203
-73,Isola del Gran Sasso,https://www.chietimeteo.it/sanpietro.htm?TE141,42.501667,13.668333.802,Isola del Gran Sasso,TE141,116
+73,Isola del Gran Sasso,https://www.chietimeteo.it/sanpietro.htm?TE141,42.501667,13.668333,802,Isola del Gran Sasso,TE141,116
 74,Castelli,https://www.chietimeteo.it/castelli.htm?TE047,42.472222,13.704167,620,Castelli,TE047,118
-75,Carrufo,https://www.chietimeteo.it/carrufo.htm?AQ169,42,330,13.771667,800,Carrufo,AQ169,196
-76,Fara Filiorum Petri,https://www.caputfrigoris.it/tabgraph.php?id=CH082,42.248696.14.185917,300,Fara Filiorum Petri,CH082,315
-77,Rifugio Macchia di Taranta,https://www.caputfrigoris.it/tabgraph.php?id=CH142,42.033566,14.1423548,1700,Rifugio Macchia di Taranta,318
+75,Carrufo,https://www.chietimeteo.it/carrufo.htm?AQ169,42.330,13.771667,800,Carrufo,AQ169,196
+76,Fara Filiorum Petri,https://www.caputfrigoris.it/tabgraph.php?id=CH082,42.248696,14.185917,300,Fara Filiorum Petri,CH082,315
+77,Rifugio Macchia di Taranta,https://www.caputfrigoris.it/tabgraph.php?id=CH142,42.033566,14.1423548,1700,Rifugio Macchia di Taranta,CH142,318
 78,Luco dei Marsi,https://www.caputfrigoris.it/tabgraph.php?id=AQ063,41.967926,13.494761,660,Luco dei Marsi,AQ063,208
 79,Civitella Roveto,https://www.caputfrigoris.it/tabgraph.php?id=AQ158,41.9191646,13.422923,530,Civitella Roveto,AQ158,209
+80,Avezzano,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=342&Itemid=524,42.041,13.439,700,Avezzano,AQ666,1000
