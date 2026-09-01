@@ -56,7 +56,7 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 55,Monte Piselli,https://www.caputfrigoris.it/tabgraph.php?id=TE109,42.788,13.580,1426,Monte Piselli,TE109,109
 56,Valle Castellana,https://www.caputfrigoris.it/tabgraph.php?id=TE080,42.735,13.497,630,Valle Castellana,TE080,107
 57,Civitaluparella,https://www.caputfrigoris.it/tabgraph.php?id=CH119,41.944,14.304,807,Civitaluparella,CH119,318
-58,Alfedena,https://www.wunderground.com/dashboard/pws/IALFED12,41.730,14.030,880,Alfedena,IALFED12,800
+58,Alfedena Scontrone 12,https://www.wunderground.com/dashboard/pws/IALFED12,41.739,14.039,1000,Alfedena,IALFED12,803
 59,Campo di Giove - Impianti,https://www.chietimeteo.it/campodigiove.htm,41.996,14.072,1160,Campo di Giove,AQ911,252
 60,Caramanico - Decontra,https://www.chietimeteo.it/pietrantica.htm,42.168,14.018,830,Caramanico,PE211,238 
 61,Collepietro,https://www.chietimeteo.it/collepietro.htm?AQ168,42.228,13.759,850,Collepietro,AQ168,201 
@@ -79,3 +79,6 @@ Id,Stazione Meteo,Indirizzo Link,Lat,Long,Altitudine,Riferimento,CodiceStazione,
 78,Luco dei Marsi,https://www.caputfrigoris.it/tabgraph.php?id=AQ063,41.967926,13.494761,660,Luco dei Marsi,AQ063,208
 79,Civitella Roveto,https://www.caputfrigoris.it/tabgraph.php?id=AQ158,41.9191646,13.422923,530,Civitella Roveto,AQ158,209
 80,Avezzano,https://www.meteoaquilano.it/index.php?option=com_content&view=article&id=342&Itemid=524,42.041,13.439,700,Avezzano,AQ666,1000
+81,Alfedena Centro,https://www.wunderground.com/dashboard/pws/IALFED8,41.735028,14.037028,1000,Alfedena,IALFED8,800
+82,Alfedena Scontrone 4,https://www.wunderground.com/dashboard/pws/IALFED4,41.740,14.039,1330,Alfedena,IALFED4,804
+
