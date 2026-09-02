@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-001</title>
+<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-GH-005</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,7 +50,7 @@ width:100%;
 height:100vh;
 }
 
-/* Riquadro Zoom in alto a sinistra (sotto i controlli di zoom della mappa) */
+/* Riquadro Zoom in alto a sinistra */
 #zoomDisplay {
 position: absolute;
 top: 10px;
@@ -72,7 +72,7 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 #lastUpdateDisplay {
 position: absolute;
 top: 10px;
-right: 150px;
+right: 230px;
 z-index: 999;
 background: rgba(255, 255, 255, 0.95);
 padding: 6px 10px;
@@ -84,8 +84,8 @@ font-size: 11px;
 color: var(--text);
 pointer-events: none;
 box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-line-height: 1.2;
-max-width: 50%;
+line-height: 1.25;
+max-width: 55%;
 text-align: right;
 white-space: nowrap;
 overflow: hidden;
@@ -93,13 +93,20 @@ text-overflow: ellipsis;
 }
 
 #lastUpdateDisplay .sub-release {
+font-size: 9.5px;
+font-weight: 700;
+color: var(--primary);
+margin-top: 1px;
+}
+
+#lastUpdateDisplay .sub-stats {
 font-size: 9px;
 font-weight: 600;
 color: var(--muted);
 margin-top: 1px;
 }
 
-/* Pulsante Report Piogge in alto a destra (allargato per mostrare tutto il testo) */
+/* Pulsante Report Piogge in alto a destra */
 .leaflet-bar a.report-btn {
 background-color: #ff7b00 !important;
 color: #ffffff !important;
@@ -122,7 +129,7 @@ white-space: nowrap !important;
 background-color: #e66d00 !important;
 }
 
-/* Contenitore Menu a tendina e pulsante (spostato in basso per non coprire i controlli in alto) */
+/* Contenitore Menu a tendina e pulsante in basso a sinistra */
 .station-select-control {
 background: #ffffff !important;
 padding: 8px !important;
@@ -296,8 +303,9 @@ content:'';
 <div id="map"></div>
 <div id="zoomDisplay">Zoom: --</div>
 <div id="lastUpdateDisplay">
-    Dati agg. al: --
-    <div class="sub-release">TRIS - Rel. 01-GH-001</div>
+    Agg. al: --
+    <div class="sub-release">Rel. 02-GH-005</div>
+    <div class="sub-stats">Stazioni monitorate -- di cui -- offline</div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -305,8 +313,8 @@ content:'';
 
 <script>
 (() => {
-const STATIONS_CSV = './stazioni_meteo.csv';
 const WEATHER_CSV = './dati_meteo_30g.csv';
+const STATIONS_CSV = './dati_stazioni_30g.csv';
 
 const map = L.map('map', {
 zoomControl: true,
@@ -314,7 +322,6 @@ zoomDelta: 0.25,
 zoomSnap: 0.25
 }).setView([42.35, 13.95], 9.50);
 
-// Spostiamo i controlli di zoom in basso a destra per liberare l'area superiore
 map.zoomControl.setPosition('bottomright');
 
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -365,7 +372,6 @@ updateZoomDisplay();
 
 let stationSelectElement = null;
 
-// 1. Controllo in basso a sinistra con menu a tendina e pulsante "Tutte le Stazioni"
 L.Control.StationSelect = L.Control.extend({
 onAdd: function(map) {
 const div = L.DomUtil.create('div', 'station-select-control');
@@ -396,7 +402,6 @@ return div;
 });
 map.addControl(new L.Control.StationSelect({ position: 'bottomleft' }));
 
-// 2. Pulsante Report Piogge in alto a destra (testo esteso a "Report Piogge")
 L.Control.ReportButton = L.Control.extend({
 onAdd: function(map) {
 const div = L.DomUtil.create('div', 'leaflet-bar');
@@ -418,11 +423,14 @@ const result = parseFloat(String(value ?? '').replace(',','.').trim());
 return Number.isFinite(result) ? result : null;
 };
 
-const get = (row,...keys) => {
+const get = (row, ...keys) => {
+if (!row) return '';
+const rowKeys = Object.keys(row);
 for (const key of keys) {
-const value = row[key];
-if (value !== undefined && value !== null && String(value).trim() !== '') {
-return String(value).trim();
+const cleanKey = key.toLowerCase().replace(/[\s_]/g, '');
+const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanKey);
+if (found && row[found] !== undefined && row[found] !== null && String(row[found]).trim() !== '') {
+return String(row[found]).trim();
 }
 }
 return '';
@@ -484,24 +492,23 @@ count:(text.split(/\r?\n/).slice(0,10).join('\n').match(new RegExp('\\' + charac
 
 function parseWeather(rows) {
 return rows.map(row => ({
-detectedAt: parseDate(get(row, 'DataRilevamento', 'Data rilevamento', 'data_rilevamento', 'Data')),
-updatedAt: parseDate(get(row, 'DataAggiornamento', 'Data aggiornamento', 'data_aggiornamento')),
-stationUpdatedAt: parseDate(get(row, 'AggiornamentoStaz', 'Aggiornamento Staz.', 'AggiornamentoStazione', 'DataAggiornamentoStazione')),
-tmax: num(get(row, 'TemperaturaMax', 'TemperaturaMassima')),
-tmin: num(get(row, 'TemperaturaMin', 'TemperaturaMinima')),
-rain: num(get(row, 'PioggiaGiornaliera', 'Pioggia Giornaliera')),
-ventomax: num(get(row, 'VentoMax', 'Vento Massimo', 'Raffica')),
-umiditamin: num(get(row, 'UmiditaMin', 'Umidità Minima')),
-umiditamax: num(get(row, 'UmiditaMax', 'Umidità Massima')),
-rugiadamin: num(get(row, 'RugiadaMin', 'PuntoRugiadaMin')),
-rugiadamax: num(get(row, 'RugiadaMax', 'RugiadaMax')),
-stato: get(row,'Stato','stato').toLowerCase(),
-fonte: get(row,'FonteDati','fontedati').toLowerCase()
+detectedAt: parseDate(get(row, 'DataRilevamento')),
+updatedAt: parseDate(get(row, 'DataAggiornamento')),
+tmin: num(get(row, 'TemperaturaMin')),
+tmax: num(get(row, 'TemperaturaMax')),
+rain: num(get(row, 'PioggiaGiornaliera')),
+pioggiamese: num(get(row, 'PioggiaMese')),
+ventomax: num(get(row, 'VentoMax')),
+umiditamin: num(get(row, 'UmiditaMin')),
+umiditamax: num(get(row, 'UmiditaMax')),
+rugiadamin: num(get(row, 'RugiadaMin')),
+rugiadamax: num(get(row, 'RugiadaMax')),
+stato: get(row, 'Stato').toLowerCase()
 }))
-.filter(row => row.detectedAt || row.updatedAt || row.stationUpdatedAt)
+.filter(row => row.detectedAt || row.updatedAt)
 .sort((a,b) => {
-const dateA = a.detectedAt || a.stationUpdatedAt || a.updatedAt || new Date(0);
-const dateB = b.detectedAt || b.stationUpdatedAt || b.updatedAt || new Date(0);
+const dateA = a.detectedAt || a.updatedAt || new Date(0);
+const dateB = b.detectedAt || b.updatedAt || new Date(0);
 return dateA - dateB;
 });
 }
@@ -509,7 +516,7 @@ return dateA - dateB;
 function summarizeWeather(rows) {
 const series = parseWeather(rows);
 const latest = series.at(-1) || null;
-const online = latest?.fonte === 'online' || latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true';
+const online = latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true' || latest?.stato === 'ok';
 return {
 count: series.length,
 latest,
@@ -525,14 +532,13 @@ const latest = summary.latest || {};
 const status = summary.online ? 'ONLINE' : 'OFFLINE';
 const statusClass = summary.online ? 'online' : 'offline';
 const detectedText = formatDate(latest.detectedAt);
-const stationUpdateText = formatDate(latest.stationUpdatedAt || latest.updatedAt);
 
 const daily = new Map();
 summary.series.forEach(row => {
-const date = row.detectedAt || row.updatedAt || row.stationUpdatedAt;
+const date = row.detectedAt || row.updatedAt;
 if (!date) return;
 const key = dayKey(date);
-const isRowOnline = row.fonte === 'online' || row.stato === 'online' || row.stato === '1' || row.stato === 'true';
+const isRowOnline = row.stato === 'online' || row.stato === '1' || row.stato === 'true' || row.stato === 'ok';
 
 const previous = daily.get(key) || {
 rain: 0, tmin: null, tmax: null, ventomax: null, umiditamin: null, umiditamax: null, rugiadamin: null, rugiadamax: null, online: false
@@ -675,59 +681,88 @@ markersLayer.addLayer(marker);
 
 async function init() {
 try {
-const [stationText, weatherText] = await Promise.all([
-fetchText(STATIONS_CSV),
-fetchText(WEATHER_CSV)
+const [weatherText, stationsText] = await Promise.all([
+fetchText(WEATHER_CSV),
+fetchText(STATIONS_CSV)
 ]);
 
-const stationParsed = Papa.parse(stationText, {
-header: true, skipEmptyLines: true, delimiter: delimiter(stationText), transformHeader: h => h.trim(), transform: v => String(v).trim()
+const weatherParsed = Papa.parse(weatherText, {
+header: true, skipEmptyLines: true, delimiter: delimiter(weatherText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
 });
 
-const weatherParsed = Papa.parse(weatherText, {
-header: true, skipEmptyLines: true, delimiter: delimiter(weatherText), transformHeader: h => h.trim(), transform: v => String(v).trim()
+const stationsParsed = Papa.parse(stationsText, {
+header: true, skipEmptyLines: true, delimiter: delimiter(stationsText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
+});
+
+const coordsById = new Map();
+(stationsParsed.data || []).forEach(row => {
+const rowKeys = Object.keys(row);
+const findKey = (...possible) => {
+for (const p of possible) {
+const cleanP = p.toLowerCase();
+const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanP);
+if (found) return row[found];
+}
+return '';
+};
+
+const id = String(findKey('Id', 'ID') || '').trim();
+const lat = num(findKey('Lat', 'Latitudine'));
+const lon = num(findKey('Long', 'Lon', 'Longitude'));
+
+if (id && Number.isFinite(lat) && Number.isFinite(lon)) {
+coordsById.set(id, { lat, lon });
+coordsById.set(id.toLowerCase(), { lat, lon });
+}
 });
 
 const weatherRows = weatherParsed.data || [];
 const weatherById = new Map();
+const stationsMap = new Map();
 
 let allDetectedDates = [];
 weatherRows.forEach(row => {
-const id = get(row, 'Id', 'id');
+const id = String(get(row, 'Id', 'ID') || '').trim();
 if (!id) return;
 if (!weatherById.has(id)) weatherById.set(id, []);
 weatherById.get(id).push(row);
 
-const d = parseDate(get(row, 'DataRilevamento', 'Data rilevamento', 'data_rilevamento', 'Data'));
+if (!stationsMap.has(id)) {
+const coords = coordsById.get(id) || coordsById.get(id.toLowerCase());
+if (coords) {
+stationsMap.set(id, {
+id,
+name: get(row, 'StazioneMeteo', 'Stazione', 'Nome', 'Name') || `Stazione ${id}`,
+lat: coords.lat,
+lon: coords.lon
+});
+}
+}
+
+const d = parseDate(get(row, 'DataRilevamento'));
 if (d) allDetectedDates.push(d);
 });
+
+stationData = Array.from(stationsMap.values()).map(station => ({
+...station,
+summary: summarizeWeather(weatherById.get(station.id) || [])
+})).filter(station => station.id && station.name && Number.isFinite(station.lat) && Number.isFinite(station.lon));
+
+const totalStations = stationData.length;
+const offlineStations = stationData.filter(s => !s.summary.online).length;
 
 if (allDetectedDates.length > 0) {
 const maxDate = new Date(Math.max(...allDetectedDates));
 const lastUpdateEl = document.getElementById('lastUpdateDisplay');
 if (lastUpdateEl) {
-lastUpdateEl.innerHTML = `Agg. ${formatUpdateTimestamp(maxDate)}<div class="sub-release">TRIS - Rel. 01-GH-001</div>`;
+lastUpdateEl.innerHTML = `Agg. al ${formatUpdateTimestamp(maxDate)}<div class="sub-release">Rel. 02-GH-005</div><div class="sub-stats">Stazioni monitorate ${totalStations} di cui ${offlineStations} offline</div>`;
 }
 }
-
-stationData = (stationParsed.data || []).map(row => {
-const id = get(row, 'Id', 'id');
-const name = get(row, 'Stazione Meteo', 'StazioneMeteo', 'stazione');
-const lat = num(get(row, 'Lat', 'lat'));
-const lon = num(get(row, 'Long', 'long', 'Lon', 'lon'));
-
-return {
-id, name, lat, lon,
-altitude: num(get(row, 'Altitudine', 'altitudine')),
-reference: get(row, 'Riferimento', 'riferimento'),
-summary: summarizeWeather(weatherById.get(id) || [])
-};
-}).filter(station => station.id && station.name && Number.isFinite(station.lat) && Number.isFinite(station.lon));
 
 refreshMarkers(stationData);
 populateDropdown(stationData);
 } catch (error) {
-console.error(error);
+console.error("Errore di caricamento:", error);
 }
 }
 

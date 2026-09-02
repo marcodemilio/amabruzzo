@@ -1,0 +1,105 @@
+Id,Lat,Long,ZonaGeo,Stazione Meteo
+1,42.671,13.465,105,Il Ceppo Rifugio
+2,42.499,13.558,125,Prati Di Tivo
+3,42.411,13.755,155,Castel del Monte - Loc. Pietrattina
+4,42.385,13.868,160,Villa Celiera
+5,42.095,13.871,235,Pratola Peligna
+6,42.163,13.518,175,Rocca di Mezzo Loc. Rovere
+7,42.203,13.526,180,Rocca di Mezzo
+8,42.203,13.526,185,Rocca di Mezzo Loc. Fonteavignone
+9,42.249,13.693,195,Civitaretegna
+10,42.276,13.638,200,Prata d'Ansidonia
+11,42.073,14.030,245,Passo San Leonardo
+12,42.102,14.014,240,Roccacaramanico
+13,41.996,14.072,250,Campo di Giove
+14,41.950,14.028,265,Bosco di Sant'Antonio
+15,41.927,14.101,260,Palena Stazione
+16,41.888,14.058,270,Pescocostanzo Loc. Vallefura
+17,41.797,14.060,275,Roccaraso Loc. Aremogna
+18,41.784,14.108,280,Castel di Sangro
+19,41.771,14.200,295,San Pietro di Avellana
+20,41.956,14.388,315,Monteferrante
+21,42.189,14.104,300,Passolanciano
+22,42.171,14.116,305,Mammarosa
+23,42.067,13.211,215,Tagliacozzo Loc. Roccacerro
+24,42.556,13.265,110,Montereale - Aringo
+25,42.070,13.053,205,Oricola Loc. Pezzetaglie
+26,42.228,13.531,187,Rocca di Mezzo Loc. Terranera
+27,42.520,13.328,120,Lago di Campotosto
+28,42.240,14.530,945,Fossacesia Marina
+29,42.465,13.240,130,Cagnano Amiterno
+30,42.233,13.421,165,Campo Felice Loc. Lentrata
+31,41.758,14.099,290,Castel di Sangro Loc. Pantano
+32,42.003,14.084,255,Campo di Giove Loc. Guado di Coccia
+33,42.346,13.646,136,Santo Stefano di Sessanio
+34,41.840,14.270,935,Capracotta
+35,42.368,13.416,145,Collebrincioni
+36,41.850,14.080,930,Roccaraso
+37,42.363,13.184,135,Sella di Corno
+38,42.089,14.205,310,Fara San Martino
+39,41.981,13.276,225,Camporotondo
+40,42.434,13.306,140,Pizzoli
+41,42.126,13.841,230,Corfinio
+42,42.230,13.396,170,Campo Felice Loc. Camardosa
+43,42.520,13.300,115,Capitignano
+44,41.866,14.031,268,Piano delle 5 Miglia
+45,42.140,13.520,920,Ovindoli
+46,41.880,14.290,910,Pescopennattaro
+47,42.366,13.730,156,Castel del Monte
+48,42.112,13.451,192,Forme
+49,41.948,13.887,233,Monte Genzana
+50,42.302,13.729,197,Ofena
+51,42.180,13.468,189,Piani di Pezza
+52,42.414,13.558,152,Rifugio Montecristo
+53,42.328,13.690,198,Rocca Calascio
+54,42.431,13.808,162,Farindola
+55,42.788,13.580,109,Monte Piselli
+56,42.735,13.497,107,Valle Castellana
+57,41.944,14.304,318,Civitaluparella
+58,41.739,14.039,803,Alfedena Scontrone 12
+59,41.996,14.072,252,Campo di Giove - Impianti
+60,42.168,14.018,238 ,Caramanico - Decontra
+61,42.228,13.759,201 ,Collepietro
+62,41.930,14.343,272 ,Pescocostanzo - Primo Campo
+63,41.950,14.028,274,Pescocostanzo - Santa Chiara
+64,42.056,13.195,210,Marsia
+65,42.091,13.230,220,Tagliacozzo Loc. Poggetello
+66,41.912,14.373,316,Roio del Sangro
+67,42.390,13.641,150,Campo Imperatore Loc. Prato del Bove
+68,42.137,13.129,934,Pietrasecca - Grotta del cervo
+69,42.436,13.176,938,Altopiano di Cascina
+70,41.838,13.931,939,Passo Godi
+71,42.001,13.281,227,Cappadocia
+72,42.244,13.646,203,Bominaco
+73,42.501667,13.668333,116,Isola del Gran Sasso
+74,42.472222,13.704167,118,Castelli
+75,42.330,13.771667,196,Carrufo
+76,42.248696,14.185917,315,Fara Filiorum Petri
+77,42.033566,14.1423548,318,Rifugio Macchia di Taranta
+78,41.967926,13.494761,208,Luco dei Marsi
+79,41.9191646,13.422923,209,Civitella Roveto
+80,42.041,13.439,999,Avezzano
+81,41.735028,14.037028,800,Alfedena Centro
+82,41.740,14.039,804,Alfedena Scontrone 4
+83,41.937,14.47,316,Roccaspinalveti
+84,42.196,14.225,317,Guardiagrele
+85,42.176,13.959,237,Salle
+86,42.050,13.866,236,Prezza
+87,41.813,13.561,995,Balsorano
+88,41.887,13.582,996,Collelongo
+89,41.948,13.320,992,Castellafiume
+90,42.300,13.682,196,Carapelle Calvisio
+91,41.951,13.537,989,Trasacco
+92,42.341,13.935,163,Civitaquana
+93,42.021,14.169,314,Taranta Peligna
+94,41.813,13.744,980,Pescasseroli
+95,42.091,13.195,217,Sante Marie
+96,41.765085,13.94382,975,Civitella Alfedena
+97,42.236706,13.48904,970,Rocca di Cambio
+98,41.748333,14.040278,318,Villa Scontrone
+99,41.775613,13.935117,973,Villetta Barrea
+100,41.784167,14.108333,318,Bocca di Valle
+
+
+
+

@@ -1,7 +1,7 @@
 (() => {
   const WEATHER_CSV = './dati_meteo_30g.csv';
-  const STATIONS_CSV = './stazioni_meteo.csv';
-  const RELEASE = 'Rel. 01-GH-002';
+  const STATIONS_CSV = './dati_stazioni_30g.csv';
+  const RELEASE = 'Rel. 01-GH-004';
 
   const els = {
     app: document.getElementById('app'),
@@ -28,7 +28,6 @@
   let stationMap = new Map();
   let selectedDateIndex = 0;
 
-  // Stili CSS aggiornati con bordi più marcati e testo del cumulativo in blu scuro e più grande
   if (!document.getElementById('offlineStyle')) {
     const style = document.createElement('style');
     style.id = 'offlineStyle';
@@ -61,7 +60,7 @@
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
         position: relative !important;
-        border: 2px solid #64748b !important; /* Bordo contenitore più marcato */
+        border: 2px solid #64748b !important;
         border-radius: 6px;
         background-color: #ffffff;
       }
@@ -75,8 +74,8 @@
         white-space: nowrap !important;
         padding: 6px 10px !important;
         text-align: center;
-        border-right: 1px solid #94a3b8 !important; /* Bordo verticale più marcato */
-        border-bottom: 1px solid #94a3b8 !important; /* Bordo orizzontale più marcato */
+        border-right: 1px solid #94a3b8 !important;
+        border-bottom: 1px solid #94a3b8 !important;
       }
       th:not(.name-cell), td:not(.name-cell) {
         min-width: 68px !important;
@@ -121,18 +120,18 @@
       }
       .rain-row td.name-cell { background-color: #ffffff !important; }
       .cum-row td.name-cell { 
-        background-color: #cbd5e1 !important; /* Sfondo cumulativo leggermente più scuro */
+        background-color: #cbd5e1 !important;
         font-weight: bold !important;
-        font-size: 1rem !important; /* Carattere più grande */
-        color: #00008B !important; /* Testo blu scuro */
+        font-size: 1rem !important;
+        color: #00008B !important;
         border-top: 2px solid #64748b !important;
         border-bottom: 2px solid #64748b !important;
       }
       .cum-row td {
-        background-color: #cbd5e1 !important; /* Sfondo cumulativo leggermente più scuro */
-        font-weight: 700 !important; /* Grassetto accentuato */
-        font-size: 0.9rem !important; /* Dati cumulativi leggermente più grandi */
-        color: #00008B !important; /* Testo dei dati in blu scuro */
+        background-color: #cbd5e1 !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
+        color: #00008B !important;
         border-top: 2px solid #64748b !important;
         border-bottom: 2px solid #64748b !important;
       }
@@ -140,7 +139,6 @@
         background-color: #7dd3fc !important;
         color: #00008B !important;
       }
-      /* Popup Modal Ottimizzato per Smartphone */
       .station-modal-overlay {
         position: fixed;
         top: 0; left: 0; width: 100vw; height: 100vh;
@@ -216,8 +214,6 @@
     }
   }
 
-  function updateTopScrollWidth() {}
-
   function showStationPopup(stName) {
     const meta = getStationMetaByName(stName) || { name: stName, id: 'N/D', ref: 'N/D', code: 'N/D', lat: 'N/D', long: 'N/D', zona: 'N/D' };
     const rawStData = stationMap.get(stName);
@@ -251,7 +247,7 @@
       <div class="station-modal-box">
         <h3>${meta.name || stName}</h3>
         <p style="margin:4px 0; font-size:0.8rem; color:#475569;">
-          <strong>ID:</strong> ${meta.id ?? 'N/D'} | <strong>Zona:</strong> ${meta.zona ?? 'N/D'}
+          <strong>ID:</strong> ${meta.id ?? 'N/D'} | <strong>ZonaGeo:</strong> ${meta.zona ?? 'N/D'}
         </p>
         <div class="station-modal-content">
           <table class="station-modal-table">
@@ -385,7 +381,7 @@
           <select id="sortSelect">
             <option value="rain_desc">Pioggia decrescente</option>
             <option value="id_asc" selected>Id Stazione</option>
-            <option value="geo">Zona Geografica</option>
+            <option value="geo">ZonaGeo</option>
           </select>
         `;
         daySelectField.parentNode.insertBefore(fieldDiv, daySelectField.nextSibling);
@@ -399,28 +395,64 @@
     if (els.savePdfBtn) els.savePdfBtn.textContent = 'Genera PDF';
   }
 
-  function processStationsMeta(rows) {
+  function processStationsMeta(stationsRows, weatherRows) {
     const map = new Map();
-    rows.forEach(r => {
-      const id = parseInt(getRowValue(r, ['id', 'idstazione', 'codice']), 10) || null;
-      const name = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione']);
-      const ref = getRowValue(r, ['riferimento']);
-      const code = getRowValue(r, ['codicestazione', 'codice']);
-      const lat = parseFloat(getRowValue(r, ['lat', 'latitude'])) || null;
-      const long = parseFloat(getRowValue(r, ['long', 'longitude', 'lng'])) || null;
-      const zona = getRowValue(r, ['zonageo', 'zona', 'zonageografica', 'ordinegeo', 'ordine_geo', 'area']);
 
-      const displayName = name || ref || code || (id ? `Stazione #${id}` : null);
-      if (!displayName) return;
+    if (stationsRows && stationsRows.length > 0) {
+      stationsRows.forEach(r => {
+        const id = parseInt(getRowValue(r, ['id', 'idstazione', 'codice', 'codicestazione']), 10) || null;
+        // Cerca esplicitamente le varianti per il nome stazione (inclusa la combinazione stazionemeteo)
+        const name = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione', 'descrizione']);
+        const ref = getRowValue(r, ['riferimento']);
+        const code = getRowValue(r, ['codicestazione', 'codice']);
+        const lat = parseFloat(getRowValue(r, ['lat', 'latitude'])) || null;
+        const long = parseFloat(getRowValue(r, ['long', 'longitude', 'lng'])) || null;
+        const zona = getRowValue(r, ['zonageo', 'zona_geo', 'zona', 'zonageografica', 'ordinegeo', 'ordine_geo', 'area']);
 
-      const stationInfo = { id, name: displayName, ref, code, lat, long, zona };
-      [id, name, ref, code, displayName].forEach(val => {
-        if (val !== null && val !== undefined) {
-          const key = normalizeKey(val);
-          if (key) map.set(key, stationInfo);
+        const displayName = name || ref || code || (id ? `Stazione #${id}` : null);
+        if (!displayName) return;
+
+        const stationInfo = { id, name: displayName, ref, code, lat, long, zona };
+        [id, name, ref, code, displayName].forEach(val => {
+          if (val !== null && val !== undefined) {
+            const key = normalizeKey(val);
+            if (key) map.set(key, stationInfo);
+          }
+        });
+      });
+    }
+
+    if (weatherRows && weatherRows.length > 0) {
+      weatherRows.forEach(r => {
+        const id = parseInt(getRowValue(r, ['id', 'idstazione', 'codice', 'codicestazione']), 10) || null;
+        const name = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione', 'descrizione']);
+        const ref = getRowValue(r, ['riferimento']);
+        const code = getRowValue(r, ['codicestazione', 'codice']);
+        const lat = parseFloat(getRowValue(r, ['lat', 'latitude'])) || null;
+        const long = parseFloat(getRowValue(r, ['long', 'longitude', 'lng'])) || null;
+        const zona = getRowValue(r, ['zonageo', 'zona_geo', 'zona', 'zonageografica', 'ordinegeo', 'ordine_geo', 'area']);
+
+        const displayName = name || ref || code || (id ? `Stazione #${id}` : null);
+        if (!displayName) return;
+
+        const existingKey = normalizeKey(displayName);
+        const existing = map.get(existingKey) || (id ? map.get(normalizeKey(id)) : null);
+
+        if (!existing) {
+          const stationInfo = { id, name: displayName, ref, code, lat, long, zona };
+          [id, name, ref, code, displayName].forEach(val => {
+            if (val !== null && val !== undefined) {
+              const key = normalizeKey(val);
+              if (key && !map.has(key)) map.set(key, stationInfo);
+            }
+          });
+        } else {
+          if (!existing.zona && zona) existing.zona = zona;
+          if (existing.name.startsWith('Stazione #') && name) existing.name = name;
         }
       });
-    });
+    }
+
     return map;
   }
 
@@ -429,13 +461,21 @@
   }
 
   function resolveStationName(rawVal, row) {
-    if (!rawVal) return 'Stazione Sconosciuta';
+    if (!rawVal) {
+      // Prova a recuperare direttamente dalla riga se l'ID manca ma c'è il nome
+      const directName = getRowValue(row, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione']);
+      if (directName) return directName;
+      return 'Stazione Sconosciuta';
+    }
     const key = normalizeKey(rawVal);
     if (stationsMetaMap.has(key)) return stationsMetaMap.get(key).name;
-    const rowId = getRowValue(row, ['id', 'idstazione']);
+    
+    const rowId = getRowValue(row, ['id', 'idstazione', 'codice', 'codicestazione']);
     if (rowId !== null && stationsMetaMap.has(normalizeKey(rowId))) {
       return stationsMetaMap.get(normalizeKey(rowId)).name;
     }
+    
+    // Se non trovato nelle mappe, restituisce il valore pulito se è una stringa descrittiva
     return String(rawVal).trim();
   }
 
@@ -455,7 +495,9 @@
         dateMap.set(timeKey, { time: timeKey, dateObj: dObj, display: dateStr });
       }
 
-      const rawStId = getRowValue(r, ['idstazione', 'codicestazione', 'id']) || getRowValue(r, ['stazionemeteo', 'stazione', 'nome']);
+      // Estrae prioritariamente il nome della stazione dal campo dedicato nel meteo o nei metadati
+      const rawStId = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione']) || 
+                      getRowValue(r, ['idstazione', 'codicestazione', 'id']);
       const stName = resolveStationName(rawStId, r);
       
       const rawRain = getRowValue(r, ['pioggiagiornaliera', 'pioggia', 'precipitazione', 'rain', 'mm', 'precipitazioni']);
@@ -760,13 +802,13 @@
 
       const [weatherText, stationsText] = await Promise.all([
         fetchCsvFile(WEATHER_CSV),
-        fetchCsvFile(STATIONS_CSV).catch(() => null)
+        fetchCsvFile(STATIONS_CSV).catch(() => '')
       ]);
 
-      if (stationsText) {
-        stationsMetaMap = processStationsMeta(parseCsv(stationsText).data || []);
-      }
       weatherRawData = parseCsv(weatherText).data || [];
+      const stationsRawData = stationsText ? (parseCsv(stationsText).data || []) : [];
+
+      stationsMetaMap = processStationsMeta(stationsRawData, weatherRawData);
       processWeatherData(weatherRawData);
 
       if (uniqueDates.length > 0) {
