@@ -28,7 +28,6 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 27,42.52,13.328,1070,Lago di Campotosto
 28,42.24,14.53,1490,Fossacesia Marina
 29,42.465,13.24,1090,Cagnano Amiterno
-30,42.233,13.421,1400,Campo Felice Loc. Lentrata
 31,41.758,14.099,1790,Castel di Sangro Loc. Pantano
 32,42.003,14.084,1680,Campo di Giove Loc. Guado di Coccia
 33,42.346,13.646,1290,Santo Stefano di Sessanio
@@ -44,7 +43,6 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 43,42.52,13.3,1080,Capitignano
 44,41.866,14.031,1750,Piano delle 5 Miglia
 45,42.14,13.52,1390,Ovindoli
-46,41.88,14.29,1610,Pescopennattaro
 47,42.366,13.73,1140,Castel del Monte
 48,42.112,13.451,1420,Forme
 49,41.948,13.887,1870,Monte Genzana
@@ -60,7 +58,7 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 59,41.996,14.072,1690,Campo di Giove - Impianti
 60,42.168,14.018,1630,Caramanico - Decontra
 61,42.228,13.759,1300,Collepietro
-62,41.93,14.343,1730,Pescocostanzo - Primo Campo
+62,41.9462739,14.0263258,1310,Pescocostanzo - Primo Campo
 63,41.897041,14.101035,1332,Pescocostanzo - Santa Chiara
 64,42.056,13.195,1440,Marsia
 65,42.091,13.23,1450,Tagliacozzo Loc. Poggetello
