@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-WB-006</title>
+<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-WB-007</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 }
 .brand-logo-img { max-height: 42px; width: auto; display: block; object-fit: contain; }
 
-/* PANNELLO IN ALTO A DESTRA (SOLO REPORT E MODALITÀ) */
+/* PANNELLO IN ALTO A DESTRA (REPORT E BARRA MODALITÀ) */
 .top-right-panel {
     position: absolute;
     top: 12px;
@@ -338,7 +338,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     </div>
     <div class="bottom-left-info">
         <div class="update-date-text" id="updateDateText">Dati Aggiornati al: --/--/---- --:--</div>
-        <div class="summary-stats" id="summaryStats">Stazioni Monitorate: <strong>--</strong> di cui <strong>--</strong> offline - Rel. 02-WB-006</div>
+        <div class="summary-stats" id="summaryStats">Stazioni Monitorate: <strong>--</strong> di cui <strong>--</strong> offline - Rel. 02-WB-007</div>
     </div>
 </div>
 
@@ -373,6 +373,7 @@ updateZoomDisplay();
 let stationData = [];
 let markerRefs = new Map();
 let markersLayer = L.layerGroup().addTo(map);
+let globalMaxDetectedText = 'n/d';
 
 let currentMode = 'rain'; 
 const forecastCache = new Map();
@@ -462,9 +463,7 @@ function summarizeWeather(rows) {
 
 function popupHtml(station) {
     const summary = station.summary;
-    const latest = summary.latest || {};
     const status = summary.online ? 'ONLINE' : 'OFFLINE';
-    const detectedText = formatDate(latest.detectedAt);
 
     const daily = new Map();
     summary.series.forEach(row => {
@@ -537,7 +536,7 @@ function popupHtml(station) {
         <div class="popup-container">
             <div class="popup-header-row">
                 <span class="popup-station-name">${station.name} (${station.id})</span>
-                <span style="font-size:0.72rem; color:var(--muted);">Stato: <strong style="color:${summary.online?'#2e7d32':'#b91c1c'};">${status}</strong> &bull; Agg: ${detectedText}</span>
+                <span style="font-size:0.72rem; color:var(--muted);">Stato: <strong style="color:${summary.online?'#2e7d32':'#b91c1c'};">${status}</strong> &bull; Agg: ${globalMaxDetectedText}</span>
             </div>
 
             <div id="forecast-container-${station.id}" style="margin-bottom:.4rem;">
@@ -743,6 +742,10 @@ async function init() {
             }
         });
 
+        if (maxDetectedDate) {
+            globalMaxDetectedText = formatDate(maxDetectedDate);
+        }
+
         stationData = Array.from(stationsMap.values()).map(station => ({
             ...station,
             summary: summarizeWeather(weatherById.get(station.id) || [])
@@ -751,13 +754,8 @@ async function init() {
         const totalStations = stationData.length;
         const offlineStations = stationData.filter(s => !s.summary.online).length;
 
-        document.getElementById('summaryStats').innerHTML = `Stazioni Monitorate: <strong>${totalStations}</strong> di cui <strong>${offlineStations}</strong> offline - Rel. 02-WB-006`;
-
-        if (maxDetectedDate) {
-            document.getElementById('updateDateText').textContent = `Dati Aggiornati al: ${formatDate(maxDetectedDate)}`;
-        } else {
-            document.getElementById('updateDateText').textContent = `Dati Aggiornati al: n/d`;
-        }
+        document.getElementById('summaryStats').innerHTML = `Stazioni Monitorate: <strong>${totalStations}</strong> di cui <strong>${offlineStations}</strong> offline - Rel. 02-WB-007`;
+        document.getElementById('updateDateText').textContent = `Dati Aggiornati al: ${globalMaxDetectedText}`;
 
         refreshMarkers(stationData);
         populateDropdown(stationData);
