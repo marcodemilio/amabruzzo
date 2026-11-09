@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-WB-003</title>
+<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-WB-006</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,47 +37,8 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 
 #map { width: 100vw; height: 100vh; z-index: 1; }
 
-/* PERSONALIZZAZIONE ICONA LAYER LEAFLET (OMBRELLO) */
-.leaflet-control-layers-toggle {
-    background-image: none !important;
-    position: relative;
-}
-.leaflet-control-layers-toggle::after {
-    content: "☔";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.2rem;
-    line-height: 1;
-}
-
-/* EVIDENZIAZIONE CHIARA DEL LAYER SELEZIONATO */
-.leaflet-control-layers-expanded {
-    padding: 8px 12px;
-    font-family: var(--font);
-    font-size: 0.85rem;
-    border-radius: var(--radius);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-    border: 1.5px solid var(--border);
-}
-.leaflet-control-layers-list label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-    cursor: pointer;
-    color: var(--muted);
-    font-weight: 500;
-}
-.leaflet-control-layers-list label:has(input:checked) {
-    color: var(--fineco-blue);
-    font-weight: 800;
-}
-.leaflet-control-layers-list label input {
-    accent-color: var(--fineco-blue);
-    cursor: pointer;
-}
+/* DISATTIVAZIONE TOTALE CONTROLLI NATIVI LEAFLET IN ALTO A DESTRA */
+.leaflet-top.leaflet-right { display: none !important; }
 
 /* LOGO IN ALTO A SINISTRA CON CORNICE BIANCA E BORDI ARROTONDATI */
 .top-left-logo-card {
@@ -98,38 +59,17 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 }
 .brand-logo-img { max-height: 42px; width: auto; display: block; object-fit: contain; }
 
-/* IN BASSO A DESTRA: TESTO STAZIONI */
-.bottom-right-info {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 8px 12px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    font-size: 0.75rem;
-    pointer-events: auto;
-}
-.summary-stats { font-weight: 700; color: var(--text); white-space: nowrap; }
-.summary-stats strong { color: var(--fineco-blue); font-weight: 800; }
-
-/* GRUPPO IN ALTO A DESTRA CON LARGHEZZA UNIFICATA E PERFETTAMENTE ALLINEATA */
-.top-right-custom-group {
+/* PANNELLO IN ALTO A DESTRA (SOLO REPORT E MODALITÀ) */
+.top-right-panel {
     position: absolute;
     top: 12px;
-    right: 185px; 
+    right: 12px;
     z-index: 1000;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
-    width: 250px; /* Larghezza coerente e spaziosa per tutti e 3 i pulsanti */
+    width: 250px;
     pointer-events: auto;
 }
 
@@ -174,7 +114,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 
 .mode-btn-horiz {
     flex: 1;
-    min-width: 0; /* Fondamentale per evitare overflow e disallineamenti nelle griglie flex */
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -220,7 +160,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     width: 100%;
 }
 
-/* BASSO A SINISTRA: ZOOM E TENDINA STAZIONI */
+/* BASSO A SINISTRA: ZOOM, TENDINA STAZIONI E INFO SOTTO */
 .bottom-left-controls {
     position: absolute;
     bottom: 15px;
@@ -230,7 +170,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     flex-direction: column;
     gap: 6px;
     width: calc(100vw - 160px);
-    max-width: 280px;
+    max-width: 310px;
 }
 
 .zoom-buttons-group {
@@ -285,6 +225,23 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
+/* BOX INFO STAZIONI E DATA AGGIORNAMENTO SOTTO LA TENDINA A SINISTRA */
+.bottom-left-info {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    font-size: 0.72rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.update-date-text { font-weight: 600; color: var(--muted); font-size: 0.7rem; white-space: nowrap; }
+.summary-stats { font-weight: 700; color: var(--text); white-space: nowrap; }
+.summary-stats strong { color: var(--fineco-blue); font-weight: 800; }
+
 /* MARKER STAZIONI SULLA MAPPA */
 .station-marker { 
     position: relative; 
@@ -335,14 +292,11 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     <img src="logo_330.png" alt="Alcolisti Micologici Analcolici TRIS" class="brand-logo-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/160x40?text=TRIS+Meteo';">
 </div>
 
-<!-- IN BASSO A DESTRA: TESTO STAZIONI -->
-<div class="bottom-right-info">
-    <div class="summary-stats" id="summaryStats">Stazioni Monitorate: <strong>97</strong> di cui <strong>7</strong> offline - Rel. 02-WB-003</div>
-</div>
-
-<!-- GRUPPO IN ALTO A DESTRA: REPORT PIOGGE E BARRA MODALITÀ CON ETICHETTE -->
-<div class="top-right-custom-group">
+<!-- PANNELLO UNICO IN ALTO A DESTRA (REPORT E BARRA MODALITÀ) -->
+<div class="top-right-panel">
+    <!-- REPORT PIOGGE -->
     <a href="report_piogge2.html" class="btn-report-top"><span>📊</span> Report Piogge</a>
+    <!-- BARRA MODALITÀ -->
     <div class="horizontal-modes-bar">
         <!-- PIOGGE ODIERNE -->
         <button type="button" class="mode-btn-horiz active" id="btnRainMode" title="Pioggia odierna">
@@ -370,7 +324,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     </div>
 </div>
 
-<!-- BASSO A SINISTRA: ZOOM E TENDINA STAZIONI -->
+<!-- BASSO A SINISTRA: ZOOM, TENDINA STAZIONI E INFO SOTTO -->
 <div class="bottom-left-controls">
     <div class="zoom-buttons-group">
         <button type="button" class="zoom-btn" id="btnZoomIn">+</button>
@@ -381,6 +335,10 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
         <select id="stationSelect">
             <option value="">🔍 Seleziona Stazione...</option>
         </select>
+    </div>
+    <div class="bottom-left-info">
+        <div class="update-date-text" id="updateDateText">Dati Aggiornati al: --/--/---- --:--</div>
+        <div class="summary-stats" id="summaryStats">Stazioni Monitorate: <strong>--</strong> di cui <strong>--</strong> offline - Rel. 02-WB-006</div>
     </div>
 </div>
 
@@ -401,20 +359,9 @@ const map = L.map('map', {
 document.getElementById('btnZoomIn').addEventListener('click', () => map.zoomIn());
 document.getElementById('btnZoomOut').addEventListener('click', () => map.zoomOut());
 
-const googleHybrid = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0','mt1','mt2','mt3'], attribution: '&copy; Google Maps' });
-const googleStreets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0','mt1','mt2','mt3'], attribution: '&copy; Google Maps' });
-const googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0','mt1','mt2','mt3'], attribution: '&copy; Google Maps' });
+// MAPPA DI DEFAULT FISSA: CARTA AMMINISTRATIVA (OSM) SENZA ALCUN SELETTORE
 const osmAdmin = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' });
-
-// IMPOSTAZIONE DI DEFAULT: CARTA AMMINISTRATIVA (OSM)
 osmAdmin.addTo(map);
-
-L.control.layers({
-    "Carta Amministrativa": osmAdmin,
-    "Google Stradale": googleStreets,
-    "Google Ibrido": googleHybrid,
-    "Google Satellite": googleSat
-}, null, { position: 'topright' }).addTo(map);
 
 const zoomDisplay = document.getElementById('zoomDisplay');
 function updateZoomDisplay() {
@@ -770,11 +717,18 @@ async function init() {
         const weatherById = new Map();
         const stationsMap = new Map();
 
+        let maxDetectedDate = null;
+
         weatherRows.forEach(row => {
             const id = String(get(row, 'Id', 'ID') || '').trim();
             if (!id) return;
             if (!weatherById.has(id)) weatherById.set(id, []);
             weatherById.get(id).push(row);
+
+            const dt = parseDate(get(row, 'DataRilevamento'));
+            if (dt && (!maxDetectedDate || dt > maxDetectedDate)) {
+                maxDetectedDate = dt;
+            }
 
             if (!stationsMap.has(id)) {
                 const coords = coordsById.get(id) || coordsById.get(id.toLowerCase());
@@ -797,7 +751,13 @@ async function init() {
         const totalStations = stationData.length;
         const offlineStations = stationData.filter(s => !s.summary.online).length;
 
-        document.getElementById('summaryStats').innerHTML = `Stazioni Monitorate: <strong>${totalStations}</strong> di cui <strong>${offlineStations}</strong> offline - Rel. 02-WB-003`;
+        document.getElementById('summaryStats').innerHTML = `Stazioni Monitorate: <strong>${totalStations}</strong> di cui <strong>${offlineStations}</strong> offline - Rel. 02-WB-006`;
+
+        if (maxDetectedDate) {
+            document.getElementById('updateDateText').textContent = `Dati Aggiornati al: ${formatDate(maxDetectedDate)}`;
+        } else {
+            document.getElementById('updateDateText').textContent = `Dati Aggiornati al: n/d`;
+        }
 
         refreshMarkers(stationData);
         populateDropdown(stationData);
