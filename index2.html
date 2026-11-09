@@ -3,309 +3,385 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-GH-005</title>
+<title>Alcolisti Micologici Analcolici TRIS - Rel. 02-WB-003</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin>
 
 <style>
-:root{
---bg:#f7f6f2;
---surface:#ffffff;
---border:#d4d1ca;
---text:#28251d;
---muted:#6f6d68;
---primary:#01696f;
---success:#437a22;
---danger:#a13544;
---blue-dark:#003f88;
---blue:#1f78b4;
---red:#a13544;
---fuchsia:#ff00ff;
---green-dark:#0b5d1e;
---tris:#7b2cbf;
---radius:1rem;
---font:'Inter',system-ui,sans-serif;
+:root {
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --border: #d0d7de;
+    --text: #111827;
+    --muted: #6b7280;
+    
+    --fineco-blue: #00539F;
+    --fineco-blue-hover: #003d78;
+    --fineco-blue-light: #e6f0fa;
+    
+    /* GIALLO LOGO ALCOLISTI MICOLOGICI */
+    --aa-yellow: #FFD700;
+    --aa-yellow-hover: #e6c200;
+    
+    --danger: #b91c1c;
+    --success: #2e7d32;
+    --radius: 0.5rem;
+    --font: 'Figtree', system-ui, -apple-system, sans-serif;
 }
 
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color: transparent;
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); }
+
+#map { width: 100vw; height: 100vh; z-index: 1; }
+
+/* PERSONALIZZAZIONE ICONA LAYER LEAFLET (OMBRELLO) */
+.leaflet-control-layers-toggle {
+    background-image: none !important;
+    position: relative;
+}
+.leaflet-control-layers-toggle::after {
+    content: "☔";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    line-height: 1;
 }
 
-html,
-body{
-margin:0;
-height:100%;
-background:var(--bg);
-color:var(--text);
-font-family:var(--font);
-overflow: hidden;
+/* EVIDENZIAZIONE CHIARA DEL LAYER SELEZIONATO */
+.leaflet-control-layers-expanded {
+    padding: 8px 12px;
+    font-family: var(--font);
+    font-size: 0.85rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    border: 1.5px solid var(--border);
+}
+.leaflet-control-layers-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    cursor: pointer;
+    color: var(--muted);
+    font-weight: 500;
+}
+.leaflet-control-layers-list label:has(input:checked) {
+    color: var(--fineco-blue);
+    font-weight: 800;
+}
+.leaflet-control-layers-list label input {
+    accent-color: var(--fineco-blue);
+    cursor: pointer;
 }
 
-#map{
-width:100%;
-height:100vh;
+/* LOGO IN ALTO A SINISTRA CON CORNICE BIANCA E BORDI ARROTONDATI */
+.top-left-logo-card {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+.brand-logo-img { max-height: 42px; width: auto; display: block; object-fit: contain; }
+
+/* IN BASSO A DESTRA: TESTO STAZIONI */
+.bottom-right-info {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.75rem;
+    pointer-events: auto;
+}
+.summary-stats { font-weight: 700; color: var(--text); white-space: nowrap; }
+.summary-stats strong { color: var(--fineco-blue); font-weight: 800; }
+
+/* GRUPPO IN ALTO A DESTRA CON LARGHEZZA UNIFICATA E PERFETTAMENTE ALLINEATA */
+.top-right-custom-group {
+    position: absolute;
+    top: 12px;
+    right: 185px; 
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 250px; /* Larghezza coerente e spaziosa per tutti e 3 i pulsanti */
+    pointer-events: auto;
 }
 
-/* Riquadro Zoom in alto a sinistra */
-#zoomDisplay {
-position: absolute;
-top: 10px;
-left: 55px;
-z-index: 999;
-background: rgba(255, 255, 255, 0.95);
-padding: 6px 10px;
-border: 1.5px solid var(--primary);
-border-radius: 6px;
-font-family: var(--font);
-font-weight: 800;
-font-size: 11px;
-color: var(--primary);
-pointer-events: none;
-box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+.btn-report-top {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid var(--fineco-blue);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--fineco-blue);
+    font-weight: 800;
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    height: 42px;
+    width: 100%;
+    transition: all 0.15s ease;
+}
+.btn-report-top:hover {
+    background: var(--fineco-blue);
+    color: #ffffff;
 }
 
-/* Riquadro Ultimo Aggiornamento in alto a destra */
-#lastUpdateDisplay {
-position: absolute;
-top: 10px;
-right: 230px;
-z-index: 999;
-background: rgba(255, 255, 255, 0.95);
-padding: 6px 10px;
-border: 1.5px solid var(--primary);
-border-radius: 6px;
-font-family: var(--font);
-font-weight: 700;
-font-size: 11px;
-color: var(--text);
-pointer-events: none;
-box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-line-height: 1.25;
-max-width: 55%;
-text-align: right;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+/* BARRA MODALITÀ CON DISTRIBUZIONE UNIFORME E FLEX */
+.horizontal-modes-bar {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    width: 100%;
+    gap: 4px;
 }
 
-#lastUpdateDisplay .sub-release {
-font-size: 9.5px;
-font-weight: 700;
-color: var(--primary);
-margin-top: 1px;
+.mode-btn-horiz {
+    flex: 1;
+    min-width: 0; /* Fondamentale per evitare overflow e disallineamenti nelle griglie flex */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 5px 2px;
+    transition: all 0.15s ease;
+    color: var(--text);
+    text-decoration: none;
+}
+.mode-btn-horiz:hover { background: #f8fafc; border-color: var(--muted); }
+
+/* STATO ATTIVO: GIALLO LOGO CON TESTO E BORDO EVIDENTI */
+.mode-btn-horiz.active {
+    background: var(--aa-yellow) !important;
+    border-color: #d4af37 !important;
+    color: #111827 !important;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.mode-btn-horiz.active svg { fill: #111827 !important; }
+
+.mode-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#lastUpdateDisplay .sub-stats {
-font-size: 9px;
-font-weight: 600;
-color: var(--muted);
-margin-top: 1px;
+.mode-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
-/* Pulsante Report Piogge in alto a destra */
-.leaflet-bar a.report-btn {
-background-color: #ff7b00 !important;
-color: #ffffff !important;
-width: auto !important;
-height: auto !important;
-line-height: normal !important;
-padding: 6px 12px !important;
-font-size: 0.85rem !important;
-font-weight: 700 !important;
-text-decoration: none !important;
-display: flex !important;
-align-items: center !important;
-justify-content: center !important;
-gap: 6px !important;
-border-radius: 6px !important;
-box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
-white-space: nowrap !important;
-}
-.leaflet-bar a.report-btn:hover {
-background-color: #e66d00 !important;
+/* BASSO A SINISTRA: ZOOM E TENDINA STAZIONI */
+.bottom-left-controls {
+    position: absolute;
+    bottom: 15px;
+    left: 12px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: calc(100vw - 160px);
+    max-width: 280px;
 }
 
-/* Contenitore Menu a tendina e pulsante in basso a sinistra */
-.station-select-control {
-background: #ffffff !important;
-padding: 8px !important;
-border-radius: 8px !important;
-box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
-display: flex;
-flex-direction: column;
-gap: 6px;
-border: 1px solid var(--border);
-min-width: 240px;
+.zoom-buttons-group {
+    display: flex;
+    gap: 6px;
 }
 
-.station-select-control select {
-width: 100%;
-padding: 8px 10px;
-border: 1px solid #9bb9d6;
-border-radius: 6px;
-background: linear-gradient(180deg,#f5fbff,#dfeeff);
-color: #173b5d;
-font-weight: 700;
-font-family: var(--font);
-font-size: 0.90rem;
-cursor: pointer;
-outline: none;
+.zoom-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--fineco-blue);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.zoom-btn:hover { background: var(--fineco-blue-light); border-color: var(--fineco-blue); }
+
+.zoom-indicator {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0 8px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-weight: 700;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--fineco-blue);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-.all-stations-btn {
-width: 100%;
-padding: 8px 10px;
-background-color: var(--primary);
-color: #ffffff;
-border: none;
-border-radius: 6px;
-font-family: var(--font);
-font-weight: 700;
-font-size: 0.88rem;
-cursor: pointer;
-text-align: center;
-box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-.all-stations-btn:active {
-background-color: #015257;
+.station-select-wrap select {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 8px;
+    border: 1.5px solid var(--fineco-blue);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.98);
+    color: var(--text);
+    font-family: var(--font);
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
-/* Stili Popup Ottimizzati per Mobile */
-.leaflet-popup-content-wrapper {
-padding: 0;
-border-radius: 12px;
-overflow: hidden;
+/* MARKER STAZIONI SULLA MAPPA */
+.station-marker { 
+    position: relative; 
+    display: grid; 
+    place-items: center; 
+    min-width: 24px; 
+    height: 24px; 
+    padding: 0 .2rem; 
+    transform: translate(-50%,-50%); 
+    border: 1.5px solid rgba(255, 255, 255, 0.85); 
+    border-radius: 999px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25); 
+    color: #ffffff; 
+    font-size: 10px; 
+    font-weight: 700; 
+    line-height: 1; 
 }
-.leaflet-popup-content {
-margin: 12px 14px !important;
-line-height: 1.4;
-max-width: calc(100vw - 60px) !important;
-}
+.station-marker.rain.online { background: #2e7d32; }
+.station-marker.rain.offline { background: #b91c1c; }
+.station-marker.min.online { background: #1e40af; }
+.station-marker.min.offline { background: #b91c1c; }
+.station-marker.max.online { background: #c2410c; }
+.station-marker.max.offline { background: #64748b; }
 
-.popup-title{
-margin-bottom:.25rem;
-color:var(--primary);
-font-size:1.05rem;
-font-weight:800;
-}
-.popup-meta{
-color:var(--text);
-font-size:0.85rem;
-line-height:1.3;
-}
-.popup-status{
-margin-top:.1rem;
-font-weight:900;
-letter-spacing:.02em;
-font-size: 0.8rem;
-}
-.popup-status.online{ color:var(--success); }
-.popup-status.offline{ color:var(--danger); }
-.popup-update-line{
-margin-top:.2rem;
-font-size: 0.75rem;
-font-weight:600;
-color: var(--muted);
-}
-.popup-table-wrap{
-max-height: 240px;
-margin-top:.4rem;
-overflow-x: auto;
-overflow-y: auto;
--webkit-overflow-scrolling: touch;
-border: 1px solid var(--border);
-border-radius: 6px;
-}
-.popup-weather-table{
-width:100%;
-border-collapse:collapse;
-font-family:inherit;
-font-size:0.8rem;
-white-space: nowrap;
-}
-.popup-weather-table th{
-background:#f1efeb;
-color:var(--muted);
-font-size:0.7rem;
-font-weight:700;
-padding:6px 8px;
-border-bottom:1px solid var(--border);
-position:sticky;
-top:0;
-z-index:2;
-}
-.popup-weather-table th:nth-child(1),
-.popup-weather-table th:nth-child(2){ text-align:left; }
-.popup-weather-table th:nth-child(n+3){ text-align:right; }
+/* POPUP LARGHEZZA ESTESA 750PX */
+.leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border-radius: 0.5rem; }
+.leaflet-popup-content { margin: 10px 12px !important; max-width: calc(100vw - 30px) !important; max-height: 70vh !important; overflow-y: auto !important; }
 
-.popup-weather-table td{
-padding:5px 8px;
-vertical-align:middle;
-line-height:1.2;
-}
-.popup-weather-table td:nth-child(1){ text-align:left; }
-.popup-weather-table td:nth-child(2){ text-align:center; }
-.popup-weather-table td:nth-child(n+3){ text-align:right; }
-.popup-weather-table tr.today-row{
-font-weight:800;
-background:#f0ffe5;
-}
-.popup-rain-day{ color:var(--green-dark); font-weight:700; }
-.popup-rain-cum{ color:var(--fuchsia); font-weight:700; }
-.popup-temp-min{ color:var(--blue-dark); font-weight:800; }
-.popup-temp-max{ color:var(--red); font-weight:800; }
-.popup-wind{ color:var(--blue); font-weight:700; }
-.popup-hum{ color:var(--success); font-weight:700; }
-.popup-dew{ color:var(--tris); font-weight:700; }
-.popup-temp-muted{ color:var(--muted); }
+.popup-container { font-family: inherit; width: 100%; max-width: 750px; font-size: .78rem; }
+.popup-header-row { background: #f8fafc; padding: .5rem .7rem; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: .5rem; }
+.popup-station-name { color: var(--fineco-blue); font-weight: 800; font-size: 0.92rem; text-transform: uppercase; display: block; margin-bottom: 2px; }
 
-.station-marker{
-position:relative;
-display:grid;
-place-items:center;
-min-width:32px;
-height:32px;
-padding:0 .2rem;
-transform:translate(-50%,-50%);
-border:2.5px solid #fff;
-border-radius:999px;
-box-shadow:0 3px 8px rgba(0,0,0,.3);
-color:#fff;
-font-size:11px;
-font-weight:800;
-line-height:1;
-}
-.station-marker.online{ background:var(--success); }
-.station-marker.offline{ background:var(--danger); }
-.station-marker::after{
-position:absolute;
-bottom:-6px;
-left:50%;
-width:0;
-height:0;
-transform:translateX(-50%);
-border-top:7px solid currentColor;
-border-right:5px solid transparent;
-border-left:5px solid transparent;
-content:'';
-}
-.station-marker.online::after{ color:var(--success); }
-.station-marker.offline::after{ color:var(--danger); }
+.popup-table-wrap, .forecast-scroll-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); border-radius: var(--radius); background: #ffffff; margin-bottom: .5rem; }
+.popup-table-wrap { max-height: 200px; }
+
+.popup-weather-table { width:100%; border-collapse:collapse; font-size:0.74rem; white-space: nowrap; }
+.popup-weather-table th { background:#f8fafc; color:var(--text); font-size:0.72rem; font-weight:700; padding:5px 7px; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:2; text-align:center; }
+.popup-weather-table td { padding:4px 7px; vertical-align:middle; text-align:center; border-bottom:1px solid #f1f5f9; }
+.popup-weather-table tr.today-row { font-weight:800; background:#ffffff; }
 </style>
 </head>
-
 <body>
 
 <div id="map"></div>
-<div id="zoomDisplay">Zoom: --</div>
-<div id="lastUpdateDisplay">
-    Agg. al: --
-    <div class="sub-release">Rel. 02-GH-005</div>
-    <div class="sub-stats">Stazioni monitorate -- di cui -- offline</div>
+
+<!-- LOGO IN ALTO A SINISTRA CON CORNICE BIANCA E BORDI ARROTONDATI -->
+<div class="top-left-logo-card">
+    <img src="logo_330.png" alt="Alcolisti Micologici Analcolici TRIS" class="brand-logo-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/160x40?text=TRIS+Meteo';">
+</div>
+
+<!-- IN BASSO A DESTRA: TESTO STAZIONI -->
+<div class="bottom-right-info">
+    <div class="summary-stats" id="summaryStats">Stazioni Monitorate: <strong>97</strong> di cui <strong>7</strong> offline - Rel. 02-WB-003</div>
+</div>
+
+<!-- GRUPPO IN ALTO A DESTRA: REPORT PIOGGE E BARRA MODALITÀ CON ETICHETTE -->
+<div class="top-right-custom-group">
+    <a href="report_piogge2.html" class="btn-report-top"><span>📊</span> Report Piogge</a>
+    <div class="horizontal-modes-bar">
+        <!-- PIOGGE ODIERNE -->
+        <button type="button" class="mode-btn-horiz active" id="btnRainMode" title="Pioggia odierna">
+            <span class="mode-icon">☔</span>
+            <span class="mode-label">Piogge Odierne</span>
+        </button>
+        <!-- TEMPERATURE MASSIME -->
+        <button type="button" class="mode-btn-horiz" id="btnMaxMode" title="Temperature Massime">
+            <span class="mode-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#c2410c">
+                    <path d="M12 2a3 3 0 0 0-3 3v9.55a5 5 0 1 0 6 0V5a3 3 0 0 0-3-3zm1 14.83v-7.83a1 1 0 0 0-2 0v7.83a2.5 2.5 0 1 0 2 0z"/>
+                </svg>
+            </span>
+            <span class="mode-label">Temp. Massime</span>
+        </button>
+        <!-- TEMPERATURE MINIME -->
+        <button type="button" class="mode-btn-horiz" id="btnMinMode" title="Temperature Minime">
+            <span class="mode-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#1e40af">
+                    <path d="M12 2a3 3 0 0 0-3 3v9.55a5 5 0 1 0 6 0V5a3 3 0 0 0-3-3zm1 14.83v-7.83a1 1 0 0 0-2 0v7.83a2.5 2.5 0 1 0 2 0z"/>
+                </svg>
+            </span>
+            <span class="mode-label">Temp. Minime</span>
+        </button>
+    </div>
+</div>
+
+<!-- BASSO A SINISTRA: ZOOM E TENDINA STAZIONI -->
+<div class="bottom-left-controls">
+    <div class="zoom-buttons-group">
+        <button type="button" class="zoom-btn" id="btnZoomIn">+</button>
+        <button type="button" class="zoom-btn" id="btnZoomOut">-</button>
+        <div class="zoom-indicator" id="zoomDisplay">Zoom: --</div>
+    </div>
+    <div class="station-select-wrap">
+        <select id="stationSelect">
+            <option value="">🔍 Seleziona Stazione...</option>
+        </select>
+    </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -317,453 +393,419 @@ const WEATHER_CSV = './dati_meteo_30g.csv';
 const STATIONS_CSV = './dati_stazioni_30g.csv';
 
 const map = L.map('map', {
-zoomControl: true,
-zoomDelta: 0.25,
-zoomSnap: 0.25
+    zoomControl: false,
+    zoomDelta: 0.25,
+    zoomSnap: 0.25
 }).setView([42.35, 13.95], 9.50);
 
-map.zoomControl.setPosition('bottomright');
+document.getElementById('btnZoomIn').addEventListener('click', () => map.zoomIn());
+document.getElementById('btnZoomOut').addEventListener('click', () => map.zoomOut());
 
-const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom:18,
-attribution:'&copy; OpenStreetMap'
-});
+const googleHybrid = L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0','mt1','mt2','mt3'], attribution: '&copy; Google Maps' });
+const googleStreets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0','mt1','mt2','mt3'], attribution: '&copy; Google Maps' });
+const googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 20, subdomains: ['mt0','mt1','mt2','mt3'], attribution: '&copy; Google Maps' });
+const osmAdmin = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' });
 
-const adminLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-maxZoom:19,
-attribution:'&copy; CARTO'
-});
+// IMPOSTAZIONE DI DEFAULT: CARTA AMMINISTRATIVA (OSM)
+osmAdmin.addTo(map);
 
-const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-maxZoom:18,
-attribution:'Tiles &copy; Esri'
-});
-
-const reliefLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-maxZoom:17,
-subdomains: 'abc',
-attribution:'Map data: &copy; OpenStreetMap contributors'
-});
-
-osmLayer.addTo(map);
-
-const baseLayers = {
-"Standard (OSM)": osmLayer,
-"Carta Amm.": adminLayer,
-"Satellite": satelliteLayer,
-"Rilievo": reliefLayer
-};
-
-L.control.layers(baseLayers, null, { position: 'bottomright' }).addTo(map);
-
-map.setMaxBounds(
-L.latLngBounds([[41.30, 12.30], [43.25, 15.30]])
-);
+L.control.layers({
+    "Carta Amministrativa": osmAdmin,
+    "Google Stradale": googleStreets,
+    "Google Ibrido": googleHybrid,
+    "Google Satellite": googleSat
+}, null, { position: 'topright' }).addTo(map);
 
 const zoomDisplay = document.getElementById('zoomDisplay');
 function updateZoomDisplay() {
-if(zoomDisplay) {
-zoomDisplay.textContent = 'Zoom: ' + map.getZoom().toFixed(2);
+    if(zoomDisplay) zoomDisplay.textContent = 'Zoom: ' + map.getZoom().toFixed(2);
 }
-}
-map.on('zoomend', updateZoomDisplay);
-map.on('moveend', updateZoomDisplay);
+map.on('zoomend moveend', updateZoomDisplay);
 updateZoomDisplay();
-
-let stationSelectElement = null;
-
-L.Control.StationSelect = L.Control.extend({
-onAdd: function(map) {
-const div = L.DomUtil.create('div', 'station-select-control');
-
-stationSelectElement = document.createElement('select');
-stationSelectElement.id = 'stationDropdown';
-stationSelectElement.innerHTML = '<option value="">🔍 Seleziona Stazione...</option>';
-div.appendChild(stationSelectElement);
-
-const resetBtn = document.createElement('button');
-resetBtn.type = 'button';
-resetBtn.textContent = '🏠 Tutte le Stazioni';
-resetBtn.className = 'all-stations-btn';
-div.appendChild(resetBtn);
-
-resetBtn.onclick = (e) => {
-e.preventDefault();
-if (stationSelectElement) stationSelectElement.value = "";
-map.setView([42.35, 13.95], 9.50);
-map.closePopup();
-refreshMarkers(stationData);
-};
-
-L.DomEvent.disableClickPropagation(div);
-L.DomEvent.disableScrollPropagation(div);
-return div;
-}
-});
-map.addControl(new L.Control.StationSelect({ position: 'bottomleft' }));
-
-L.Control.ReportButton = L.Control.extend({
-onAdd: function(map) {
-const div = L.DomUtil.create('div', 'leaflet-bar');
-const link = L.DomUtil.create('a', 'report-btn', div);
-link.href = 'report_piogge2.html';
-link.innerHTML = '<span>📊</span> Report Piogge';
-link.title = 'Report Piogge';
-return div;
-}
-});
-map.addControl(new L.Control.ReportButton({ position: 'topright' }));
 
 let stationData = [];
 let markerRefs = new Map();
 let markersLayer = L.layerGroup().addTo(map);
 
+let currentMode = 'rain'; 
+const forecastCache = new Map();
+
 const num = value => {
-const result = parseFloat(String(value ?? '').replace(',','.').trim());
-return Number.isFinite(result) ? result : null;
+    const result = parseFloat(String(value ?? '').replace(',','.').trim());
+    return Number.isFinite(result) ? result : null;
 };
 
 const get = (row, ...keys) => {
-if (!row) return '';
-const rowKeys = Object.keys(row);
-for (const key of keys) {
-const cleanKey = key.toLowerCase().replace(/[\s_]/g, '');
-const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanKey);
-if (found && row[found] !== undefined && row[found] !== null && String(row[found]).trim() !== '') {
-return String(row[found]).trim();
-}
-}
-return '';
+    if (!row) return '';
+    const rowKeys = Object.keys(row);
+    for (const key of keys) {
+        const cleanKey = key.toLowerCase().replace(/[\s_]/g, '');
+        const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanKey);
+        if (found && row[found] !== undefined && row[found] !== null && String(row[found]).trim() !== '') {
+            return String(row[found]).trim();
+        }
+    }
+    return '';
 };
 
 function parseDate(value) {
-if (value === null || value === undefined) return null;
-const text = String(value).trim();
-if (!text) return null;
+    if (value === null || value === undefined) return null;
+    const text = String(value).trim();
+    if (!text) return null;
 
-let match = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})(?:[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
-if (match) {
-const day = Number(match[1]), month = Number(match[2]), year = Number(match[3]);
-const hour = Number(match[4] || 0), minute = Number(match[5] || 0), second = Number(match[6] || 0);
-const date = new Date(year, month - 1, day, hour, minute, second);
-if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) return date;
-return null;
+    let match = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})(?:[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
+    if (match) {
+        const day = Number(match[1]), month = Number(match[2]), year = Number(match[3]);
+        const date = new Date(year, month - 1, day, Number(match[4] || 0), Number(match[5] || 0));
+        if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) return date;
+        return null;
+    }
+    return null;
 }
 
-match = text.match(/^(\d{4})[\/.-](\d{1,2})[\/.-](\d{1,2})(?:[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
-if (match) {
-return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4] || 0), Number(match[5] || 0), Number(match[6] || 0));
-}
-return null;
-}
-
-function pad(value) { return String(value).padStart(2,'0'); }
-
-function formatDate(date) {
-if (!date) return 'n/d';
-return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
-
-function formatUpdateTimestamp(date) {
-if (!date) return 'n/d';
-return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${pad(date.getHours())}.${pad(date.getMinutes())}`;
-}
-
-function dayKey(date) {
-return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
-
-function dayLabel(date) {
-return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}`;
-}
+function pad(v) { return String(v).padStart(2,'0'); }
+function formatDate(d) { return d ? `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}` : 'n/d'; }
+function dayKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+function dayLabel(d) { return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`; }
 
 const fetchText = async path => {
-const response = await fetch(`${path}?v=${Date.now()}`, { cache:'no-store' });
-if (!response.ok) throw new Error(`HTTP ${response.status} per ${path}`);
-return response.text();
+    const response = await fetch(`${path}?v=${Date.now()}`, { cache:'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status} per ${path}`);
+    return response.text();
 };
 
 const delimiter = text => {
-return [';',',','\t','|'].map(character => ({
-character,
-count:(text.split(/\r?\n/).slice(0,10).join('\n').match(new RegExp('\\' + character, 'g')) || []).length
-})).sort((a,b) => b.count - a.count)[0].character;
+    return [';',',','\t','|'].map(character => ({
+        character,
+        count:(text.split(/\r?\n/).slice(0,10).join('\n').match(new RegExp('\\' + character, 'g')) || []).length
+    })).sort((a,b) => b.count - a.count)[0].character;
 };
 
 function parseWeather(rows) {
-return rows.map(row => ({
-detectedAt: parseDate(get(row, 'DataRilevamento')),
-updatedAt: parseDate(get(row, 'DataAggiornamento')),
-tmin: num(get(row, 'TemperaturaMin')),
-tmax: num(get(row, 'TemperaturaMax')),
-rain: num(get(row, 'PioggiaGiornaliera')),
-pioggiamese: num(get(row, 'PioggiaMese')),
-ventomax: num(get(row, 'VentoMax')),
-umiditamin: num(get(row, 'UmiditaMin')),
-umiditamax: num(get(row, 'UmiditaMax')),
-rugiadamin: num(get(row, 'RugiadaMin')),
-rugiadamax: num(get(row, 'RugiadaMax')),
-stato: get(row, 'Stato').toLowerCase()
-}))
-.filter(row => row.detectedAt || row.updatedAt)
-.sort((a,b) => {
-const dateA = a.detectedAt || a.updatedAt || new Date(0);
-const dateB = b.detectedAt || b.updatedAt || new Date(0);
-return dateA - dateB;
-});
+    return rows.map(row => ({
+        detectedAt: parseDate(get(row, 'DataRilevamento')),
+        tmin: num(get(row, 'TemperaturaMin')),
+        tmax: num(get(row, 'TemperaturaMax')),
+        tavg: num(get(row, 'TempMedia')),
+        rain: num(get(row, 'PioggiaGiornaliera')),
+        rainMaxHour: num(get(row, 'PioggiaMaxOraria')),
+        uMin: num(get(row, 'UmiditaMin')),
+        uMax: num(get(row, 'UmiditaMax')),
+        ventoMax: num(get(row, 'VentoMax')),
+        ventoMedio: num(get(row, 'VentoMedio')),
+        dirVento: num(get(row, 'DirezioneVento')),
+        stato: get(row, 'Stato').toLowerCase()
+    }))
+    .filter(row => row.detectedAt)
+    .sort((a,b) => a.detectedAt - b.detectedAt);
 }
 
 function summarizeWeather(rows) {
-const series = parseWeather(rows);
-const latest = series.at(-1) || null;
-const online = latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true' || latest?.stato === 'ok';
-return {
-count: series.length,
-latest,
-series,
-online,
-rainValue: latest ? latest.rain : null
-};
+    const series = parseWeather(rows);
+    const latest = series.at(-1) || null;
+    const online = latest?.stato === 'online' || latest?.stato === '1' || latest?.stato === 'true' || latest?.stato === 'ok';
+    return {
+        count: series.length,
+        latest,
+        series,
+        online,
+        rainValue: latest ? latest.rain : null
+    };
 }
 
 function popupHtml(station) {
-const summary = station.summary;
-const latest = summary.latest || {};
-const status = summary.online ? 'ONLINE' : 'OFFLINE';
-const statusClass = summary.online ? 'online' : 'offline';
-const detectedText = formatDate(latest.detectedAt);
+    const summary = station.summary;
+    const latest = summary.latest || {};
+    const status = summary.online ? 'ONLINE' : 'OFFLINE';
+    const detectedText = formatDate(latest.detectedAt);
 
-const daily = new Map();
-summary.series.forEach(row => {
-const date = row.detectedAt || row.updatedAt;
-if (!date) return;
-const key = dayKey(date);
-const isRowOnline = row.stato === 'online' || row.stato === '1' || row.stato === 'true' || row.stato === 'ok';
+    const daily = new Map();
+    summary.series.forEach(row => {
+        if (!row.detectedAt) return;
+        const key = dayKey(row.detectedAt);
+        const previous = daily.get(key) || { 
+            rain: 0, tmin: null, tmax: null, tavg: null,
+            rainMaxHour: 0, uMin: null, uMax: null,
+            ventoMax: 0, ventoMedio: 0, dirVento: 0
+        };
 
-const previous = daily.get(key) || {
-rain: 0, tmin: null, tmax: null, ventomax: null, umiditamin: null, umiditamax: null, rugiadamin: null, rugiadamax: null, online: false
-};
+        if (Number.isFinite(row.rain)) previous.rain += row.rain;
+        if (Number.isFinite(row.rainMaxHour)) previous.rainMaxHour = Math.max(previous.rainMaxHour, row.rainMaxHour);
+        if (Number.isFinite(row.tmin)) previous.tmin = previous.tmin === null ? row.tmin : Math.min(previous.tmin, row.tmin);
+        if (Number.isFinite(row.tmax)) previous.tmax = previous.tmax === null ? row.tmax : Math.max(previous.tmax, row.tmax);
+        if (Number.isFinite(row.tavg)) previous.tavg = row.tavg;
+        if (Number.isFinite(row.uMin)) previous.uMin = previous.uMin === null ? row.uMin : Math.min(previous.uMin, row.uMin);
+        if (Number.isFinite(row.uMax)) previous.uMax = previous.uMax === null ? row.uMax : Math.max(previous.uMax, row.uMax);
+        if (Number.isFinite(row.ventoMax)) previous.ventoMax = Math.max(previous.ventoMax, row.ventoMax);
+        if (Number.isFinite(row.ventoMedio)) previous.ventoMedio = row.ventoMedio;
+        if (Number.isFinite(row.dirVento)) previous.dirVento = row.dirVento;
 
-if (isRowOnline) previous.online = true;
-if (Number.isFinite(row.rain)) previous.rain += row.rain;
-if (Number.isFinite(row.tmin)) previous.tmin = previous.tmin === null ? row.tmin : Math.min(previous.tmin, row.tmin);
-if (Number.isFinite(row.tmax)) previous.tmax = previous.tmax === null ? row.tmax : Math.max(previous.tmax, row.tmax);
-if (Number.isFinite(row.ventomax)) previous.ventomax = previous.ventomax === null ? row.ventomax : Math.max(previous.ventomax, row.ventomax);
-if (Number.isFinite(row.umiditamin)) previous.umiditamin = previous.umiditamin === null ? row.umiditamin : Math.min(previous.umiditamin, row.umiditamin);
-if (Number.isFinite(row.umiditamax)) previous.umiditamax = previous.umiditamax === null ? row.umiditamax : Math.max(previous.umiditamax, row.umiditamax);
-if (Number.isFinite(row.rugiadamin)) previous.rugiadamin = previous.rugiadamin === null ? row.rugiadamin : Math.min(previous.rugiadamin, row.rugiadamin);
-if (Number.isFinite(row.rugiadamax)) previous.rugiadamax = previous.rugiadamax === null ? row.rugiadamax : Math.max(previous.rugiadamax, row.rugiadamax);
+        daily.set(key, previous);
+    });
 
-daily.set(key, previous);
-});
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    let cumulative = 0;
+    const tableRows = [];
 
-const today = new Date();
-today.setHours(0,0,0,0);
-let cumulative = 0;
-const tableRows = [];
+    for (let i = 0; i <= 30; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const item = daily.get(dayKey(date));
 
-for (let i = 0; i <= 30; i++) {
-const date = new Date(today);
-date.setDate(date.getDate() - i);
-const item = daily.get(dayKey(date));
+        const rain = item && Number.isFinite(item.rain) ? item.rain : 0;
+        cumulative += rain;
+        const rainMaxHour = item && Number.isFinite(item.rainMaxHour) ? item.rainMaxHour.toFixed(1) : '0.0';
 
-const isOnline = item ? item.online : false;
-const dotColor = isOnline ? 'var(--success)' : 'var(--danger)';
-const statusDot = `<span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${dotColor}; vertical-align:middle;"></span>`;
+        const tMin = item && Number.isFinite(item.tmin) ? Math.round(item.tmin) : 0;
+        const tMax = item && Number.isFinite(item.tmax) ? Math.round(item.tmax) : 0;
+        const tAvg = item && Number.isFinite(item.tavg) ? Math.round(item.tavg) : (tMin && tMax ? Math.round((tMin + tMax)/2) : 0);
+        const tempStr = `${tMin}° / ${tMax}° (${tAvg}°)`;
 
-const rain = item && Number.isFinite(item.rain) ? item.rain : 0;
-cumulative += rain;
+        const uMin = item && Number.isFinite(item.uMin) ? Math.round(item.uMin) : 0;
+        const uMax = item && Number.isFinite(item.uMax) ? Math.round(item.uMax) : 0;
+        const humStr = `${uMin}% - ${uMax}%`;
 
-const temperature = item && Number.isFinite(item.tmin) && Number.isFinite(item.tmax)
-? `<span class="popup-temp-min">${item.tmin.toFixed(0)}°</span>/<span class="popup-temp-max">${item.tmax.toFixed(0)}°</span>`
-: `<span class="popup-temp-muted">[n/d]</span>`;
+        const vMax = item && Number.isFinite(item.ventoMax) ? Math.round(item.ventoMax) : 0;
+        const vMed = item && Number.isFinite(item.ventoMedio) ? Math.round(item.ventoMedio) : 0;
+        const vDir = item && Number.isFinite(item.dirVento) ? Math.round(item.dirVento) : 0;
+        const windStr = `${vMax} / ${vMed} (${vDir}°)`;
 
-const windText = item && Number.isFinite(item.ventomax) && item.ventomax !== 0 ? `<span class="popup-wind">${item.ventomax.toFixed(0)}</span>` : '';
-const humText = item && Number.isFinite(item.umiditamin) && Number.isFinite(item.umiditamax) ? `<span class="popup-hum">${item.umiditamin.toFixed(0)}%-${item.umiditamax.toFixed(0)}%</span>` : '';
-const dewText = item && Number.isFinite(item.rugiadamin) && Number.isFinite(item.rugiadamax) ? `<span class="popup-dew">${item.rugiadamin.toFixed(0)}°-${item.rugiadamax.toFixed(0)}°</span>` : '';
-const dayText = i === 0 ? 'Oggi' : `-${i} ${dayLabel(date)}`;
+        const dayText = i === 0 ? 'Oggi' : `-${i} (${dayLabel(date)})`;
 
-tableRows.push(`
-<tr class="${i === 0 ? 'today-row' : ''}">
-<td>${dayText}</td>
-<td>${statusDot}</td>
-<td><span class="popup-rain-day">${rain.toFixed(1)}</span></td>
-<td><span class="popup-rain-cum">(${cumulative.toFixed(1)})</span></td>
-<td>${temperature}</td>
-<td>${windText}</td>
-<td>${humText}</td>
-<td>${dewText}</td>
-</tr>
-`);
+        tableRows.push(`
+            <tr class="${i === 0 ? 'today-row' : ''}">
+                <td style="text-align:left;">${dayText}</td>
+                <td>${rain.toFixed(1)}</td>
+                <td>${cumulative.toFixed(1)}</td>
+                <td>${rainMaxHour}</td>
+                <td>${tempStr}</td>
+                <td>${humStr}</td>
+                <td>${windStr}</td>
+            </tr>
+        `);
+    }
+
+    return `
+        <div class="popup-container">
+            <div class="popup-header-row">
+                <span class="popup-station-name">${station.name} (${station.id})</span>
+                <span style="font-size:0.72rem; color:var(--muted);">Stato: <strong style="color:${summary.online?'#2e7d32':'#b91c1c'};">${status}</strong> &bull; Agg: ${detectedText}</span>
+            </div>
+
+            <div id="forecast-container-${station.id}" style="margin-bottom:.4rem;">
+                <div style="padding:6px;text-align:center;color:var(--muted);font-weight:600;font-size:0.75rem;">Caricamento previsioni 5 giorni...</div>
+            </div>
+
+            <div class="popup-table-wrap">
+                <table class="popup-weather-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Giorno</th>
+                            <th>Pioggia</th>
+                            <th>Cumulata</th>
+                            <th>Max/h</th>
+                            <th>Temperatura</th>
+                            <th>Umidità</th>
+                            <th>Vento Max/Med (Dir.)</th>
+                        </tr>
+                    </thead>
+                    <tbody>${tableRows.join('')}</tbody>
+                </table>
+            </div>
+        </div>
+    `;
 }
 
-return `
-<div class="popup-title">${station.name}</div>
-<div class="popup-meta">
-<div class="popup-status ${statusClass}">${status}</div>
-<div class="popup-update-line">Ril. ${detectedText}</div>
-<div class="popup-table-wrap">
-<table class="popup-weather-table">
-<thead>
-<tr><th>Giorno</th><th></th><th>Pioggia</th><th>Cum</th><th>Temp</th><th>Vento</th><th>Umidità</th><th>Rugiada</th></tr>
-</thead>
-<tbody>${tableRows.join('')}</tbody>
-</table>
-</div>
-</div>
-`;
+async function loadOpenMeteoForecast(stationId, lat, lon) {
+    const container = document.getElementById(`forecast-container-${stationId}`);
+    if (!container) return;
+    if (forecastCache.has(stationId)) {
+        renderForecastHtml(container, forecastCache.get(stationId));
+        return;
+    }
+    try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&timezone=auto`);
+        const data = await res.json();
+        if (!data.daily) { container.innerHTML = ''; return; }
+        forecastCache.set(stationId, data.daily);
+        renderForecastHtml(container, data.daily);
+    } catch (err) {
+        container.innerHTML = '<div style="padding:4px;text-align:center;color:var(--danger);font-size:0.72rem;">Previsioni non disponibili</div>';
+    }
+}
+
+function renderForecastHtml(container, daily) {
+    let thCols = '', rainRow = '', tMinRow = '', tMaxRow = '';
+    for (let i = 0; i < 5; i++) {
+        if (!daily.time[i]) break;
+        const dParts = daily.time[i].split('-');
+        thCols += `<th style="padding:3px 4px;">${dParts[2]}/${dParts[1]}</th>`;
+        rainRow += `<td style="padding:3px 4px;">${(daily.precipitation_sum[i] ?? 0).toFixed(1)}</td>`;
+        tMinRow += `<td style="padding:3px 4px;">${(daily.temperature_2m_min[i] ?? 0).toFixed(0)}°</td>`;
+        tMaxRow += `<td style="padding:3px 4px;">${(daily.temperature_2m_max[i] ?? 0).toFixed(0)}°</td>`;
+    }
+    container.innerHTML = `
+        <div style="font-weight:800;margin-bottom:2px;color:var(--fineco-blue);font-size:.75rem;text-transform:uppercase;">Previsioni prossimi 5 giorni</div>
+        <div class="forecast-scroll-wrap">
+            <table class="popup-weather-table">
+                <thead><tr style="background:#f8fafc;"><th style="text-align:left;padding:3px 4px;">Parametro</th>${thCols}</tr></thead>
+                <tbody>
+                    <tr><td style="text-align:left;padding:3px 4px;font-weight:600;">Pioggia mm</td>${rainRow}</tr>
+                    <tr><td style="text-align:left;padding:3px 4px;font-weight:600;">Temp Min</td>${tMinRow}</tr>
+                    <tr><td style="text-align:left;padding:3px 4px;font-weight:600;">Temp Max</td>${tMaxRow}</tr>
+                </tbody>
+            </table>
+        </div>
+    `;
 }
 
 function markerIcon(station) {
-const statusClass = station.summary.online ? 'online' : 'offline';
-let value = station.summary.rainValue;
+    const statusClass = station.summary.online ? 'online' : 'offline';
+    let val = station.summary.rainValue;
+    if (currentMode === 'min') val = station.summary.latest?.tmin;
+    if (currentMode === 'max') val = station.summary.latest?.tmax;
 
-return L.divIcon({
-className: '',
-html: `<div class="station-marker ${statusClass}">${Number.isFinite(value) ? Math.round(value) : '–'}</div>`,
-iconSize: [32,32],
-iconAnchor: [16,16],
-popupAnchor: [0,-60]
-});
+    return L.divIcon({
+        className: '',
+        html: `<div class="station-marker ${currentMode} ${statusClass}">${Number.isFinite(val) ? Math.round(val) : '0'}</div>`,
+        iconSize: [26,26],
+        iconAnchor: [13,13],
+        popupAnchor: [0,-15]
+    });
 }
 
 function refreshMarkers(data) {
-markersLayer.clearLayers();
-markerRefs.clear();
+    markersLayer.clearLayers();
+    markerRefs.clear();
 
-data.forEach(station => {
-const marker = L.marker([station.lat, station.lon], {
-icon: markerIcon(station)
-})
-.bindPopup(popupHtml(station), {
-autoPan: true,
-keepInView: true,
-maxWidth: 400
-});
+    data.forEach(station => {
+        const marker = L.marker([station.lat, station.lon], { icon: markerIcon(station) })
+        .addTo(markersLayer)
+        .bindPopup(popupHtml(station), { maxWidth: 750, autoPan: true });
 
-markerRefs.set(station.id, marker);
-markersLayer.addLayer(marker);
-});
+        marker.on('popupopen', () => loadOpenMeteoForecast(station.id, station.lat, station.lon));
+        markerRefs.set(station.id, marker);
+    });
 }
 
 function populateDropdown(data) {
-if (!stationSelectElement) return;
-stationSelectElement.innerHTML = '<option value="">🔍 Seleziona Stazione...</option>';
-const sortedStations = [...data].sort((a, b) => a.name.localeCompare(b.name));
-sortedStations.forEach(station => {
-const opt = document.createElement('option');
-opt.value = station.id;
-opt.textContent = station.name;
-stationSelectElement.appendChild(opt);
-});
+    const select = document.getElementById('stationSelect');
+    if (!select) return;
+    select.innerHTML = '<option value="">🔍 Seleziona Stazione...</option>';
+    [...data].sort((a,b) => a.name.localeCompare(b.name, 'it')).forEach(station => {
+        const opt = document.createElement('option');
+        opt.value = station.id;
+        opt.textContent = `${station.name} (${station.id})`;
+        select.appendChild(opt);
+    });
 
-stationSelectElement.onchange = (e) => {
-const stationId = e.target.value;
-if (!stationId) {
-refreshMarkers(stationData);
-map.setView([42.35, 13.95], 9.50);
-map.closePopup();
-return;
+    select.onchange = (e) => {
+        const stationId = e.target.value;
+        if (!stationId) {
+            refreshMarkers(stationData);
+            map.setView([42.35, 13.95], 9.50);
+            map.closePopup();
+            return;
+        }
+        const station = data.find(s => s.id === stationId);
+        if (station) {
+            map.flyTo([station.lat, station.lon], 12);
+            const marker = markerRefs.get(station.id);
+            if (marker) marker.openPopup();
+        }
+    };
 }
-const station = data.find(s => s.id === stationId);
-if (station) {
-map.setView([station.lat, station.lon], 13);
-map.closePopup();
 
-markersLayer.clearLayers();
-const marker = markerRefs.get(station.id);
-if (marker) {
-markersLayer.addLayer(marker);
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btnRainMode').classList.toggle('active', mode === 'rain');
+    document.getElementById('btnMaxMode').classList.toggle('active', mode === 'max');
+    document.getElementById('btnMinMode').classList.toggle('active', mode === 'min');
+    refreshMarkers(stationData);
 }
-}
-};
-}
+
+document.getElementById('btnRainMode').addEventListener('click', () => setMode('rain'));
+document.getElementById('btnMaxMode').addEventListener('click', () => setMode('max'));
+document.getElementById('btnMinMode').addEventListener('click', () => setMode('min'));
 
 async function init() {
-try {
-const [weatherText, stationsText] = await Promise.all([
-fetchText(WEATHER_CSV),
-fetchText(STATIONS_CSV)
-]);
+    try {
+        const [weatherText, stationsText] = await Promise.all([
+            fetchText(WEATHER_CSV),
+            fetchText(STATIONS_CSV)
+        ]);
 
-const weatherParsed = Papa.parse(weatherText, {
-header: true, skipEmptyLines: true, delimiter: delimiter(weatherText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
-});
+        const weatherParsed = Papa.parse(weatherText, {
+            header: true, skipEmptyLines: true, delimiter: delimiter(weatherText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
+        });
 
-const stationsParsed = Papa.parse(stationsText, {
-header: true, skipEmptyLines: true, delimiter: delimiter(stationsText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
-});
+        const stationsParsed = Papa.parse(stationsText, {
+            header: true, skipEmptyLines: true, delimiter: delimiter(stationsText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
+        });
 
-const coordsById = new Map();
-(stationsParsed.data || []).forEach(row => {
-const rowKeys = Object.keys(row);
-const findKey = (...possible) => {
-for (const p of possible) {
-const cleanP = p.toLowerCase();
-const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanP);
-if (found) return row[found];
-}
-return '';
-};
+        const coordsById = new Map();
+        (stationsParsed.data || []).forEach(row => {
+            const rowKeys = Object.keys(row);
+            const findKey = (...possible) => {
+                for (const p of possible) {
+                    const cleanP = p.toLowerCase();
+                    const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanP);
+                    if (found) return row[found];
+                }
+                return '';
+            };
 
-const id = String(findKey('Id', 'ID') || '').trim();
-const lat = num(findKey('Lat', 'Latitudine'));
-const lon = num(findKey('Long', 'Lon', 'Longitude'));
+            const id = String(findKey('Id', 'ID') || '').trim();
+            const lat = num(findKey('Lat', 'Latitudine'));
+            const lon = num(findKey('Long', 'Lon', 'Longitude'));
 
-if (id && Number.isFinite(lat) && Number.isFinite(lon)) {
-coordsById.set(id, { lat, lon });
-coordsById.set(id.toLowerCase(), { lat, lon });
-}
-});
+            if (id && Number.isFinite(lat) && Number.isFinite(lon)) {
+                coordsById.set(id, { lat, lon });
+                coordsById.set(id.toLowerCase(), { lat, lon });
+            }
+        });
 
-const weatherRows = weatherParsed.data || [];
-const weatherById = new Map();
-const stationsMap = new Map();
+        const weatherRows = weatherParsed.data || [];
+        const weatherById = new Map();
+        const stationsMap = new Map();
 
-let allDetectedDates = [];
-weatherRows.forEach(row => {
-const id = String(get(row, 'Id', 'ID') || '').trim();
-if (!id) return;
-if (!weatherById.has(id)) weatherById.set(id, []);
-weatherById.get(id).push(row);
+        weatherRows.forEach(row => {
+            const id = String(get(row, 'Id', 'ID') || '').trim();
+            if (!id) return;
+            if (!weatherById.has(id)) weatherById.set(id, []);
+            weatherById.get(id).push(row);
 
-if (!stationsMap.has(id)) {
-const coords = coordsById.get(id) || coordsById.get(id.toLowerCase());
-if (coords) {
-stationsMap.set(id, {
-id,
-name: get(row, 'StazioneMeteo', 'Stazione', 'Nome', 'Name') || `Stazione ${id}`,
-lat: coords.lat,
-lon: coords.lon
-});
-}
-}
+            if (!stationsMap.has(id)) {
+                const coords = coordsById.get(id) || coordsById.get(id.toLowerCase());
+                if (coords) {
+                    stationsMap.set(id, {
+                        id,
+                        name: get(row, 'StazioneMeteo', 'Stazione', 'Nome', 'Name') || `Stazione ${id}`,
+                        lat: coords.lat,
+                        lon: coords.lon
+                    });
+                }
+            }
+        });
 
-const d = parseDate(get(row, 'DataRilevamento'));
-if (d) allDetectedDates.push(d);
-});
+        stationData = Array.from(stationsMap.values()).map(station => ({
+            ...station,
+            summary: summarizeWeather(weatherById.get(station.id) || [])
+        })).filter(station => station.id && station.name && Number.isFinite(station.lat) && Number.isFinite(station.lon));
 
-stationData = Array.from(stationsMap.values()).map(station => ({
-...station,
-summary: summarizeWeather(weatherById.get(station.id) || [])
-})).filter(station => station.id && station.name && Number.isFinite(station.lat) && Number.isFinite(station.lon));
+        const totalStations = stationData.length;
+        const offlineStations = stationData.filter(s => !s.summary.online).length;
 
-const totalStations = stationData.length;
-const offlineStations = stationData.filter(s => !s.summary.online).length;
+        document.getElementById('summaryStats').innerHTML = `Stazioni Monitorate: <strong>${totalStations}</strong> di cui <strong>${offlineStations}</strong> offline - Rel. 02-WB-003`;
 
-if (allDetectedDates.length > 0) {
-const maxDate = new Date(Math.max(...allDetectedDates));
-const lastUpdateEl = document.getElementById('lastUpdateDisplay');
-if (lastUpdateEl) {
-lastUpdateEl.innerHTML = `Agg. al ${formatUpdateTimestamp(maxDate)}<div class="sub-release">Rel. 02-GH-005</div><div class="sub-stats">Stazioni monitorate ${totalStations} di cui ${offlineStations} offline</div>`;
-}
-}
+        refreshMarkers(stationData);
+        populateDropdown(stationData);
 
-refreshMarkers(stationData);
-populateDropdown(stationData);
-} catch (error) {
-console.error("Errore di caricamento:", error);
-}
+        setTimeout(() => map.invalidateSize(), 200);
+    } catch (error) {
+        console.error("Errore di caricamento:", error);
+    }
 }
 
 init();
