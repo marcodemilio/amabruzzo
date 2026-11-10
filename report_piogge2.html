@@ -4,80 +4,99 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <title>
-    Piogge Giornaliere/Cumulate -
-    Alcolisti Micologici Analcolici TRIS -
-    Rel. 01-GH-002
+    Report Piogge Giornaliere e Cumulate - Alcolisti Micologici Analcolici TRIS
   </title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.25/dist/jspdf.plugin.autotable.min.js"></script>
 
   <style>
-    :root{
-      --bg:#f7f6f2;
-      --surface:#ffffff;
-      --border:#d4d1ca;
-      --text:#28251d;
-      --muted:#6f6d68;
-      --primary:#01696f;
-      --tris:#7b2cbf;
-      --active-green:#a8df6f;
-      --radius:1rem;
-      --font:'Inter',system-ui,sans-serif;
-      --yellow:#ffe66a;
-      --yellow2:#fff3a8;
-      --yellow-border:#c7a900;
+    :root {
+      --bg-body: #f4f6f9;
+      --surface: #ffffff;
+      --border: #d0d7de;
+      --text: #111827;
+      --muted: #6b7280;
+      
+      --fineco-blue: #00539F;
+      --fineco-blue-hover: #003d78;
+      --fineco-blue-light: #e6f0fa;
+      
+      --radius: 0.375rem;
+      --font: 'Figtree', system-ui, -apple-system, sans-serif;
     }
 
-    *{
-      box-sizing:border-box;
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: var(--bg-body) !important;
+      color: var(--text);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+      padding: 1rem 1.5rem;
     }
 
-    html,
-    body{
-      margin:0;
-      min-height:100%;
-      background:var(--bg);
-      color:var(--text);
-      font-family:var(--font);
-      -webkit-text-size-adjust: 100%;
-    }
-
-    .report-main{
-      max-width: 1600px;
+    .report-main {
+      max-width: 1700px;
       margin: 0 auto;
-      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 2rem);
     }
 
-    .report-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:1rem;
-      margin-bottom:1rem;
-      padding:1rem;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:linear-gradient(180deg,#ffffff,#f4fbfc);
-      box-shadow:0 1px 2px rgba(0,0,0,.08);
+    /* Cornice superiore unificata con logo */
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding: 0.65rem 1.25rem;
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      flex-shrink: 0;
     }
 
-    .report-title{
-      margin:0;
-      font-size:1.15rem;
-      line-height:1.2;
+    .header-title-box {
+      text-align: center;
+      flex-grow: 1;
     }
 
-    .report-subtitle{
-      margin:.35rem 0 0;
-      color:var(--muted);
-      font-size:.85rem;
+    .header-title-box h1 {
+      margin: 0;
+      color: var(--fineco-blue);
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-logo {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      flex-shrink: 0;
+    }
+
+    .header-logo img {
+      max-height: 38px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      background: transparent;
     }
 
     .cartina-btn {
@@ -85,397 +104,271 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      width: 100%;
-      padding: 10px 14px;
+      padding: 0 1rem;
       background: #ff7b00;
       color: #ffffff;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 700;
       text-decoration: none;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      border-radius: var(--radius);
+      height: 38px;
       border: 1px solid rgba(255,255,255,0.4);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: background 0.15s ease;
+      white-space: nowrap;
+    }
+    .cartina-btn:hover {
+      background: #e06d00;
     }
 
-    .panel{
-      padding:1rem;
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      background:var(--surface);
-      box-shadow:0 1px 2px rgba(0,0,0,.08);
-    }
-
-    .controls{
-      display:flex;
-      align-items:stretch;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
+    /* Pannello Unificato */
+    .panel-unified {
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      overflow: hidden;
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
       width: 100%;
     }
 
-    .field label{
-      display:block;
-      color:var(--muted);
-      font-size:.88rem;
-      font-weight:700;
+    /* Controlli e filtri */
+    .controls {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
     }
 
-    select,
-    button{
-      min-height:46px;
-      padding:0 .75rem;
-      border:1px solid var(--border);
-      border-radius:.65rem;
-      background:var(--surface);
-      color:var(--text);
-      font:inherit;
-      font-size: 1rem;
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 240px;
+    }
+
+    .field label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .sub-indicator {
+      font-size: 0.75rem;
+      color: #475569;
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    select, button, .action-btn {
+      min-height: 38px;
+      height: 38px;
+      padding: 0 0.8rem;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-weight: 600;
+      box-sizing: border-box;
+    }
+
+    select {
+      background-color: var(--surface);
+      cursor: pointer;
+      font-weight: 600;
       width: 100%;
     }
 
-    select{
-      border-color:#9bb9d6;
-      background:linear-gradient(180deg,#f5fbff,#dfeeff);
-      color:#173b5d;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 3px 8px rgba(0,0,0,.08);
+    select:focus, button:focus, .action-btn:focus {
+      outline: none;
+      border-color: var(--fineco-blue);
+      box-shadow: 0 0 0 2px rgba(0, 83, 159, 0.15);
     }
 
-    select.placeholder{
-      border-color:#d9b900;
-      background:linear-gradient(180deg, var(--yellow2), var(--yellow));
-      color:#5a4800;
+    button, .action-btn {
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.8rem;
+      white-space: nowrap;
     }
 
-    button{
-      cursor:pointer;
-      font-weight:700;
-      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    .btn-group-align {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 1.4rem;
+      flex-wrap: wrap;
     }
 
-    .btn-execute{
-      border-color:#9bd5da;
-      background:linear-gradient(180deg,#f2fbfc,#d6f0f2);
-      color:#0f4f54;
+    .btn-execute, .btn-save, .btn-menu-icon {
+      background-color: var(--fineco-blue-light);
+      border: 1.5px solid var(--fineco-blue);
+      color: var(--fineco-blue);
+    }
+    .btn-execute:hover, .btn-save:hover, .btn-menu-icon:hover {
+      background-color: var(--fineco-blue);
+      border-color: var(--fineco-blue);
+      color: #ffffff;
+      transform: translateY(-1px);
     }
 
-    .btn-save{
-      border-color:#d6b15f;
-      background:linear-gradient(180deg,#fff4dc,#f3cd7b);
-      color:#5a4310;
+    .btn-logout-icon {
+      background-color: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      color: #475569;
+    }
+    .btn-logout-icon:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+      color: #1e293b;
+      transform: translateY(-1px);
     }
 
-    .hidden{
-      display:none !important;
+    .hidden { display: none !important; }
+
+    .error {
+      padding: 10px 14px;
+      border: 1.5px solid #fca5a5;
+      border-radius: var(--radius);
+      background: #fef2f2;
+      color: #991b1b;
+      font-weight: 600;
+      font-size: 0.82rem;
+      margin-bottom: 0.85rem;
+      flex-shrink: 0;
     }
 
-    .summary{
-      display:flex;
-      align-items:flex-start;
-      flex-direction:column;
-      gap:10px;
-      margin-bottom:12px;
-    }
-
-    .summary .left,
-    .summary .right{
-      display:flex;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:8px;
-      width: 100%;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.4rem;
-      padding:.4rem .6rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:#fafafa;
-      color:var(--muted);
-      font-size:.82rem;
-    }
-
-    .pill strong{
-      color:var(--text);
-    }
-
-    .status{
-      color:var(--muted);
-      font-size:.85rem;
-    }
-
-    .error{
-      padding:10px;
-      border:1px solid #efc9cf;
-      border-radius:12px;
-      background:#fff6f8;
-      color:#a13544;
-      font-weight:700;
-      white-space:pre-wrap;
-    }
-
-    .legend{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-top:12px;
-    }
-
-    .legend .item{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      padding:.3rem .5rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:#fbfbfb;
-      font-size:.78rem;
-    }
-
-    .legend .dot{
-      display:inline-block;
-      width:8px;
-      height:8px;
-      border-radius:50%;
-    }
-
-    .dot-rain{ background:#2f7a2f; }
-    .dot-cum{ background:#7b2cbf; }
-
-    .legend .selected-column{
-      width:8px;
-      height:8px;
-      border:1px solid var(--yellow-border);
-      background:var(--yellow);
-    }
-
-    .table-wrap{
+    .table-wrap {
+      flex-grow: 1;
       overflow-x: auto;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
       -webkit-overflow-scrolling: touch;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:#fff;
-      max-height: 70vh;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #ffffff;
+      max-height: calc(100vh - 240px);
     }
 
-    table{
-      width:max-content;
-      min-width:100%;
-      border-collapse:collapse;
-      table-layout:auto;
-      font-size:.8rem;
-    }
-
-    thead th{
-      position:sticky;
-      top:0;
-      z-index:2;
-      padding:8px 4px;
-      border-bottom:1px solid var(--border);
-      background:#eaf7fb;
-      color:#16484e;
-      font-weight:800;
-      white-space: nowrap;
-    }
-
-    th,
-    td{
-      width:38px;
-      max-width:38px;
-      min-width:38px;
-      padding:6px 2px;
-      border-right:1px solid #e6e2da;
-      border-bottom:1px solid #e6e2da;
-      text-align:center;
-      vertical-align:middle;
-      overflow:hidden;
-    }
-
-    th:first-child,
-    td:first-child{
-      position:sticky;
-      left:0;
-      z-index:3;
-      width:170px;
-      max-width:170px;
-      min-width:170px;
-      background:#fff;
-      text-align:left;
-      padding-left: 6px;
-    }
-
-    thead th:first-child{
-      z-index:4;
-      background:#dff3f6;
-    }
-
-    .name-cell{
-      color:#163338;
-      font-weight:700;
-      text-align:left;
-      cursor: pointer;
-    }
-
-    .station-name{
-      display:block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color:#163338;
-      font-weight:700;
-    }
-
-    .selected-cumulative{
-      display:inline;
-      color:#6a1d86;
-      font-size:.7rem;
-      font-weight:700;
-    }
-
-    .rain-row td{ color:#124f1e; font-weight:700; }
-    .cum-row td{ color:#6a1d86; font-weight:700; }
-
-    .selected-column{
-      background:var(--yellow) !important;
-      color:#3b3000 !important;
-      border-left:1px solid var(--yellow-border) !important;
-      border-right:1px solid var(--yellow-border) !important;
-    }
-
-    thead .selected-column{
-      background:#f2d733 !important;
-      color:#3b3000 !important;
-    }
-
-    /* Desktop View Enhancements */
-    @media (min-width: 768px) {
-      .report-main{ padding: 1.5rem; }
-      .controls{ flex-direction: row; align-items: flex-end; flex-wrap: wrap; }
-      .field{ width: auto; min-width: 240px; }
-      select, button { width: auto; }
-      .summary{ flex-direction: row; justify-content: space-between; align-items: center; }
-      .summary .left, .summary .right{ width: auto; }
-      th:first-child, td:first-child{ width: 250px; max-width: 250px; min-width: 250px; }
-      th, td{ width: 42px; max-width: 42px; min-width: 42px; }
-      .station-name{ white-space: normal; }
+    @media (max-width: 980px) {
+      body {
+        padding: 0.5rem 0.5rem;
+        overflow: auto;
+      }
+      .report-main {
+        min-height: auto;
+        height: auto;
+      }
+      .header-container {
+        padding: 0.5rem 0.75rem;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .header-title-box h1 {
+        font-size: 0.95rem;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .field {
+        width: 100%;
+        min-width: 100%;
+      }
+      .btn-group-align {
+        margin-top: 0;
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .btn-group-align button, 
+      .btn-group-align a {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+      }
+      .panel-unified {
+        padding: 0.75rem 0.75rem;
+        overflow: visible;
+      }
+      .table-wrap {
+        max-height: 65vh;
+      }
     }
   </style>
 </head>
 
 <body>
   <main class="report-main">
-    <header class="report-header">
-      <div>
-        <h2 class="report-title" id="reportTitle">
-          Piogge Giornaliere/Cumulate
-        </h2>
-        <p class="report-subtitle" style="margin-top: 6px; font-size: 0.86rem; color: var(--muted); font-weight: 600;">
-          Alcolisti Micologici Analcolici TRIS - Rel. 01-GH-002 - Dati aggiornati al: <span id="updateDateValue">—</span>
-        </p>
-      </div>
-      <div style="width: 100%; max-width: 200px;">
+    <div class="header-container">
+      <div style="width: 160px;">
         <a href="index2.html" class="cartina-btn">🗺️ Mappa Stazioni</a>
       </div>
-    </header>
+      <div class="header-title-box">
+        <h1 id="dynamicReportSubtitle">Report Piogge Giornaliere e Cumulate</h1>
+      </div>
+      <div class="header-logo">
+        <img src="assets/css/logo_330.png" alt="Logo TRIS" onerror="this.onerror=null; this.src='logo_330.png';">
+      </div>
+    </div>
 
-    <section class="panel">
+    <section class="panel-unified">
       <div class="controls">
         <div class="field">
-          <label for="daySelect">
-            Seleziona Giorno (0:-30)
-          </label>
-          <select
-            id="daySelect"
-            class="placeholder"
-            aria-label="Seleziona giorno">
-            <option value="">
-              Seleziona un giorno
-            </option>
+          <label for="daySelect">Seleziona Giorno di Riferimento</label>
+          <select id="daySelect" aria-label="Seleziona giorno">
+            <option value="">Caricamento date...</option>
           </select>
+          <span id="rifAttivoText" class="sub-indicator">Rif. attivo: —</span>
         </div>
 
         <div class="field">
-          <button
-            id="executeBtn"
-            class="btn-execute"
-            type="button">
-            Esegui
-          </button>
+          <label for="sortSelect">Criterio di Ordinamento</label>
+          <select id="sortSelect" aria-label="Ordinamento stazioni">
+            <option value="rain_desc">Pioggia decrescente (sul giorno)</option>
+            <option value="id_asc" selected>ID Stazione</option>
+            <option value="geo">Zona Geografica</option>
+          </select>
+          <span id="ordAttivoText" class="sub-indicator">Ord. attivo: ID Stazione</span>
         </div>
 
-        <div
-          class="field hidden"
-          id="savePdfField">
-          <button
-            id="savePdfBtn"
-            class="btn-save"
-            type="button">
-            Salva PDF
-          </button>
-        </div>
-      </div>
-
-      <div class="legend">
-        <span class="item">
-          <span class="dot dot-rain"></span>
-          Riga superiore: pioggia giornaliera
-        </span>
-        <span class="item">
-          <span class="dot dot-cum"></span>
-          Riga inferiore: cumulativo retrogrado
-        </span>
-        <span class="item">
-          Colonne: -30, -29, ... -1, 0
-        </span>
-        <span class="item">
-          <span class="selected-column"></span>
-          Giorno selezionato
-        </span>
-      </div>
-    </section>
-
-    <section
-      class="panel"
-      style="margin-top:1rem">
-      <div class="summary">
-        <div class="left">
-          <span class="pill">
-            Stazioni:
-            <strong id="stationsCount">0</strong>
-          </span>
-          <span class="pill">
-            Righe meteo:
-            <strong id="recordsCount">0</strong>
-          </span>
-          <span class="pill">
-            Ordine su:
-            <strong id="selectedDayLabel">—</strong>
-          </span>
+        <div class="btn-group-align">
+          <button id="executeBtn" class="btn-execute" type="button">&#9658; Esegui</button>
+          <div id="savePdfField" class="hidden" style="flex: 1;">
+            <button id="savePdfBtn" class="btn-save" type="button" style="width: 100%;">&#128196; Genera Report</button>
+          </div>
         </div>
 
-        <div
-          class="right status"
-          id="statusText">
-          Seleziona un giorno e premi Esegui.
+        <div class="btn-group-align" style="margin-left: auto;">
+          <a href="menu.php" class="action-btn btn-menu-icon">&#128506; Menù principale</a>
+          <a href="logout.php" class="action-btn btn-logout-icon">&#128682; Logout - Esci</a>
         </div>
       </div>
 
-      <div
-        id="errorBox"
-        class="error"
-        style="display:none">
-      </div>
+      <div id="errorBox" class="error" style="display:none"></div>
 
       <div class="table-wrap">
         <table id="reportTable">
@@ -486,119 +379,6 @@
     </section>
   </main>
 
-  <!-- Riferimento aggiornato allo script report_piogge2.js -->
   <script src="report_piogge2.js" defer></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const statusEl = document.getElementById('statusText');
-      if (statusEl) {
-        const observer = new MutationObserver(() => {
-          if (statusEl.textContent.includes("Pronto") || statusEl.textContent.includes("record")) {
-            statusEl.textContent = "Seleziona un giorno e premi Esegui.";
-          }
-        });
-        observer.observe(statusEl, { childList: true, characterData: true, subtree: true });
-      }
-
-      function parseCustomDate(str) {
-        if (!str) return null;
-        str = str.trim();
-        let isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/);
-        if (isoMatch) {
-          return new Date(isoMatch[1], isoMatch[2]-1, isoMatch[3], isoMatch[4]||0, isoMatch[5]||0, isoMatch[6]||0);
-        }
-        let itMatch = str.match(/^(\d{2})\/(\d{2})\/(\d{4})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?/);
-        if (itMatch) {
-          return new Date(itMatch[3], itMatch[2]-1, itMatch[1], itMatch[4]||0, itMatch[5]||0, itMatch[6]||0);
-        }
-        let d = new Date(str);
-        return isNaN(d.getTime()) ? null : d;
-      }
-
-      Papa.parse("dati_meteo_30g.csv", {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          if (results.data && results.data.length > 0) {
-            let maxDateObj = null;
-            let maxDateOriginalStr = "";
-
-            results.data.forEach(row => {
-              let dataRil = "";
-              for (let key in row) {
-                const lKey = key.trim().toLowerCase();
-                if (lKey === 'datarilevamento' || lKey === 'data_rilevamento') {
-                  if (row[key]) {
-                    dataRil = String(row[key]).trim();
-                    break;
-                  }
-                }
-              }
-              if (!dataRil) {
-                dataRil = String(row.DataRilevamento || row.data_rilevamento || row.Data || row.data || "").trim();
-              }
-
-              if (dataRil) {
-                let parsed = parseCustomDate(dataRil);
-                if (parsed && (!maxDateObj || parsed > maxDateObj)) {
-                  maxDateObj = parsed;
-                  maxDateOriginalStr = dataRil;
-                }
-              }
-            });
-
-            if (maxDateObj) {
-              const pad = (n) => String(n).padStart(2, '0');
-              const dd = pad(maxDateObj.getDate());
-              const mm = pad(maxDateObj.getMonth() + 1);
-              const yyyy = maxDateObj.getFullYear();
-              const hh = pad(maxDateObj.getHours());
-              const min = pad(maxDateObj.getMinutes());
-              
-              document.getElementById("updateDateValue").textContent = `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-            } else if (maxDateOriginalStr) {
-              document.getElementById("updateDateValue").textContent = maxDateOriginalStr;
-            }
-
-            document.getElementById("headerRecordsCount").textContent = results.data.length;
-            document.getElementById("recordsCount").textContent = results.data.length;
-          }
-        }
-      });
-
-      Papa.parse("stazioni_meteo.csv", {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          if (results.data && results.data.length > 0) {
-            const stations = new Set();
-            results.data.forEach(row => {
-              let stn = "";
-              for (let key in row) {
-                const lKey = key.trim().toLowerCase();
-                if (lKey.includes('stazione') || lKey.includes('station') || lKey.includes('nome') || lKey.includes('id') || lKey.includes('codice')) {
-                  if (row[key]) {
-                    stn = row[key];
-                    break;
-                  }
-                }
-              }
-              if (!stn && Object.keys(row).length > 0) {
-                stn = row[Object.keys(row)[0]];
-              }
-              if (stn) {
-                stations.add(String(stn).trim());
-              }
-            });
-            const stnTotal = stations.size > 0 ? stations.size : results.data.length;
-            document.getElementById("headerStationsCount").textContent = stnTotal;
-            document.getElementById("stationsCount").textContent = stnTotal;
-          }
-        }
-      });
-    });
-  </script>
 </body>
 </html>

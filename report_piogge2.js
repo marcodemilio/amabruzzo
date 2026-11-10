@@ -1,10 +1,9 @@
 (() => {
   const WEATHER_CSV = './dati_meteo_30g.csv';
   const STATIONS_CSV = './dati_stazioni_30g.csv';
-  const RELEASE = 'Rel. 01-GH-004';
+  const RELEASE = 'Rel. 02-WB-014';
 
   const els = {
-    app: document.getElementById('app'),
     tableHead: document.getElementById('tableHead'),
     tableBody: document.getElementById('tableBody'),
     daySelect: document.getElementById('daySelect'),
@@ -12,252 +11,172 @@
     executeBtn: document.getElementById('executeBtn'),
     savePdfBtn: document.getElementById('savePdfBtn'),
     savePdfField: document.getElementById('savePdfField'),
-    stationsCount: document.getElementById('stationsCount'),
-    recordsCount: document.getElementById('recordsCount'),
-    selectedDayLabel: document.getElementById('selectedDayLabel'),
-    statusText: document.getElementById('statusText'),
+    rifAttivoText: document.getElementById('rifAttivoText'),
+    ordAttivoText: document.getElementById('ordAttivoText'),
     errorBox: document.getElementById('errorBox'),
-    lastUpdate: document.getElementById('lastUpdate'),
-    sidebarToggleInside: document.getElementById('sidebarToggleInside'),
-    sidebarToggleMini: document.getElementById('sidebarToggleMini')
+    dynamicReportSubtitle: document.getElementById('dynamicReportSubtitle')
   };
 
   let weatherRawData = [];
   let stationsMetaMap = new Map();
   let uniqueDates = [];
-  let stationMap = new Map();
+  let stationMatrix = new Map();
   let selectedDateIndex = 0;
 
-  if (!document.getElementById('offlineStyle')) {
+  if (!document.getElementById('professionalReportStyle')) {
     const style = document.createElement('style');
-    style.id = 'offlineStyle';
+    style.id = 'professionalReportStyle';
     style.textContent = `
-      .offline-cell {
-        background-color: transparent !important;
-        color: #dc2626 !important;
-        font-weight: 700 !important;
-        font-style: normal !important;
+      .offline-cell { 
+        background-color: #f1f5f9 !important; 
+        color: #64748b !important; 
+        font-weight: 600 !important; 
+        font-style: italic;
       }
-      .selected-column {
-        background-color: #7dd3fc !important;
-        color: #000000 !important;
+      .selected-column { 
+        background-color: #e6f0fa !important; 
+        color: #00539F !important; 
+        font-weight: 600;
       }
-      thead th.selected-column {
-        background-color: #7dd3fc !important;
-        color: #00008B !important;
-        font-weight: bold !important;
+      thead th.selected-column { 
+        background-color: #d0e4f7 !important; 
+        color: #00539F !important; 
+        font-weight: 700 !important; 
       }
-      td.offline-cell.selected-column, td.selected-column.offline-cell {
-        background-color: #7dd3fc !important;
-        color: #dc2626 !important;
+      table { 
+        border-collapse: separate !important; 
+        border-spacing: 0 !important; 
+        width: 100% !important; 
+        font-family: 'Figtree', system-ui, -apple-system, sans-serif;
       }
-      .top-scroll-container {
-        display: none;
+      th, td { 
+        white-space: nowrap !important; 
+        padding: 4px 8px !important; 
+        text-align: center; 
+        border-right: 1px solid #e2e8f0 !important; 
+        border-bottom: 1px solid #e2e8f0 !important; 
+        font-size: 0.76rem;
+        color: #111827;
+        font-weight: 500;
       }
-      .table-scroll-container {
-        max-height: 68vh !important;
-        overflow-y: auto !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        position: relative !important;
-        border: 2px solid #64748b !important;
-        border-radius: 6px;
-        background-color: #ffffff;
+      thead th { 
+        position: sticky !important; 
+        top: 0 !important; 
+        z-index: 20 !important; 
+        background-color: #f8fafc !important; 
+        color: #111827 !important; 
+        font-weight: 700;
+        border-bottom: 2px solid #d0d7de !important;
+        font-size: 0.76rem;
+        padding: 5px 8px !important;
       }
-      table {
-        border-collapse: separate !important;
-        border-spacing: 0 !important;
-        width: 100% !important;
-        table-layout: auto !important;
+      .name-cell { 
+        position: sticky !important; 
+        left: 0 !important; 
+        z-index: 10 !important; 
+        background-color: #ffffff !important; 
+        cursor: pointer; 
+        width: 220px !important; 
+        min-width: 220px !important; 
+        text-align: left !important; 
+        padding-left: 10px !important; 
+        border-right: 2px solid #d0d7de !important; 
+        font-weight: 700;
+        color: #111827;
+        font-size: 0.76rem;
       }
-      th, td {
-        white-space: nowrap !important;
-        padding: 6px 10px !important;
-        text-align: center;
-        border-right: 1px solid #94a3b8 !important;
-        border-bottom: 1px solid #94a3b8 !important;
+      .name-cell:hover { background-color: #e6f0fa !important; color: #00539F !important; }
+      thead th.name-cell { z-index: 30 !important; background-color: #f8fafc !important; }
+      
+      .rain-row td { background-color: #ffffff; }
+      .rain-row:hover td { background-color: #f8fafc; }
+      .rain-row:hover td.name-cell { background-color: #f8fafc !important; }
+
+      .cum-row td { 
+        background-color: #f8fafc !important; 
+        font-weight: 700 !important; 
+        color: #334155 !important; 
+        border-top: 1px solid #e2e8f0 !important; 
+        border-bottom: 2px solid #d0d7de !important; 
       }
-      th:not(.name-cell), td:not(.name-cell) {
-        min-width: 68px !important;
+      .cum-row td.name-cell {
+        color: #475569 !important;
+        background-color: #f8fafc !important;
       }
-      thead th {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 20 !important;
-        background-color: #00FFFF !important;
-        color: #00008B !important;
-        box-shadow: none !important;
-        border-bottom: 2px solid #64748b !important;
-      }
-      .name-cell {
-        position: sticky !important;
-        left: 0 !important;
-        z-index: 10 !important;
-        background-color: #ffffff !important;
-        box-shadow: none !important;
-        cursor: pointer;
-        width: 220px !important;
-        min-width: 220px !important;
-        max-width: 220px !important;
-        text-align: left !important;
-        padding-left: 12px !important;
-        border-right: 2px solid #64748b !important;
-      }
-      .name-cell:hover {
-        background-color: #7dd3fc !important;
-      }
-      thead th.name-cell {
-        z-index: 30 !important;
-        background-color: #00FFFF !important;
-        color: #00008B !important;
-        cursor: default;
-        width: 220px !important;
-        min-width: 220px !important;
-        max-width: 220px !important;
-        text-align: left !important;
-        box-shadow: none !important;
-        border-right: 2px solid #64748b !important;
-      }
-      .rain-row td.name-cell { background-color: #ffffff !important; }
-      .cum-row td.name-cell { 
-        background-color: #cbd5e1 !important;
-        font-weight: bold !important;
-        font-size: 1rem !important;
-        color: #00008B !important;
-        border-top: 2px solid #64748b !important;
-        border-bottom: 2px solid #64748b !important;
-      }
-      .cum-row td {
-        background-color: #cbd5e1 !important;
-        font-weight: 700 !important;
-        font-size: 0.9rem !important;
-        color: #00008B !important;
-        border-top: 2px solid #64748b !important;
-        border-bottom: 2px solid #64748b !important;
-      }
-      .cum-row td.selected-column {
-        background-color: #7dd3fc !important;
-        color: #00008B !important;
-      }
+
       .station-modal-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0, 0, 0, 0.6);
-        display: flex; align-items: center; justify-content: center;
-        z-index: 9999;
-        padding: 12px;
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(17, 24, 39, 0.6); display: flex; align-items: center; justify-content: center;
+        z-index: 9999; padding: 16px; backdrop-filter: blur(2px);
       }
       .station-modal-box {
-        background: #ffffff;
-        padding: 16px;
-        border-radius: 12px;
-        width: 100%;
-        max-width: 500px;
-        max-height: 85vh;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        font-family: inherit;
+        background: #ffffff; padding: 20px; border-radius: 0.375rem; width: 100%; max-width: 520px; max-height: 85vh;
+        display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        font-family: inherit; border: 1px solid #d0d7de;
       }
       .station-modal-box h3 {
-        margin-top: 0;
-        font-size: 1.1rem;
-        color: #00008B;
-        border-bottom: 2px solid #00FFFF;
-        padding-bottom: 6px;
+        margin-top: 0; font-size: 1.15rem; color: #00539F; border-bottom: 2px solid #00539F; padding-bottom: 8px; font-weight: 800; text-transform: uppercase;
       }
-      .station-modal-content {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        margin-top: 8px;
-        margin-bottom: 12px;
-      }
-      .station-modal-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.8rem;
-        margin-top: 6px;
-      }
-      .station-modal-table th, .station-modal-table td {
-        border: 1px solid #94a3b8;
-        padding: 6px 4px;
-        text-align: center;
-      }
-      .station-modal-table th {
-        background-color: #f1f5f9;
-        color: #1e293b;
-      }
+      .station-modal-content { overflow-y: auto; -webkit-overflow-scrolling: touch; margin-top: 8px; margin-bottom: 16px; }
+      .station-modal-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 4px; }
+      .station-modal-table th, .station-modal-table td { border: 1px solid #d0d7de; padding: 6px 6px; text-align: center; color: #111827; }
+      .station-modal-table th { background-color: #f8fafc; color: #111827; font-weight: 700; }
       .station-modal-close {
-        background: #00008B;
-        color: #ffffff;
-        border: none;
-        padding: 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        width: 100%;
-        font-size: 1rem;
+        background: #00539F; color: #ffffff; border: none; padding: 10px; border-radius: 0.375rem;
+        cursor: pointer; font-weight: 700; width: 100%; font-size: 0.9rem; text-transform: uppercase;
       }
+      .station-modal-close:hover { background: #003d78; }
     `;
     document.head.appendChild(style);
   }
 
-  function ensureTableWrapper() {
-    const tableEl = document.querySelector('table');
-    if (tableEl && !tableEl.parentElement.classList.contains('table-scroll-container')) {
-      const parent = tableEl.parentNode;
-      const wrapper = document.createElement('div');
-      wrapper.className = 'table-scroll-container';
-      wrapper.id = 'mainTableScrollContainer';
-      parent.insertBefore(wrapper, tableEl);
-      wrapper.appendChild(tableEl);
+  function updateActiveIndicators() {
+    const selDateObj = uniqueDates[selectedDateIndex];
+    const dateStr = selDateObj ? selDateObj.display : '—';
+    if (els.rifAttivoText) {
+      els.rifAttivoText.textContent = `Rif. attivo: ${dateStr}`;
+    }
+
+    if (els.ordAttivoText && els.sortSelect) {
+      const opt = els.sortSelect.options[els.sortSelect.selectedIndex];
+      const sortText = opt ? opt.text : 'ID Stazione';
+      els.ordAttivoText.textContent = `Ord. attivo: ${sortText}`;
+    }
+
+    if (els.savePdfBtn) {
+      els.savePdfBtn.innerHTML = '&#128196; Genera Report';
     }
   }
 
   function showStationPopup(stName) {
-    const meta = getStationMetaByName(stName) || { name: stName, id: 'N/D', ref: 'N/D', code: 'N/D', lat: 'N/D', long: 'N/D', zona: 'N/D' };
-    const rawStData = stationMap.get(stName);
-
+    const rawStData = stationMatrix.get(stName);
     let rowsHtml = '';
     if (uniqueDates.length > 0 && rawStData) {
       uniqueDates.forEach((d, i) => {
         const dayRecord = rawStData.get(d.display);
         const rain = dayRecord ? (dayRecord.offline ? 'OFF' : `${dayRecord.rain.toFixed(1)} mm`) : '-';
-        const tmin = dayRecord && !dayRecord.offline && dayRecord.tmin !== null ? `${dayRecord.tmin.toFixed(1)} °C` : '-';
-        const tmax = dayRecord && !dayRecord.offline && dayRecord.tmax !== null ? `${dayRecord.tmax.toFixed(1)} °C` : '-';
-        const tmed = dayRecord && !dayRecord.offline && dayRecord.tmed !== null ? `${dayRecord.tmed.toFixed(1)} °C` : '-';
-
         rowsHtml += `
           <tr>
             <td>${d.display} (-${i})</td>
-            <td>${rain}</td>
-            <td>${tmin}</td>
-            <td>${tmax}</td>
-            <td>${tmed}</td>
+            <td><strong>${rain}</strong></td>
           </tr>
         `;
       });
     } else {
-      rowsHtml = `<tr><td colspan="5">Nessun dato dettagliato disponibile.</td></tr>`;
+      rowsHtml = `<tr><td colspan="2">Nessun dato dettagliato disponibile.</td></tr>`;
     }
 
     const overlay = document.createElement('div');
     overlay.className = 'station-modal-overlay';
     overlay.innerHTML = `
       <div class="station-modal-box">
-        <h3>${meta.name || stName}</h3>
-        <p style="margin:4px 0; font-size:0.8rem; color:#475569;">
-          <strong>ID:</strong> ${meta.id ?? 'N/D'} | <strong>ZonaGeo:</strong> ${meta.zona ?? 'N/D'}
-        </p>
+        <h3>${stName}</h3>
         <div class="station-modal-content">
           <table class="station-modal-table">
             <thead>
               <tr>
                 <th>Data</th>
-                <th>Pioggia</th>
-                <th>Min</th>
-                <th>Max</th>
-                <th>Media</th>
+                <th>Pioggia Giornaliera</th>
               </tr>
             </thead>
             <tbody>
@@ -265,7 +184,7 @@
             </tbody>
           </table>
         </div>
-        <button class="station-modal-close" id="closeModalBtn">Chiudi</button>
+        <button class="station-modal-close" id="closeModalBtn">Chiudi Finestra</button>
       </div>
     `;
 
@@ -277,28 +196,6 @@
     });
   }
 
-  function delimiter(text) {
-    const candidates = [';', ',', '\t', '|'];
-    return candidates.map(character => ({
-      character,
-      count: (text.match(new RegExp('\\' + character, 'g')) || []).length
-    })).sort((a, b) => b.count - a.count)[0].character;
-  }
-
-  function parseCsv(text) {
-    if (typeof Papa === 'undefined') {
-      throw new Error("Libreria PapaParse non trovata.");
-    }
-    return Papa.parse(text, {
-      header: true,
-      skipEmptyLines: true,
-      dynamicTyping: false,
-      delimiter: delimiter(text),
-      transformHeader: header => header ? header.trim() : '',
-      transform: value => typeof value === 'string' ? value.trim() : value
-    });
-  }
-
   function setError(message) {
     if (els.errorBox) {
       els.errorBox.style.display = message ? 'block' : 'none';
@@ -306,29 +203,23 @@
     }
   }
 
-  function toggleSidebar() {
-    if (els.app) els.app.classList.toggle('sidebar-collapsed');
-  }
-
-  function normalizeKey(str) {
-    return String(str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-  }
-
   function parseDateStr(strVal) {
     if (!strVal) return null;
     const str = String(strVal).trim();
-    const [datePart] = str.split(' ');
-
-    if (datePart.includes('/')) {
-      const [d, m, y] = datePart.split('/').map(Number);
-      if (!d || !m || !y) return null;
-      return new Date(y, m - 1, d);
+    const [datePart] = str.split('T')[0].split(' ');
+    
+    if (datePart && datePart.includes('/')) {
+      const parts = datePart.split('/').map(Number);
+      if (parts.length === 3) {
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+      }
     }
-    if (datePart.includes('-')) {
+    if (datePart && datePart.includes('-')) {
       const parts = datePart.split('-').map(Number);
-      if (parts[0] > 1000) {
-        return new Date(parts[0], parts[1] - 1, parts[2]);
-      } else {
+      if (parts.length === 3) {
+        if (parts[0] > 1000) {
+          return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
         return new Date(parts[2], parts[1] - 1, parts[0]);
       }
     }
@@ -343,148 +234,63 @@
     return `${d}/${m}/${y}`;
   }
 
-  async function fetchCsvFile(url) {
-    try {
-      const res = await fetch(`${url}?v=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`File non trovato o errore HTTP ${res.status}`);
-      return await res.text();
-    } catch (err) {
-      if (window.location.protocol === 'file:') {
-        throw new Error(`I file CSV non possono essere letti tramite file://. Utilizzare un web server locale.`);
-      }
-      throw err;
-    }
-  }
+  const fetchText = async path => {
+    const response = await fetch(`${path}?v=${Date.now()}`, { cache:'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status} per ${path}`);
+    return response.text();
+  };
 
-  function getRowValue(row, possibleKeys) {
-    if (!row) return null;
+  const delimiter = text => {
+    return [';',',','\t','|'].map(character => ({
+      character,
+      count:(text.split(/\r?\n/).slice(0,10).join('\n').match(new RegExp('\\' + character, 'g')) || []).length
+    })).sort((a,b) => b.count - a.count)[0].character;
+  };
+
+  const num = value => {
+    const result = parseFloat(String(value ?? '').replace(',','.').trim());
+    return Number.isFinite(result) ? result : 0;
+  };
+
+  const get = (row, ...keys) => {
+    if (!row) return '';
     const rowKeys = Object.keys(row);
-    for (const pKey of possibleKeys) {
-      const targetNorm = normalizeKey(pKey);
-      const foundKey = rowKeys.find(k => normalizeKey(k) === targetNorm);
-      if (foundKey && row[foundKey] !== undefined && row[foundKey] !== null && String(row[foundKey]).trim() !== '') {
-        return row[foundKey];
+    for (const key of keys) {
+      const cleanKey = key.toLowerCase().replace(/[\s_]/g, '');
+      const found = rowKeys.find(k => k.toLowerCase().replace(/[\s_]/g, '') === cleanKey);
+      if (found && row[found] !== undefined && row[found] !== null && String(row[found]).trim() !== '') {
+        return String(row[found]).trim();
       }
     }
-    return null;
-  }
+    return '';
+  };
 
-  function ensureSortSelect() {
-    let sortSelect = document.getElementById('sortSelect');
-    if (!sortSelect) {
-      const daySelectField = els.daySelect ? els.daySelect.closest('.field') : null;
-      if (daySelectField && daySelectField.parentNode) {
-        const fieldDiv = document.createElement('div');
-        fieldDiv.className = 'field';
-        fieldDiv.innerHTML = `
-          <label for="sortSelect">Ordinamento</label>
-          <select id="sortSelect">
-            <option value="rain_desc">Pioggia decrescente</option>
-            <option value="id_asc" selected>Id Stazione</option>
-            <option value="geo">ZonaGeo</option>
-          </select>
-        `;
-        daySelectField.parentNode.insertBefore(fieldDiv, daySelectField.nextSibling);
-        sortSelect = document.getElementById('sortSelect');
-      }
-    }
-    els.sortSelect = sortSelect;
-    if (els.sortSelect) {
-      els.sortSelect.addEventListener('change', () => renderMatrixTable());
-    }
-    if (els.savePdfBtn) els.savePdfBtn.textContent = 'Genera PDF';
-  }
+  function processData(stationsRows, weatherRows) {
+    const stationsMap = new Map();
+    stationsMetaMap.clear();
 
-  function processStationsMeta(stationsRows, weatherRows) {
-    const map = new Map();
+    stationsRows.forEach(r => {
+      const id = String(get(r, 'Id', 'ID', 'IdStazione') || '').trim();
+      const name = String(get(r, 'StazioneMeteo', 'Stazione', 'Nome', 'Name') || '').trim();
+      const lat = num(get(r, 'Lat', 'Latitudine'));
+      const lon = num(get(r, 'Long', 'Lon', 'Longitude'));
 
-    if (stationsRows && stationsRows.length > 0) {
-      stationsRows.forEach(r => {
-        const id = parseInt(getRowValue(r, ['id', 'idstazione', 'codice', 'codicestazione']), 10) || null;
-        // Cerca esplicitamente le varianti per il nome stazione (inclusa la combinazione stazionemeteo)
-        const name = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione', 'descrizione']);
-        const ref = getRowValue(r, ['riferimento']);
-        const code = getRowValue(r, ['codicestazione', 'codice']);
-        const lat = parseFloat(getRowValue(r, ['lat', 'latitude'])) || null;
-        const long = parseFloat(getRowValue(r, ['long', 'longitude', 'lng'])) || null;
-        const zona = getRowValue(r, ['zonageo', 'zona_geo', 'zona', 'zonageografica', 'ordinegeo', 'ordine_geo', 'area']);
-
-        const displayName = name || ref || code || (id ? `Stazione #${id}` : null);
-        if (!displayName) return;
-
-        const stationInfo = { id, name: displayName, ref, code, lat, long, zona };
-        [id, name, ref, code, displayName].forEach(val => {
-          if (val !== null && val !== undefined) {
-            const key = normalizeKey(val);
-            if (key) map.set(key, stationInfo);
-          }
+      if (id && name) {
+        stationsMap.set(id, name);
+        stationsMetaMap.set(name, {
+          id: parseInt(id, 10) || id,
+          lat: Number.isFinite(lat) ? lat : 0,
+          lon: Number.isFinite(lon) ? lon : 0,
+          zone: (lat >= 42.10) ? 0 : 1
         });
-      });
-    }
+      }
+    });
 
-    if (weatherRows && weatherRows.length > 0) {
-      weatherRows.forEach(r => {
-        const id = parseInt(getRowValue(r, ['id', 'idstazione', 'codice', 'codicestazione']), 10) || null;
-        const name = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione', 'descrizione']);
-        const ref = getRowValue(r, ['riferimento']);
-        const code = getRowValue(r, ['codicestazione', 'codice']);
-        const lat = parseFloat(getRowValue(r, ['lat', 'latitude'])) || null;
-        const long = parseFloat(getRowValue(r, ['long', 'longitude', 'lng'])) || null;
-        const zona = getRowValue(r, ['zonageo', 'zona_geo', 'zona', 'zonageografica', 'ordinegeo', 'ordine_geo', 'area']);
-
-        const displayName = name || ref || code || (id ? `Stazione #${id}` : null);
-        if (!displayName) return;
-
-        const existingKey = normalizeKey(displayName);
-        const existing = map.get(existingKey) || (id ? map.get(normalizeKey(id)) : null);
-
-        if (!existing) {
-          const stationInfo = { id, name: displayName, ref, code, lat, long, zona };
-          [id, name, ref, code, displayName].forEach(val => {
-            if (val !== null && val !== undefined) {
-              const key = normalizeKey(val);
-              if (key && !map.has(key)) map.set(key, stationInfo);
-            }
-          });
-        } else {
-          if (!existing.zona && zona) existing.zona = zona;
-          if (existing.name.startsWith('Stazione #') && name) existing.name = name;
-        }
-      });
-    }
-
-    return map;
-  }
-
-  function getStationMetaByName(stName) {
-    return stationsMetaMap.get(normalizeKey(stName)) || null;
-  }
-
-  function resolveStationName(rawVal, row) {
-    if (!rawVal) {
-      // Prova a recuperare direttamente dalla riga se l'ID manca ma c'è il nome
-      const directName = getRowValue(row, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione']);
-      if (directName) return directName;
-      return 'Stazione Sconosciuta';
-    }
-    const key = normalizeKey(rawVal);
-    if (stationsMetaMap.has(key)) return stationsMetaMap.get(key).name;
-    
-    const rowId = getRowValue(row, ['id', 'idstazione', 'codice', 'codicestazione']);
-    if (rowId !== null && stationsMetaMap.has(normalizeKey(rowId))) {
-      return stationsMetaMap.get(normalizeKey(rowId)).name;
-    }
-    
-    // Se non trovato nelle mappe, restituisce il valore pulito se è una stringa descrittiva
-    return String(rawVal).trim();
-  }
-
-  function processWeatherData(rows) {
     const dateMap = new Map();
     const stations = new Map();
 
-    rows.forEach(r => {
-      const rawDate = getRowValue(r, ['datarilevamento', 'data', 'dataril', 'date', 'giorno']);
+    weatherRows.forEach(r => {
+      const rawDate = get(r, 'DataRilevamento', 'Data', 'data');
       const dObj = parseDateStr(rawDate);
       if (!dObj) return;
 
@@ -495,47 +301,19 @@
         dateMap.set(timeKey, { time: timeKey, dateObj: dObj, display: dateStr });
       }
 
-      // Estrae prioritariamente il nome della stazione dal campo dedicato nel meteo o nei metadati
-      const rawStId = getRowValue(r, ['stazionemeteo', 'stazione', 'nome', 'nomestazione', 'nome_stazione']) || 
-                      getRowValue(r, ['idstazione', 'codicestazione', 'id']);
-      const stName = resolveStationName(rawStId, r);
-      
-      const rawRain = getRowValue(r, ['pioggiagiornaliera', 'pioggia', 'precipitazione', 'rain', 'mm', 'precipitazioni']);
-      const rainVal = parseFloat(String(rawRain || '0').replace(',', '.')) || 0;
+      const stId = String(get(r, 'Id', 'ID', 'id_stazione') || '').trim();
+      const stName = stationsMap.get(stId) || get(r, 'StazioneMeteo', 'Stazione') || `Stazione #${stId}`;
 
-      const rawTMin = getRowValue(r, ['tempmin', 'temperaturaminima', 'tmin', 'minima']);
-      const tMinVal = rawTMin !== null ? parseFloat(String(rawTMin).replace(',', '.')) : null;
-
-      const rawTMax = getRowValue(r, ['tempmax', 'temperaturamassima', 'tmax', 'massima']);
-      const tMaxVal = rawTMax !== null ? parseFloat(String(rawTMax).replace(',', '.')) : null;
-
-      const rawTMed = getRowValue(r, ['tempmed', 'temperaturamedia', 'tmed', 'media', 'temperatura']);
-      const tMedVal = rawTMed !== null ? parseFloat(String(rawTMed).replace(',', '.')) : null;
-
-      const rawOffline = getRowValue(r, ['offline', 'stato', 'status', 'online', 'funzionante']);
-      let isOffline = false;
-      if (rawOffline !== null && rawOffline !== undefined) {
-        if (['true', '1', 'off', 'offline', 'no', 'guasto', 'nd'].includes(String(rawOffline).toLowerCase().trim())) {
-          isOffline = true;
-        }
-      }
-      const rawRainText = String(rawRain || '').toUpperCase();
-      if (rawRainText.includes('N/D') || rawRainText.includes('OFF') || rawRainText === '-') {
-        isOffline = true;
-      }
+      const rainVal = num(get(r, 'PioggiaGiornaliera', 'pioggia_totale'));
+      const statoStr = String(get(r, 'Stato', 'stato') || 'online').trim().toLowerCase();
+      const isOffline = (statoStr === 'offline' || statoStr === '0' || statoStr === 'false' || statoStr === 'off');
 
       if (!stations.has(stName)) stations.set(stName, new Map());
-      stations.get(stName).set(dateStr, { 
-        rain: rainVal, 
-        tmin: isNaN(tMinVal) ? null : tMinVal, 
-        tmax: isNaN(tMaxVal) ? null : tMaxVal, 
-        tmed: isNaN(tMedVal) ? null : tMedVal, 
-        offline: isOffline 
-      });
+      stations.get(stName).set(dateStr, { rain: rainVal, offline: isOffline });
     });
 
     uniqueDates = Array.from(dateMap.values()).sort((a, b) => b.time - a.time);
-    stationMap = stations;
+    stationMatrix = stations;
   }
 
   function populateDaySelect() {
@@ -544,33 +322,27 @@
     uniqueDates.forEach((d, idx) => {
       const opt = document.createElement('option');
       opt.value = idx;
-      opt.textContent = `${d.display} (-${idx})`;
+      opt.textContent = `${d.display} (giorno -${idx})`;
       els.daySelect.appendChild(opt);
     });
-    els.daySelect.classList.remove('placeholder');
     
-    els.daySelect.addEventListener('change', () => {
-      if (els.daySelect.value !== '') {
-        selectedDateIndex = parseInt(els.daySelect.value, 10);
-        renderMatrixTable();
-      }
-    });
-  }
-
-  function cleanStationName(stName) {
-    return String(stName || '').replace(/\s*\(gg\)/gi, '').trim();
+    if (uniqueDates.length > 0 && els.daySelect.value === "") {
+      els.daySelect.value = "0";
+      selectedDateIndex = 0;
+    }
   }
 
   function getSortedStationsList(visibleDates) {
     const sortMode = els.sortSelect ? els.sortSelect.value : 'id_asc';
-    const stationsList = Array.from(stationMap.entries());
-    const targetDateStr = visibleDates && visibleDates.length > 0 ? visibleDates[0].display : null;
+    const stationsList = Array.from(stationMatrix.entries());
+    const targetDateObj = visibleDates && visibleDates[selectedDateIndex] ? visibleDates[selectedDateIndex] : (visibleDates ? visibleDates[0] : null);
+    const targetDateStr = targetDateObj ? targetDateObj.display : null;
 
     stationsList.sort((a, b) => {
-      const nameA = cleanStationName(a[0]);
-      const nameB = cleanStationName(b[0]);
-      const metaA = getStationMetaByName(a[0]);
-      const metaB = getStationMetaByName(b[0]);
+      const nameA = a[0];
+      const nameB = b[0];
+      const metaA = stationsMetaMap.get(nameA) || { id: 0, zone: 0, lat: 0 };
+      const metaB = stationsMetaMap.get(nameB) || { id: 0, zone: 0, lat: 0 };
 
       if (sortMode === 'rain_desc') {
         const dataA = targetDateStr ? a[1].get(targetDateStr) : null;
@@ -579,20 +351,15 @@
         const rainB = (dataB && !dataB.offline) ? dataB.rain : 0;
         if (rainB !== rainA) return rainB - rainA;
         return nameA.localeCompare(nameB);
-      } else if (sortMode === 'geo') {
-        const zonaA = metaA?.zona ? String(metaA.zona).trim() : '';
-        const zonaB = metaB?.zona ? String(metaB.zona).trim() : '';
-        if (zonaA !== zonaB) {
-          if (!zonaA) return 1;
-          if (!zonaB) return -1;
-          return zonaA.localeCompare(zonaB, 'it', { sensitivity: 'base' });
-        }
-        return nameA.localeCompare(nameB);
-      } else {
-        const idA = metaA?.id ?? 999999;
-        const idB = metaB?.id ?? 999999;
-        if (idA !== idB) return idA - idB;
-        return nameA.localeCompare(nameB);
+      } 
+      else if (sortMode === 'geo') {
+        if (metaA.zone !== metaB.zone) return metaA.zone - metaB.zone;
+        if (metaB.lat !== metaA.lat) return metaB.lat - metaA.lat;
+        return metaA.id - metaB.id;
+      } 
+      else {
+        if (metaA.id !== metaB.id) return metaA.id - metaB.id;
+        return nameA.localeCompare(nameB, 'it');
       }
     });
     return stationsList;
@@ -600,11 +367,6 @@
 
   function renderMatrixTable() {
     if (!els.tableHead || !els.tableBody || uniqueDates.length === 0) return;
-    ensureTableWrapper();
-
-    if (els.daySelect && els.daySelect.value !== '') {
-      selectedDateIndex = parseInt(els.daySelect.value, 10);
-    }
 
     const visibleDates = uniqueDates.slice(0, Math.min(uniqueDates.length, 31));
     const sortedStations = getSortedStationsList(visibleDates);
@@ -617,12 +379,12 @@
 
     els.tableHead.innerHTML = `
       <tr>
-        <th class="name-cell" rowspan="2" style="vertical-align:middle;">Stazione meteo</th>
+        <th class="name-cell" rowspan="2" style="vertical-align:middle;">Stazione Meteorologica</th>
         ${headersData.map(h => `<th class="${h.isSel ? 'selected-column' : ''}"><span>${h.relDay}</span></th>`).join('')}
-        <th rowspan="2" style="vertical-align:middle; background-color:#00FFFF !important; color:#00008B !important;" title="Giorni Offline">G.O.</th>
+        <th rowspan="2" style="vertical-align:middle; background:#f8fafc; color:#111827;" title="Giorni Offline">G.O.</th>
       </tr>
       <tr>
-        ${headersData.map(h => `<th class="${h.isSel ? 'selected-column' : ''}" style="font-weight:bold; font-size:0.75rem;">${h.display.slice(0, 5)}</th>`).join('')}
+        ${headersData.map(h => `<th class="${h.isSel ? 'selected-column' : ''}" style="font-weight:700; font-size:0.72rem;">${h.display.slice(0, 5)}</th>`).join('')}
       </tr>
     `;
 
@@ -634,7 +396,7 @@
       visibleDates.forEach(d => {
         const dayData = rainByDate.get(d.display);
         const rain = dayData ? dayData.rain : 0;
-        const isOff = dayData ? dayData.offline : true;
+        const isOff = dayData ? dayData.offline : !dayData;
         if (isOff) offlineDaysCount++;
         dailyRains.push({ rain, isOff });
       });
@@ -646,12 +408,10 @@
         cumRains[i] = { rain: runningSum, isOff: dailyRains[i].isOff };
       }
 
-      const displayName = cleanStationName(stName);
-
       bodyHtml += `
         <tr class="rain-row">
-          <td class="name-cell" data-station="${stName}" title="${displayName}">
-            <span class="station-name">${displayName}</span>
+          <td class="name-cell" data-station="${stName}" title="${stName}">
+            <span class="station-name">${stName}</span>
           </td>
           ${dailyRains.map((d, i) => {
             const h = headersData[i];
@@ -661,13 +421,13 @@
               </td>
             `;
           }).join('')}
-          <td rowspan="2" style="font-weight:800; background:#f9fafb; text-align:center; vertical-align:middle; border-left:1px solid #94a3b8; border-bottom:2px solid #64748b;">
+          <td rowspan="2" style="font-weight:700; background:#f8fafc; text-align:center; vertical-align:middle; color:#111827;">
             ${offlineDaysCount}
           </td>
         </tr>
         <tr class="cum-row">
           <td class="name-cell" data-station="${stName}">
-            <span class="selected-cumulative">Cumulativo</span>
+            <span style="font-size:0.72rem; font-weight:700; color:#6b7280;">&bull; Cumulativo</span>
           </td>
           ${cumRains.map((c, i) => {
             const h = headersData[i];
@@ -691,137 +451,154 @@
     });
   }
 
-  function generatePdf() {
-    if (!window.jspdf || !window.jspdf.jsPDF) {
-      setError('Libreria jsPDF non disponibile.');
-      return;
-    }
-    if (els.daySelect && els.daySelect.value !== '') {
-      selectedDateIndex = parseInt(els.daySelect.value, 10);
-    }
-    setError('');
+  function exportPdfReport() {
+    try {
+      if (typeof window.jspdf === 'undefined') {
+        alert("Libreria jsPDF non ancora caricata. Riprova tra qualche istante.");
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('landscape', 'pt', 'a3');
 
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('l', 'mm', 'a3');
-    const visibleDates = uniqueDates.slice(0, Math.min(uniqueDates.length, 31));
-    const sortedStations = getSortedStationsList(visibleDates);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      doc.setTextColor(0, 83, 159);
+      doc.text("REPORT PIOGGE GIORNALIERE E CUMULATE", 40, 40);
 
-    const headersData = visibleDates.map((d, i) => ({
-      display: d.display,
-      relDay: -i,
-      isSel: (i === selectedDateIndex)
-    }));
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      const selObj = uniqueDates[selectedDateIndex];
+      doc.text(`Riferimento attivo: ${selObj ? selObj.display : 'N/D'} | Generato il: ${new Date().toLocaleString()}`, 40, 58);
 
-    const selDateObj = uniqueDates[selectedDateIndex];
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(11);
-    pdf.text(`Report Piogge - Giorno evidenziato: ${selDateObj ? selDateObj.display : '-'} · ${RELEASE}`, 14, 12);
-
-    const head = [
-      ['Stazione meteo', ...headersData.map(h => String(h.relDay)), 'G.O.'],
-      ['Data', ...headersData.map(h => h.display.slice(0, 5)), '']
-    ];
-
-    const body = [];
-    sortedStations.forEach(([stName, rainByDate]) => {
-      let dailyRains = [];
-      let offlineDaysCount = 0;
-
-      visibleDates.forEach(d => {
-        const dayData = rainByDate.get(d.display);
-        const rain = dayData ? dayData.rain : 0;
-        const isOff = dayData ? dayData.offline : true;
-        if (isOff) offlineDaysCount++;
-        dailyRains.push({ rain, isOff });
-      });
-
-      let cumRains = [];
-      let runningSum = 0;
-      for (let i = dailyRains.length - 1; i >= 0; i--) {
-        if (!dailyRains[i].isOff) runningSum += dailyRains[i].rain;
-        cumRains[i] = { rain: runningSum, isOff: dailyRains[i].isOff };
+      try {
+        const img = new Image();
+        img.src = 'logo_330.png';
+        doc.addImage(img, 'PNG', 990, 20, 105, 32);
+      } catch (imgErr) {
+        console.warn("Impossibile caricare il logo nel PDF:", imgErr);
       }
 
-      body.push([
-        { content: cleanStationName(stName), styles: { valign: 'middle', fontStyle: 'bold' } },
-        ...dailyRains.map((d, i) => {
-          const h = headersData[i];
-          if (h.isSel) {
-            return { content: d.isOff ? 'OFF' : (d.rain > 0 ? d.rain.toFixed(1) : '-'), styles: { fillColor: [125, 211, 252], fontSize: 6, textColor: d.isOff ? [220, 38, 38] : [0, 0, 0], fontStyle: d.isOff ? 'bold' : 'normal' } };
-          }
-          if (d.isOff) {
-            return { content: 'OFF', styles: { textColor: [220, 38, 38], fontStyle: 'bold', fontSize: 6 } };
-          }
-          return { content: d.rain > 0 ? d.rain.toFixed(1) : '-' };
-        }),
-        { content: String(offlineDaysCount), rowSpan: 2, styles: { valign: 'middle', halign: 'center', fontStyle: 'bold', fillColor: [249, 250, 251] } }
-      ]);
+      const visibleDates = uniqueDates.slice(0, Math.min(uniqueDates.length, 31));
+      const sortedStations = getSortedStationsList(visibleDates);
 
-      body.push([
-        { content: 'Cumulativo', styles: { fontStyle: 'bold', textColor: [0, 0, 139], fillColor: [203, 213, 225], fontSize: 7 } },
-        ...cumRains.map((c, i) => ({
-          content: c.rain > 0 ? c.rain.toFixed(1) : '-',
-          styles: { fillColor: headersData[i].isSel ? [125, 211, 252] : [203, 213, 225], fontStyle: 'bold', textColor: [0, 0, 139] }
-        }))
-      ]);
-    });
+      const tableHead = [
+        "Stazione",
+        ...visibleDates.map(d => d.display.slice(0, 5)),
+        "G.O."
+      ];
 
-    pdf.autoTable({
-      startY: 18,
-      head: head,
-      body: body,
-      theme: 'grid',
-      styles: { fontSize: 6, cellPadding: 1, halign: 'center', valign: 'middle', lineColor: [148, 163, 184], lineWidth: 0.2 },
-      headStyles: { fillColor: [0, 255, 255], textColor: [0, 0, 139], fontStyle: 'bold', fontSize: 6, lineColor: [100, 116, 139], lineWidth: 0.3 },
-      columnStyles: { 0: { halign: 'left', fontStyle: 'bold', cellWidth: 50 } }
-    });
+      const tableRows = [];
+      sortedStations.forEach(([stName, rainByDate]) => {
+        let rowRain = [stName];
+        let rowCum = ["• Cumulativo"];
+        let offCount = 0;
 
-    const blob = pdf.output('blob');
-    const url = URL.createObjectURL(blob);
-    const popup = window.open(url, '_blank');
-    if (!popup) window.location.href = url;
-    setTimeout(() => URL.revokeObjectURL(url), 60000);
+        visibleDates.forEach(d => {
+          const dayData = rainByDate.get(d.display);
+          const rain = dayData ? dayData.rain : 0;
+          const isOff = dayData ? dayData.offline : !dayData;
+          if (isOff) offCount++;
+          rowRain.push(isOff ? "OFF" : (rain > 0 ? rain.toFixed(1) : "-"));
+        });
+
+        let runningSum = 0;
+        for (let i = visibleDates.length - 1; i >= 0; i--) {
+          const dayData = rainByDate.get(visibleDates[i].display);
+          const rain = (dayData && !dayData.offline) ? dayData.rain : 0;
+          runningSum += rain;
+          rowCum.push(rain > 0 || runningSum > 0 ? runningSum.toFixed(1) : "-");
+        }
+
+        rowRain.push(offCount.toString());
+        rowCum.push("");
+
+        tableRows.push(rowRain);
+        tableRows.push(rowCum);
+      });
+
+      doc.autoTable({
+        head: [tableHead],
+        body: tableRows,
+        startY: 75,
+        theme: 'grid',
+        styles: { fontSize: 8, cellPadding: 4, halign: 'center' },
+        columnStyles: { 0: { halign: 'left', fontStyle: 'bold', cellWidth: 160 } },
+        headStyles: { fillColor: [0, 83, 159], textColor: [255, 255, 255], fontStyle: 'bold' }
+      });
+
+      const fileName = `Report_Piogge_${selObj ? selObj.display.replace(/\//g, '-') : 'data'}.pdf`;
+      const newTab = window.open('', '_blank');
+      if (newTab) {
+        newTab.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head><title>${fileName}</title></head>
+            <body style="margin:0; padding:0;">
+              <h3 style="font-family:sans-serif; text-align:center; color:#00539F; margin-top:20vh;">Generazione anteprima ${fileName} in corso...</h3>
+            </body>
+          </html>
+        `);
+      }
+
+      const pdfBlob = doc.output('blob');
+      const blobUrl = URL.createObjectURL(pdfBlob);
+
+      if (newTab) {
+        newTab.location.href = blobUrl;
+        setTimeout(() => {
+          try { newTab.document.title = fileName; } catch (e) {}
+        }, 500);
+      } else {
+        window.open(blobUrl, '_blank');
+      }
+
+    } catch (err) {
+      console.error("Errore generazione Report PDF:", err);
+      alert("Si è verificato un errore durante la generazione del report PDF.");
+    }
   }
 
   function executeCalculation() {
     setError('');
     if (els.daySelect && els.daySelect.value !== '') {
       selectedDateIndex = parseInt(els.daySelect.value, 10);
+    } else if (els.daySelect && els.daySelect.value === '' && uniqueDates.length > 0) {
+      selectedDateIndex = 0;
+      els.daySelect.value = "0";
     }
-    const selDateObj = uniqueDates[selectedDateIndex];
-    if (selDateObj && els.selectedDayLabel) els.selectedDayLabel.textContent = selDateObj.display;
-    if (els.statusText) els.statusText.textContent = `${RELEASE} · Report generato.`;
+
+    updateActiveIndicators();
     if (els.savePdfField) els.savePdfField.classList.remove('hidden');
     renderMatrixTable();
   }
 
   async function init() {
     try {
-      ensureSortSelect();
-      ensureTableWrapper();
-
       const [weatherText, stationsText] = await Promise.all([
-        fetchCsvFile(WEATHER_CSV),
-        fetchCsvFile(STATIONS_CSV).catch(() => '')
+        fetchText(WEATHER_CSV),
+        fetchText(STATIONS_CSV).catch(() => '')
       ]);
 
-      weatherRawData = parseCsv(weatherText).data || [];
-      const stationsRawData = stationsText ? (parseCsv(stationsText).data || []) : [];
+      const weatherParsed = Papa.parse(weatherText, {
+        header: true, skipEmptyLines: true, delimiter: delimiter(weatherText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
+      });
 
-      stationsMetaMap = processStationsMeta(stationsRawData, weatherRawData);
-      processWeatherData(weatherRawData);
+      const stationsParsed = stationsText ? Papa.parse(stationsText, {
+        header: true, skipEmptyLines: true, delimiter: delimiter(stationsText), transformHeader: h => h.trim().replace(/^\ufeff/, ''), transform: v => String(v).trim()
+      }) : { data: [] };
+
+      processData(stationsParsed.data || [], weatherParsed.data || []);
 
       if (uniqueDates.length > 0) {
-        if (els.lastUpdate) els.lastUpdate.textContent = uniqueDates[0].display;
         populateDaySelect();
+        selectedDateIndex = 0;
+        if (els.daySelect) els.daySelect.value = "0";
+        updateActiveIndicators();
         renderMatrixTable();
       } else {
-        throw new Error("Nessuna data valida estratta dal file meteo.");
+        throw new Error("Nessuna data o dato meteo trovato nei file CSV.");
       }
-
-      if (els.stationsCount) els.stationsCount.textContent = String(stationMap.size);
-      if (els.recordsCount) els.recordsCount.textContent = String(weatherRawData.length);
-      if (els.statusText) els.statusText.textContent = `${RELEASE} · Pronto.`;
     } catch (err) {
       setError(err.message);
       console.error(err);
@@ -829,9 +606,11 @@
   }
 
   if (els.executeBtn) els.executeBtn.addEventListener('click', executeCalculation);
-  if (els.savePdfBtn) els.savePdfBtn.addEventListener('click', generatePdf);
-  if (els.sidebarToggleInside) els.sidebarToggleInside.addEventListener('click', toggleSidebar);
-  if (els.sidebarToggleMini) els.sidebarToggleMini.addEventListener('click', toggleSidebar);
+  if (els.sortSelect) els.sortSelect.addEventListener('change', () => {
+    updateActiveIndicators();
+    if (uniqueDates.length > 0) renderMatrixTable();
+  });
+  if (els.savePdfBtn) els.savePdfBtn.addEventListener('click', exportPdfReport);
 
   init();
 })();
