@@ -22,14 +22,14 @@
     --fineco-blue-hover: #003d78;
     --fineco-blue-light: #e6f0fa;
     
-    --btn-bg: #f8fafc;
+    --btn-bg: #ffffff;
     --btn-hover: #f1f5f9;
     --btn-active-bg: #00539F;
     --btn-active-text: #ffffff;
     
-    --danger: #b91c1c;
+    --danger: #991b1b;
     --success: #2e7d32;
-    --radius: 0.5rem;
+    --radius: 0.375rem;
     --font: 'Figtree', system-ui, -apple-system, sans-serif;
 }
 
@@ -46,20 +46,19 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     top: 12px;
     left: 12px;
     z-index: 1001;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
+    width: 38px;
+    height: 38px;
+    background: var(--surface);
     border: 1.5px solid var(--fineco-blue);
     border-radius: var(--radius);
     color: var(--fineco-blue);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: all 0.15s ease;
 }
 .toggle-sidebar-btn:hover {
     background: var(--fineco-blue);
@@ -74,35 +73,34 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     width: 320px;
     max-width: 85vw;
     height: 100%;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
+    background: var(--surface);
     border-right: 1px solid var(--border);
-    box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
     z-index: 1003;
     display: flex;
     flex-direction: column;
-    padding: 18px 16px;
-    gap: 14px;
+    padding: 16px;
+    gap: 12px;
     transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.25s ease;
     overflow-y: auto;
 }
 .sidebar-panel.open {
     transform: translateX(0);
 }
 
-/* HEADER SIDEBAR: LOGO INGRANDITO E CENTRATO */
+/* HEADER SIDEBAR */
 .sidebar-header {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
+    padding-bottom: 10px;
     margin-bottom: 2px;
 }
 .sidebar-logo-img {
-    max-height: 52px;
+    max-height: 42px;
     width: auto;
     display: block;
     object-fit: contain;
@@ -114,10 +112,10 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     transform: translateY(-50%);
     background: none;
     border: none;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: var(--muted);
     cursor: pointer;
-    padding: 0 4px;
+    padding: 4px;
 }
 .close-sidebar-btn:hover { color: var(--text); }
 
@@ -127,43 +125,71 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     gap: 6px;
 }
 .sidebar-section-label {
-    font-size: 0.72rem;
-    font-weight: 800;
+    font-size: 0.78rem;
+    font-weight: 700;
     color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.03em;
 }
 
-/* BOTTONI AZIONE SOBRI */
+/* BOTTONI AZIONE UNIFICATI STILE REPORT */
 .btn-action-side {
-    background: var(--btn-bg);
-    border: 1px solid var(--border);
+    background: var(--fineco-blue-light);
+    border: 1.5px solid var(--fineco-blue);
     border-radius: var(--radius);
-    padding: 10px 14px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--fineco-blue);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-decoration: none;
+    white-space: nowrap;
+    height: 38px;
+    width: 100%;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.btn-action-side:hover {
+    background: var(--fineco-blue);
+    border-color: var(--fineco-blue);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-action-secondary {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     color: var(--text);
-    font-weight: 700;
-    font-size: 0.88rem;
+    font-weight: 600;
+    font-size: 0.8rem;
     text-decoration: none;
     white-space: nowrap;
-    height: 40px;
+    height: 38px;
     width: 100%;
     transition: all 0.15s ease;
     cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
-.btn-action-side:hover {
-    background: var(--btn-hover);
-    border-color: var(--muted);
-}
-.btn-action-side.all-stations-btn {
-    font-weight: 600;
-    font-size: 0.84rem;
+.btn-action-secondary:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
+    transform: translateY(-1px);
 }
 
-/* BARRA MODALITÀ CON ICONE PULITE */
+/* BARRA MODALITÀ */
 .horizontal-modes-bar {
     display: flex;
     flex-direction: column;
@@ -174,60 +200,63 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .mode-btn-horiz {
     display: flex;
     align-items: center;
-    gap: 12px;
-    background: var(--btn-bg);
-    border: 1px solid var(--border);
+    gap: 10px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
     cursor: pointer;
-    padding: 9px 12px;
+    padding: 0 12px;
     transition: all 0.15s ease;
     color: var(--text);
     text-decoration: none;
     width: 100%;
+    height: 38px;
 }
 .mode-btn-horiz:hover { 
-    background: var(--btn-hover); 
-    border-color: var(--muted); 
+    background: #f1f5f9; 
+    border-color: #94a3b8; 
 }
 
 .mode-btn-horiz.active {
-    background: var(--btn-active-bg) !important;
+    background: var(--fineco-blue-light) !important;
     border-color: var(--fineco-blue) !important;
-    color: var(--btn-active-text) !important;
+    color: var(--fineco-blue) !important;
     font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0,83,159,0.25);
 }
-.mode-btn-horiz.active svg { fill: var(--btn-active-text) !important; stroke: var(--btn-active-text) !important; }
+.mode-btn-horiz.active svg { fill: var(--fineco-blue) !important; stroke: var(--fineco-blue) !important; }
 
 .mode-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 .mode-label {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
-/* TENDINA STAZIONI E CONTROLLI ZOOM */
+/* TENDINA STAZIONI E ZOOM */
 .station-select-wrap select {
     width: 100%;
-    min-height: 40px;
+    height: 38px;
     padding: 0 10px;
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    background: var(--btn-bg);
+    background: var(--surface);
     color: var(--text);
     font-family: var(--font);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     cursor: pointer;
     outline: none;
 }
-.station-select-wrap select:hover { background: var(--btn-hover); border-color: var(--muted); }
+.station-select-wrap select:hover { border-color: var(--fineco-blue); }
+.station-select-wrap select:focus { border-color: var(--fineco-blue); box-shadow: 0 0 0 2px rgba(0, 83, 159, 0.15); }
 
 .zoom-buttons-group {
     display: flex;
@@ -237,8 +266,8 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .zoom-btn {
     width: 38px;
     height: 38px;
-    background: var(--btn-bg);
-    border: 1px solid var(--border);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
     font-size: 1.1rem;
     font-weight: 700;
@@ -246,15 +275,16 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     cursor: pointer;
     display: grid;
     place-items: center;
+    transition: all 0.15s ease;
 }
-.zoom-btn:hover { background: var(--btn-hover); border-color: var(--muted); }
+.zoom-btn:hover { border-color: var(--fineco-blue); color: var(--fineco-blue); background: var(--fineco-blue-light); }
 
 .zoom-indicator {
     flex: 1;
     height: 38px;
-    background: var(--btn-bg);
+    background: #f8fafc;
     padding: 0 10px;
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
     font-family: var(--font);
     font-weight: 600;
@@ -266,7 +296,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
     justify-content: center;
 }
 
-/* FOOTER SIDEBAR CON INFO E LINK WEBMASTER ELEGANTE */
+/* FOOTER SIDEBAR */
 .sidebar-footer-group {
     margin-top: auto;
     display: flex;
@@ -276,32 +306,35 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 
 .bottom-left-info {
     background: #f8fafc;
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
     padding: 8px 10px;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 3px;
-    line-height: 1.25;
+    line-height: 1.3;
 }
 .update-date-text { font-weight: 600; color: var(--muted); }
 .summary-stats { font-weight: 700; color: var(--text); }
 .summary-stats strong { color: var(--fineco-blue); font-weight: 800; }
 
 .webmaster-card {
-    background: #f8fafc;
-    border: 1px solid var(--border);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    padding: 8px 10px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 600;
     text-decoration: none;
     color: var(--fineco-blue);
+    height: 38px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     transition: all 0.15s ease;
 }
 .webmaster-card:hover {
@@ -334,7 +367,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .station-marker.max.offline { background: #64748b; }
 
 /* POPUP LARGHEZZA ESTESA */
-.leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border-radius: 0.5rem; }
+.leaflet-popup-content-wrapper { padding: 0; overflow: hidden; border-radius: var(--radius); }
 .leaflet-popup-content { margin: 10px 12px !important; max-width: calc(100vw - 30px) !important; max-height: 70vh !important; overflow-y: auto !important; }
 
 .popup-container { font-family: inherit; width: 100%; max-width: 750px; font-size: .78rem; }
@@ -373,7 +406,6 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
         <div class="horizontal-modes-bar">
             <button type="button" class="mode-btn-horiz active" id="btnRainMode" title="Pioggia odierna">
                 <span class="mode-icon">
-                    <!-- Icona Ombrello Vettoriale Pulita -->
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2v1m0 16v2a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2v-2"></path>
                         <path d="M12 3a9 9 0 0 0-9 9 9 9 0 0 0 18 0 9 9 0 0 0-9-9z"></path>
@@ -383,7 +415,6 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
             </button>
             <button type="button" class="mode-btn-horiz" id="btnMaxMode" title="Temperature Massime">
                 <span class="mode-icon">
-                    <!-- Icona Termometro Max -->
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="#c2410c">
                         <path d="M12 2a3 3 0 0 0-3 3v9.55a5 5 0 1 0 6 0V5a3 3 0 0 0-3-3zm1 14.83v-7.83a1 1 0 0 0-2 0v7.83a2.5 2.5 0 1 0 2 0z"/>
                     </svg>
@@ -392,7 +423,6 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
             </button>
             <button type="button" class="mode-btn-horiz" id="btnMinMode" title="Temperature Minime">
                 <span class="mode-icon">
-                    <!-- Icona Termometro Min -->
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="#1e40af">
                         <path d="M12 2a3 3 0 0 0-3 3v9.55a5 5 0 1 0 6 0V5a3 3 0 0 0-3-3zm1 14.83v-7.83a1 1 0 0 0-2 0v7.83a2.5 2.5 0 1 0 2 0z"/>
                     </svg>
@@ -410,7 +440,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
                 <option value="">🔍 Seleziona Stazione...</option>
             </select>
         </div>
-        <button type="button" class="btn-action-side all-stations-btn" id="btnResetView"><span>📍</span> Tutte le Stazioni</button>
+        <button type="button" class="btn-action-secondary" id="btnResetView"><span>📍</span> Tutte le Stazioni</button>
     </div>
 
     <!-- CONTROLLI ZOOM -->
@@ -423,7 +453,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
         </div>
     </div>
 
-    <!-- BLOCCO FOOTER (INFO SU 3 RIGHE + WEBMASTER CON CASSETTA POSTALE VETTORIALE) -->
+    <!-- BLOCCO FOOTER -->
     <div class="sidebar-footer-group">
         <div class="bottom-left-info">
             <div class="update-date-text" id="updateDateText">Dati Aggiornati al: --/--/---- --:--</div>
@@ -431,7 +461,6 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
             <div style="font-weight:600; color:var(--muted);">Rel. 02-WB-014</div>
         </div>
         <a href="mailto:amatris@outlook.it" class="webmaster-card" title="Scrivi al Webmaster">
-            <!-- Icona Cassetta Postale SVG Minimalista -->
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                 <polyline points="22,6 12,13 2,6"></polyline>

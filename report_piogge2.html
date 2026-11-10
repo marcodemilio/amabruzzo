@@ -99,28 +99,6 @@
       background: transparent;
     }
 
-    .cartina-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 0 1rem;
-      background: #ff7b00;
-      color: #ffffff;
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-decoration: none;
-      border-radius: var(--radius);
-      height: 38px;
-      border: 1px solid rgba(255,255,255,0.4);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      transition: background 0.15s ease;
-      white-space: nowrap;
-    }
-    .cartina-btn:hover {
-      background: #e06d00;
-    }
-
     /* Pannello Unificato */
     .panel-unified {
       padding: 1rem 1.25rem;
@@ -284,8 +262,6 @@
       }
       .header-container {
         padding: 0.5rem 0.75rem;
-        flex-direction: column;
-        gap: 10px;
       }
       .header-title-box h1 {
         font-size: 0.95rem;
@@ -324,9 +300,7 @@
 <body>
   <main class="report-main">
     <div class="header-container">
-      <div style="width: 160px;">
-        <a href="index2.html" class="cartina-btn">🗺️ Mappa Stazioni</a>
-      </div>
+      <div style="width: 40px;"></div>
       <div class="header-title-box">
         <h1 id="dynamicReportSubtitle">Report Piogge Giornaliere e Cumulate</h1>
       </div>
@@ -363,7 +337,7 @@
         </div>
 
         <div class="btn-group-align" style="margin-left: auto;">
-          <a href="menu.php" class="action-btn btn-menu-icon">&#128506; Menù principale</a>
+          <a href="index2.html" class="action-btn btn-menu-icon">&#128506; Mappa Stazioni</a>
           <a href="logout.php" class="action-btn btn-logout-icon">&#128682; Logout - Esci</a>
         </div>
       </div>

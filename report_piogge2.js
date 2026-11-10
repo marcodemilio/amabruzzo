@@ -43,6 +43,13 @@
         color: #00539F !important; 
         font-weight: 700 !important; 
       }
+      .table-scroll-container { 
+        max-height: calc(100vh - 240px) !important; 
+        overflow: auto !important; 
+        border: 1px solid #d0d7de !important; 
+        border-radius: 0.375rem; 
+        background-color: #ffffff;
+      }
       table { 
         border-collapse: separate !important; 
         border-spacing: 0 !important; 
@@ -51,9 +58,9 @@
       }
       th, td { 
         white-space: nowrap !important; 
-        padding: 4px 8px !important; 
+        padding: 5px 8px !important; 
         text-align: center; 
-        border-right: 1px solid #e2e8f0 !important; 
+        border-right: 1px solid #cbd5e1 !important; 
         border-bottom: 1px solid #e2e8f0 !important; 
         font-size: 0.76rem;
         color: #111827;
@@ -66,21 +73,20 @@
         background-color: #f8fafc !important; 
         color: #111827 !important; 
         font-weight: 700;
-        border-bottom: 2px solid #d0d7de !important;
+        border-bottom: 2px solid #00539F !important;
         font-size: 0.76rem;
-        padding: 5px 8px !important;
+        padding: 6px 8px !important;
       }
       .name-cell { 
         position: sticky !important; 
         left: 0 !important; 
         z-index: 10 !important; 
-        background-color: #ffffff !important; 
         cursor: pointer; 
         width: 220px !important; 
         min-width: 220px !important; 
         text-align: left !important; 
         padding-left: 10px !important; 
-        border-right: 2px solid #d0d7de !important; 
+        border-right: 2px solid #cbd5e1 !important; 
         font-weight: 700;
         color: #111827;
         font-size: 0.76rem;
@@ -88,20 +94,20 @@
       .name-cell:hover { background-color: #e6f0fa !important; color: #00539F !important; }
       thead th.name-cell { z-index: 30 !important; background-color: #f8fafc !important; }
       
-      .rain-row td { background-color: #ffffff; }
-      .rain-row:hover td { background-color: #f8fafc; }
-      .rain-row:hover td.name-cell { background-color: #f8fafc !important; }
+      .station-group-even td { background-color: #ffffff; }
+      .station-group-odd td { background-color: #f8fafc; }
+      
+      .station-group-even .name-cell { background-color: #ffffff !important; }
+      .station-group-odd .name-cell { background-color: #f8fafc !important; }
 
       .cum-row td { 
-        background-color: #f8fafc !important; 
         font-weight: 700 !important; 
         color: #334155 !important; 
-        border-top: 1px solid #e2e8f0 !important; 
-        border-bottom: 2px solid #d0d7de !important; 
+        border-bottom: 2.5px solid #94a3b8 !important; 
       }
-      .cum-row td.name-cell {
+      .cum-row .name-cell {
         color: #475569 !important;
-        background-color: #f8fafc !important;
+        font-weight: 600;
       }
 
       .station-modal-overlay {
@@ -366,6 +372,16 @@
   }
 
   function renderMatrixTable() {
+    if (!document.querySelector('table')) return;
+    const tableEl = document.querySelector('table');
+    if (!tableEl.parentElement.classList.contains('table-scroll-container')) {
+      const parent = tableEl.parentNode;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'table-scroll-container';
+      parent.insertBefore(wrapper, tableEl);
+      wrapper.appendChild(tableEl);
+    }
+
     if (!els.tableHead || !els.tableBody || uniqueDates.length === 0) return;
 
     const visibleDates = uniqueDates.slice(0, Math.min(uniqueDates.length, 31));
@@ -389,7 +405,7 @@
     `;
 
     let bodyHtml = '';
-    sortedStations.forEach(([stName, rainByDate]) => {
+    sortedStations.forEach(([stName, rainByDate], index) => {
       let dailyRains = [];
       let offlineDaysCount = 0;
 
@@ -408,8 +424,10 @@
         cumRains[i] = { rain: runningSum, isOff: dailyRains[i].isOff };
       }
 
+      const groupClass = index % 2 === 0 ? 'station-group-even' : 'station-group-odd';
+
       bodyHtml += `
-        <tr class="rain-row">
+        <tr class="rain-row ${groupClass}">
           <td class="name-cell" data-station="${stName}" title="${stName}">
             <span class="station-name">${stName}</span>
           </td>
@@ -421,11 +439,11 @@
               </td>
             `;
           }).join('')}
-          <td rowspan="2" style="font-weight:700; background:#f8fafc; text-align:center; vertical-align:middle; color:#111827;">
+          <td rowspan="2" style="font-weight:700; text-align:center; vertical-align:middle; color:#111827; border-left: 2px solid #cbd5e1;">
             ${offlineDaysCount}
           </td>
         </tr>
-        <tr class="cum-row">
+        <tr class="cum-row ${groupClass}">
           <td class="name-cell" data-station="${stName}">
             <span style="font-size:0.72rem; font-weight:700; color:#6b7280;">&bull; Cumulativo</span>
           </td>
@@ -461,20 +479,20 @@
       const doc = new jsPDF('landscape', 'pt', 'a3');
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(18);
+      doc.setFontSize(16);
       doc.setTextColor(0, 83, 159);
-      doc.text("REPORT PIOGGE GIORNALIERE E CUMULATE", 40, 40);
+      doc.text("REPORT PIOGGE GIORNALIERE E CUMULATE", 40, 35);
 
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
+      doc.setFontSize(9);
       doc.setTextColor(100, 100, 100);
       const selObj = uniqueDates[selectedDateIndex];
-      doc.text(`Riferimento attivo: ${selObj ? selObj.display : 'N/D'} | Generato il: ${new Date().toLocaleString()}`, 40, 58);
+      doc.text(`Riferimento attivo: ${selObj ? selObj.display : 'N/D'} | Generato il: ${new Date().toLocaleString()}`, 40, 50);
 
       try {
         const img = new Image();
         img.src = 'logo_330.png';
-        doc.addImage(img, 'PNG', 990, 20, 105, 32);
+        doc.addImage(img, 'PNG', 1040, 15, 95, 30);
       } catch (imgErr) {
         console.warn("Impossibile caricare il logo nel PDF:", imgErr);
       }
@@ -520,14 +538,48 @@
       doc.autoTable({
         head: [tableHead],
         body: tableRows,
-        startY: 75,
+        startY: 65,
         theme: 'grid',
-        styles: { fontSize: 8, cellPadding: 4, halign: 'center' },
-        columnStyles: { 0: { halign: 'left', fontStyle: 'bold', cellWidth: 160 } },
-        headStyles: { fillColor: [0, 83, 159], textColor: [255, 255, 255], fontStyle: 'bold' }
+        styles: { 
+          fontSize: 7.5, 
+          cellPadding: { top: 4, bottom: 4, left: 2, right: 2 }, 
+          halign: 'center', 
+          valign: 'middle',
+          textColor: [30, 41, 59], 
+          fillColor: [255, 255, 255],
+          lineColor: [203, 213, 225],
+          lineWidth: 0.4
+        },
+        columnStyles: { 
+          0: { halign: 'left', fontStyle: 'bold', cellWidth: 150 } 
+        },
+        headStyles: { 
+          fillColor: [0, 83, 159], 
+          textColor: [255, 255, 255], 
+          fontStyle: 'bold',
+          fontSize: 7.5,
+          cellPadding: { top: 6, bottom: 6, left: 2, right: 2 }
+        },
+        didParseCell: function(data) {
+          if (data.section === 'body' && data.row.index % 2 !== 0) {
+            data.cell.styles.fillColor = [248, 250, 252];
+            data.cell.styles.fontStyle = 'bold';
+          }
+        },
+        didDrawCell: function(data) {
+          if (data.section === 'body' && data.row.index % 2 !== 0) {
+            const docPdf = data.doc;
+            docPdf.setDrawColor(100, 116, 139);
+            docPdf.setLineWidth(1.2);
+            docPdf.line(data.cell.x, data.cell.y + data.cell.height, data.cell.x + data.cell.width, data.cell.y + data.cell.height);
+          }
+        }
       });
 
       const fileName = `Report_Piogge_${selObj ? selObj.display.replace(/\//g, '-') : 'data'}.pdf`;
+      const pdfBlob = doc.output('blob');
+      const blobUrl = URL.createObjectURL(pdfBlob);
+
       const newTab = window.open('', '_blank');
       if (newTab) {
         newTab.document.write(`
@@ -535,20 +587,10 @@
           <html>
             <head><title>${fileName}</title></head>
             <body style="margin:0; padding:0;">
-              <h3 style="font-family:sans-serif; text-align:center; color:#00539F; margin-top:20vh;">Generazione anteprima ${fileName} in corso...</h3>
+              <iframe src="${blobUrl}" style="width:100vw; height:100vh; border:none;"></iframe>
             </body>
           </html>
         `);
-      }
-
-      const pdfBlob = doc.output('blob');
-      const blobUrl = URL.createObjectURL(pdfBlob);
-
-      if (newTab) {
-        newTab.location.href = blobUrl;
-        setTimeout(() => {
-          try { newTab.document.title = fileName; } catch (e) {}
-        }, 500);
       } else {
         window.open(blobUrl, '_blank');
       }
