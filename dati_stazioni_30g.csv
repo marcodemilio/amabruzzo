@@ -11,7 +11,7 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 10,42.276,13.638,1280,Prata d'Ansidonia
 11,42.073,14.03,1660,Passo San Leonardo
 12,42.102,14.014,1650,Roccacaramanico
-13,41.996,14.072,1670,Campo di Giove
+13,42.010222,14.043675,1670,Campo di Giove
 14,41.95,14.028,1710,Bosco di Sant'Antonio
 15,41.927,14.101,1700,Palena Stazione
 16,41.888,14.058,1740,Pescocostanzo Loc. Vallefura
@@ -24,17 +24,15 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 23,42.067,13.211,1430,Tagliacozzo Loc. Roccacerro
 24,42.556,13.265,1030,Montereale - Aringo
 25,42.07,13.053,1470,Oricola Loc. Pezzetaglie
-26,42.228,13.531,1360,Rocca di Mezzo Loc. Terranera
 27,42.52,13.328,1070,Lago di Campotosto
 28,42.24,14.53,1490,Fossacesia Marina
 29,42.465,13.24,1090,Cagnano Amiterno
 31,41.758,14.099,1790,Castel di Sangro Loc. Pantano
 32,42.003,14.084,1680,Campo di Giove Loc. Guado di Coccia
 33,42.346,13.646,1290,Santo Stefano di Sessanio
-34,41.84,14.27,1810,Capracotta
+34,41.837,14.267,1810,Capracotta
 35,42.368,13.416,1170,Collebrincioni
 36,41.85,14.08,1760,Roccaraso
-37,42.363,13.184,1190,Sella di Corno
 38,42.089,14.205,1510,Fara San Martino
 39,41.981,13.276,1850,Camporotondo
 40,42.434,13.306,1180,Pizzoli
@@ -45,21 +43,20 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 45,42.14,13.52,1390,Ovindoli
 47,42.366,13.73,1140,Castel del Monte
 48,42.112,13.451,1420,Forme
-49,41.948,13.887,1870,Monte Genzana
 50,42.302,13.729,1250,Ofena
 51,42.18,13.468,1370,Piani di Pezza
 52,42.414,13.558,1160,Rifugio Montecristo
 53,42.328,13.69,1260,Rocca Calascio
 54,42.431,13.808,1110,Farindola
-55,42.788,13.58,1020,Monte Piselli
-56,42.735,13.497,1010,Valle Castellana
+55,42.788,13.58,1010,Monte Piselli
+56,42.735,13.497,1020,Valle Castellana
 57,41.944,14.304,1620,Civitaluparella
 58,41.739,14.039,1980,Alfedena Scontrone 12
 59,41.996,14.072,1690,Campo di Giove - Impianti
 60,42.168,14.018,1630,Caramanico - Decontra
 61,42.228,13.759,1300,Collepietro
-62,41.9462739,14.0263258,1310,Pescocostanzo - Primo Campo
-63,41.897041,14.101035,1332,Pescocostanzo - Santa Chiara
+62,41.93,14.343,1730,Pescocostanzo - Primo Campo
+63,41.897041,14.101035,1720,Pescocostanzo - Santa Chiara
 64,42.056,13.195,1440,Marsia
 65,42.091,13.23,1450,Tagliacozzo Loc. Poggetello
 66,41.912,14.373,1600,Roio del Sangro
@@ -70,21 +67,18 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 71,42.001,13.281,1860,Cappadocia
 72,42.244,13.646,1320,Bominaco
 73,42.501667,13.668333,1040,Isola del Gran Sasso
-74,42.472222,13.704167,1050,Castelli
 75,42.33,13.771667,1240,Carrufo
-76,42.248696,14.185917,1500,Fara Filiorum Petri
-77,42.033566,14.1423548,1580,Rifugio Macchia di Taranta
 78,41.967926,13.494761,1820,Luco dei Marsi
 79,41.9191646,13.422923,1890,Civitella Roveto
 80,42.041,13.439,1840,Avezzano
 81,41.735028,14.037028,1960,Alfedena Centro
-82,41.74,14.039,1970,Alfedena Scontrone 4
+82,41.739,14.039,1970,Alfedena Scontrone 4
 83,41.937,14.47,1590,Roccaspinalveti
 84,42.196,14.225,1520,Guardiagrele
 85,42.176,13.959,1640,Salle
 86,42.05,13.866,1210,Prezza
 87,41.813,13.561,1950,Balsorano
-88,41.887,13.582,1880,Collelongo
+88,41.8835878,13.58383326,1880,Collelongo
 89,41.948,13.32,1900,Castellafiume
 90,42.3,13.682,1270,Carapelle Calvisio
 91,41.951,13.537,1830,Trasacco
@@ -96,8 +90,8 @@ Id,Lat,Long,ZonaGeo,Stazione Meteo
 98,41.748333,14.040278,1990,Villa Scontrone
 99,41.775613,13.935117,1930,Villetta Barrea
 100,42.1793,14.1799,1530,Bocca di Valle
-101,42,216389,14,139722,Pretoro
-102,42,235556,14.0988,1552,Serramonacesca
+101,42.216389,14.139722,1535,Pretoro
+102,42.235556,14.0988,1552,Serramonacesca
 103,42.118889,14.031111,1635,Sant'Eufemia a Majella
 104,41.970833,13.963611,1221,Pettorano sul Gizio
 105,42.036389,13.8925,1225,Introdacqua
